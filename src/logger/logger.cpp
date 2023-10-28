@@ -1,5 +1,5 @@
+#include "logger.h"
 #include <assert.h>
-#include <rt/logger/logger.h>
 
 Logger::Logger(Level level) : m_level(level)
 {
@@ -47,6 +47,9 @@ std::ostringstream &Logger::operator<<(const std::ostringstream &stream)
 
 void Logger::flush()
 {
+    if (!m_debug && m_level == Level::DEBUG)
+        return;
+
     static const char *WHITE = "\033[0m";
     const char *color = WHITE;
     switch (m_level)

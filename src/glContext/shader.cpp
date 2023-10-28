@@ -1,8 +1,8 @@
+#include "glContext/shader.h"
+#include "glContext/window.h"
+#include "logger/logger.h"
 #include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
-#include <rt/glContext/shader.h>
-#include <rt/glContext/window.h>
-#include <rt/logger/logger.h>
 
 Shader::Shader(const char *vertPath, const char *fragPath) : m_vertPath(vertPath), m_fragPath(fragPath)
 {
@@ -120,7 +120,7 @@ void Shader::unbind() const
     glUseProgram(0);
 }
 
-void Shader::setUniforms(const Material &material, const glm::mat4 &model, const glm::mat4 &view,
+void Shader::setUniforms(const Material& material, const glm::mat4 &model, const glm::mat4 &view,
                          const glm::mat4 &projection)
 {
     int projectionMatrixLocation = glGetUniformLocation(m_programUid, "projection");
@@ -136,7 +136,7 @@ void Shader::setUniforms(const Material &material, const glm::mat4 &model, const
 
 void Shader::init()
 {
-    if (glewInit() != GL_NO_ERROR)
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
         throw std::runtime_error("Could not initialize GLEW!");
 
     load();

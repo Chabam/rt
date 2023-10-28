@@ -1,7 +1,7 @@
+#include "engine.h"
+#include "logger/logger.h"
 #include <chrono>
 #include <functional>
-#include <rt/engine/engine.h>
-#include <rt/logger/logger.h>
 #include <thread>
 
 Engine::Engine(const Shader &shader, const Window &window) : m_window(window), m_shader(shader), m_fps(60)
@@ -66,8 +66,7 @@ void Engine::render()
     for (RenderTarget &renderTarget : m_renderTargets)
     {
         m_shader.bind();
-        m_shader.setUniforms(renderTarget.m_mesh.getMaterial(), renderTarget.m_mesh.getModel(), VIEW_MATRIX,
-                             PROJECTION_MATRIX);
+        m_shader.setUniforms(renderTarget.m_mesh.getMaterial(), renderTarget.m_mesh.getModel(), VIEW_MATRIX, PROJECTION_MATRIX);
         glDrawArrays(GL_TRIANGLES, 0, renderTarget.m_mesh.getTriangleCount() * 3);
         m_shader.unbind();
     }

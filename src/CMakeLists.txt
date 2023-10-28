@@ -9,7 +9,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     main.cpp
 )
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glad GLFW glm)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glfw glm glad)
 
 set_property(TARGET ${CMAKE_PROJECT_NAME} PROPERTY CXX_STANDARD 17)
-target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Werror)

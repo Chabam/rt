@@ -1,13 +1,12 @@
 #pragma once
-
+#include "object/mesh.h"
+#include "object/quad.h"
 #include <array>
-#include <rt/object/mesh.h>
-#include <rt/object/quad.h>
 
 class Cube : public Mesh
 {
   public:
-    Cube(const Material &material = Material());
+    Cube(const Material& material = Material());
 
     const Vertice p1 = {1, -1, 1};
     const Vertice p2 = {1, 1, 1};

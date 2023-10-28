@@ -1,10 +1,9 @@
 #pragma once
-
+#include "glContext/buffer.h"
+#include "object/material.h"
+#include "object/triangle.h"
+#include "object/vertice.h"
 #include <glm/glm.hpp>
-#include <rt/glContext/buffer.h>
-#include <rt/object/material.h>
-#include <rt/object/triangle.h>
-#include <rt/object/vertice.h>
 #include <vector>
 
 class Mesh

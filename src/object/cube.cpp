@@ -1,5 +1,5 @@
-#include <rt/object/cube.h>
-#include <rt/object/quad.h>
+#include "object/cube.h"
+#include "object/quad.h"
 
 Cube::Cube(const Material &material) : Mesh({}, material)
 {

@@ -1,6 +1,6 @@
+#include "buffer.h"
+#include "logger/logger.h"
 #include <algorithm>
-#include <rt/glContext/buffer.h>
-#include <rt/logger/logger.h>
 
 Buffer::Buffer(const std::vector<Vertice> &vertices)
 {

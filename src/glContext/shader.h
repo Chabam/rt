@@ -1,9 +1,7 @@
-#pragma once
-
+#include "object/material.h"
+#include <glad/glad.h>
 #include <fstream>
-#include <glad/gl.h>
 #include <glm/glm.hpp>
-#include <rt/object/material.h>
 #include <sstream>
 #include <string>
 

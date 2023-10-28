@@ -1,10 +1,9 @@
 #pragma once
-
+#include "object/color.h"
+#include "object/vertice.h"
+#include <glad/glad.h>
 #include <array>
-#include <glad/gl.h>
 #include <initializer_list>
-#include <rt/object/color.h>
-#include <rt/object/vertice.h>
 #include <vector>
 
 class Buffer

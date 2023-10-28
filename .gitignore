@@ -6,3 +6,6 @@ cmake_install.cmake
 .vs/
 CMakeFiles
 _deps/
+CMakeSettings.json
+out/
+_build/

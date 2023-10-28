@@ -1,8 +1,8 @@
+#include "glContext/window.h"
+#include "glContext/buffer.h"
+#include "glContext/shader.h"
+#include "logger/logger.h"
 #include <math.h>
-#include <rt/glContext/buffer.h>
-#include <rt/glContext/shader.h>
-#include <rt/glContext/window.h>
-#include <rt/logger/logger.h>
 
 Window::Window(int width, int height, const char *title)
     : m_width(width), m_height(height), m_title(title), m_impl(nullptr)

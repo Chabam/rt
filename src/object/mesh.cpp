@@ -1,6 +1,7 @@
+#include "object/mesh.h"
 #include <algorithm>
-#include <rt/logger/logger.h>
-#include <rt/object/mesh.h>
+#include "logger/logger.h"
+#include "glm/gtx/string_cast.hpp"
 
 Mesh::Mesh(const std::vector<Triangle> &triangles, const Material &material)
     : m_triangles(triangles), m_model(1.f), m_material(material)

@@ -1,5 +1,3 @@
-#pragma once
-
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -22,6 +20,7 @@ class Logger
 
   private:
     void flush();
+    bool m_debug;
     Level m_level;
     std::ostringstream m_stream;
     static const char *levelToText(Level level);
@@ -29,7 +28,7 @@ class Logger
 
 #define LOG(text, level)                                                                                               \
     {                                                                                                                  \
-        Logger logger(level, DEBUGGING);                                                                               \
+        Logger logger(level);                                                                                          \
         logger << text;                                                                                                \
     }                                                                                                                  \
     static_assert(true, "")

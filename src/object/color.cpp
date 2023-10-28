@@ -1,4 +1,4 @@
-#include <rt/object/color.h>
+#include "object/color.h"
 
 const Color::Normalized Color::normalize(RGB color)
 {
