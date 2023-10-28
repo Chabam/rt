@@ -3,9 +3,8 @@ project(glad)
 add_library(${PROJECT_NAME})
 
 target_sources(${PROJECT_NAME}
-    PUBLIC
-        include/glad/glad.h
-        include/KHR/khrplatform.h
     PRIVATE
-        src/glad.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/glad/glad.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/KHR/khrplatform.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/glad.c
 )

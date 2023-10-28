@@ -4,7 +4,12 @@
 #include <filesystem>
 #include <glm/gtc/type_ptr.hpp>
 
-Shader::Shader(const char *vertPath, const char *fragPath) : m_vertPath(vertPath), m_fragPath(fragPath)
+Shader::Shader(const char *vertPath, const char *fragPath)
+    : m_vertPath(vertPath)
+    , m_fragPath(fragPath)
+    , m_vertUid()
+    , m_fragUid()
+    , m_programUid()
 {
 }
 
@@ -120,7 +125,7 @@ void Shader::unbind() const
     glUseProgram(0);
 }
 
-void Shader::setUniforms(const Material& material, const glm::mat4 &model, const glm::mat4 &view,
+void Shader::setUniforms(const Material &material, const glm::mat4 &model, const glm::mat4 &view,
                          const glm::mat4 &projection)
 {
     int projectionMatrixLocation = glGetUniformLocation(m_programUid, "projection");

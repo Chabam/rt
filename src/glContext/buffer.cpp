@@ -3,6 +3,8 @@
 #include <algorithm>
 
 Buffer::Buffer(const std::vector<Vertice> &vertices)
+    : m_VAO()
+    , m_VBO()
 {
     glGenBuffers(1, &m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -32,7 +34,7 @@ Buffer::Buffer(const std::vector<Vertice> &vertices)
     glBufferData(GL_ARRAY_BUFFER, TOTAL_DATA_SIZE, m_data.data(), GL_STATIC_DRAW);
 }
 
-Buffer::Buffer(Buffer &&other)
+Buffer::Buffer(Buffer &&other) noexcept
 {
     m_VAO = other.m_VAO;
     m_VBO = other.m_VBO;

@@ -15,7 +15,7 @@ class Buffer
     typedef std::array<GLfloat, VERTICE_DATA_SIZE> VerticeData;
 
     Buffer(const std::vector<Vertice> &vertices);
-    Buffer(Buffer &&other);
+    Buffer(Buffer &&other) noexcept;
     ~Buffer();
 
   private:
