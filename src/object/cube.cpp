@@ -1,7 +1,9 @@
-#include "object/cube.h"
-#include "object/quad.h"
+#include "cube.h"
 
-Cube::Cube(const Material &material) : Mesh({}, material)
+#include <object/quad.h>
+
+Cube::Cube(const Material &material)
+    : Mesh({}, material)
 {
     for (const Quad &quad : m_quads)
     {

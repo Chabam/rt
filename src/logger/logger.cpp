@@ -1,13 +1,50 @@
 #include "logger.h"
+
 #include <assert.h>
 
-Logger::Logger(Level level) : m_level(level)
+Logger::Logger(Level level)
+    : m_level(level)
 {
+}
+
+Logger::Logger(Logger&& other)
+    : m_level(other.m_level)
+    , m_stream(std::move(other.m_stream))
+{
+
 }
 
 Logger::~Logger()
 {
-    flush();
+    if (m_stream.tellp() != 0)
+    {
+        flush();
+    }
+}
+
+template <typename T> Logger logImpl(const T &text, Logger::Level level)
+{
+    return Logger(level) << text;
+}
+
+Logger Logger::debug(const char *text)
+{
+    return logImpl(text, Level::DEBUG);
+}
+
+Logger Logger::info(const char *text)
+{
+    return logImpl(text, Level::INFO);
+}
+
+Logger Logger::warn(const char *text)
+{
+    return logImpl(text, Level::WARN);
+}
+
+Logger Logger::error(const char *text)
+{
+    return logImpl(text, Level::ERROR);
 }
 
 const char *Logger::levelToText(Level level)
@@ -29,27 +66,27 @@ const char *Logger::levelToText(Level level)
     default:
         // Should not happen
         assert(false);
+        return " ";
         break;
     }
 }
 
-std::ostringstream &Logger::operator<<(const char *text)
+Logger&& Logger::operator<<(const char *text)
 {
     m_stream << text;
-    return m_stream;
+    
+    return std::move(*this);
 }
 
-std::ostringstream &Logger::operator<<(const std::ostringstream &stream)
+Logger&& Logger::operator<<(const std::ostringstream &stream)
 {
     m_stream << stream.str();
-    return m_stream;
+
+    return std::move(*this);
 }
 
 void Logger::flush()
 {
-    if (!m_debug && m_level == Level::DEBUG)
-        return;
-
     static const char *WHITE = "\033[0m";
     const char *color = WHITE;
     switch (m_level)

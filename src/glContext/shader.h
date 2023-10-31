@@ -1,4 +1,4 @@
-#include "object/material.h"
+#include <object/material.h>
 #include <glad/glad.h>
 #include <fstream>
 #include <glm/glm.hpp>

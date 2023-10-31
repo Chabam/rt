@@ -12,27 +12,21 @@ class Logger
         WARN,
         ERROR
     };
-    Logger(Level level = Level::DEBUG);
+    Logger(Level level);
+    Logger(Logger &&other);
     ~Logger();
 
-    std::ostringstream &operator<<(const char *text);
-    std::ostringstream &operator<<(const std::ostringstream &stream);
+    Logger &&operator<<(const char *text);
+    Logger &&operator<<(const std::ostringstream &stream);
+
+    static Logger debug(const char *text);
+    static Logger info(const char *text);
+    static Logger warn(const char *text);
+    static Logger error(const char *text);
 
   private:
     void flush();
-    bool m_debug;
     Level m_level;
     std::ostringstream m_stream;
     static const char *levelToText(Level level);
 };
-
-#define LOG(text, level)                                                                                               \
-    {                                                                                                                  \
-        Logger logger(level);                                                                                          \
-        logger << text;                                                                                                \
-    }                                                                                                                  \
-    static_assert(true, "")
-#define LOG_DEBUG(text) LOG(text, Logger::Level::DEBUG)
-#define LOG_INFO(text) LOG(text, Logger::Level::INFO)
-#define LOG_WARN(text) LOG(text, Logger::Level::WARN)
-#define LOG_ERROR(text) LOG(text, Logger::Level::ERROR)

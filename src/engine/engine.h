@@ -1,10 +1,11 @@
-#include "glContext/buffer.h"
-#include "glContext/shader.h"
-#include "glContext/window.h"
-#include "object/mesh.h"
+#include <glContext/buffer.h>
+#include <glContext/shader.h>
+#include <glContext/window.h>
+#include <object/mesh.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <vector>
+
 class Engine
 {
   public:

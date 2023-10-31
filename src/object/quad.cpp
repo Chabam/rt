@@ -1,6 +1,6 @@
-#include "object/quad.h"
+#include "quad.h"
 
-Quad::Quad(const Vertice &p1, const Vertice &p2, const Vertice &p3, const Vertice &p4)
+Quad::Quad(const glm::vec3 &p1, const glm::vec3 &p2, const glm::vec3 &p3, const glm::vec3 &p4)
     : Mesh({Triangle(p1, p2, p3), Triangle(p1, p3, p4)}), m_p{p1, p2, p3, p4}
 {
 }

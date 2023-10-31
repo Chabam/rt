@@ -1,18 +1,26 @@
-#include "object/mesh.h"
+#include "mesh.h"
+
 #include <algorithm>
-#include "logger/logger.h"
-#include "glm/gtx/string_cast.hpp"
+#include <logger/logger.h>
 
 Mesh::Mesh(const std::vector<Triangle> &triangles, const Material &material)
-    : m_triangles(triangles), m_model(1.f), m_material(material)
+    : m_triangles(triangles)
+    , m_model(1.f)
+    , m_material(material)
 {
 }
 
-Mesh::Mesh(const Mesh &other) : m_triangles(other.m_triangles), m_model(other.m_model), m_material(other.m_material)
+Mesh::Mesh(const Mesh &other)
+    : m_triangles(other.m_triangles)
+    , m_model(other.m_model)
+    , m_material(other.m_material)
 {
 }
 
-Mesh::Mesh() : m_triangles(), m_model(1.f), m_material()
+Mesh::Mesh()
+    : m_triangles()
+    , m_model(1.f)
+    , m_material()
 {
 }
 
@@ -25,9 +33,9 @@ Mesh &Mesh::operator=(const Mesh &other)
     return *this;
 }
 
-std::vector<Vertice> Mesh::getVertices() const
+std::vector<glm::vec3> Mesh::getVertices() const
 {
-    std::vector<Vertice> vertices;
+    std::vector<glm::vec3> vertices;
     for (const Triangle &triangle : m_triangles)
     {
         vertices.insert(vertices.begin(), {triangle.m_p[0], triangle.m_p[1], triangle.m_p[2]});

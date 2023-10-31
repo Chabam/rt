@@ -1,20 +1,19 @@
 #pragma once
-#include "object/color.h"
-#include "object/vertice.h"
-#include <glad/glad.h>
 #include <array>
+#include <glad/glad.h>
 #include <initializer_list>
 #include <vector>
+#include <glm/vec3.hpp>
 
 class Buffer
 {
   public:
-    static const auto COORD_DATA = 3; // x, y, z
-    static const auto VERTICE_DATA_SIZE = COORD_DATA;
-    static const auto VERTICE_POINTER_SIZE = VERTICE_DATA_SIZE * sizeof(GLfloat);
+    static constexpr auto COORD_DATA = 3; // x, y, z
+    static constexpr auto VERTICE_DATA_SIZE = COORD_DATA;
+    static constexpr auto VERTICE_POINTER_SIZE = VERTICE_DATA_SIZE * sizeof(GLfloat);
     typedef std::array<GLfloat, VERTICE_DATA_SIZE> VerticeData;
 
-    Buffer(const std::vector<Vertice> &vertices);
+    Buffer(const std::vector<glm::vec3> &vertices);
     Buffer(Buffer &&other) noexcept;
     ~Buffer();
 

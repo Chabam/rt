@@ -1,6 +1,4 @@
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    color.h
-    color.cpp
     cube.h
     cube.cpp
     material.h
@@ -11,5 +9,4 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     quad.cpp
     triangle.h
     triangle.cpp
-    vertice.h
 )

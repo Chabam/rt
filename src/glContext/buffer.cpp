@@ -1,8 +1,9 @@
 #include "buffer.h"
-#include "logger/logger.h"
-#include <algorithm>
 
-Buffer::Buffer(const std::vector<Vertice> &vertices)
+#include <algorithm>
+#include <logger/logger.h>
+
+Buffer::Buffer(const std::vector<glm::vec3> &vertices)
     : m_VAO()
     , m_VBO()
 {
@@ -12,8 +13,10 @@ Buffer::Buffer(const std::vector<Vertice> &vertices)
     glGenVertexArrays(1, &m_VAO);
     glBindVertexArray(m_VAO);
 
+    auto test = vertices.data();
+
     // Converting the vertice object to a flat array of GLfloat
-    for (const Vertice &vertice : vertices)
+    for (const glm::vec3 &vertice : vertices)
     {
         // clang-format off
         m_data.push_back({{

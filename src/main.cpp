@@ -1,7 +1,6 @@
-#include "engine/engine.h"
-#include "logger/logger.h"
-#include "object/cube.h"
-#include "object/vertice.h"
+#include <engine/engine.h>
+#include <logger/logger.h>
+#include <object/cube.h>
 
 #include <array>
 #include <stdexcept>
@@ -24,7 +23,7 @@ int main(void)
     }
     catch (const std::runtime_error &e)
     {
-        LOG_ERROR(e.what());
+        Logger::error(e.what());
         return 1;
     }
 

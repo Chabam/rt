@@ -1,4 +1,4 @@
-#include "object/material.h"
+#include "material.h"
 
 Material::Material(const glm::vec4& color, float diffuse, float specular)
     : m_color(color), m_diffuse(diffuse), m_specular(specular)

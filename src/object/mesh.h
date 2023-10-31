@@ -1,8 +1,8 @@
 #pragma once
-#include "glContext/buffer.h"
-#include "object/material.h"
-#include "object/triangle.h"
-#include "object/vertice.h"
+#include <glContext/buffer.h>
+#include <object/material.h>
+#include <object/triangle.h>
+
 #include <glm/glm.hpp>
 #include <vector>
 
@@ -14,7 +14,7 @@ class Mesh
     Mesh &operator=(const Mesh &other);
 
     uint32_t getTriangleCount() const;
-    std::vector<Vertice> getVertices() const;
+    std::vector<glm::vec3> getVertices() const;
     const glm::mat4 &getModel() const;
     void applyTransformation(const glm::mat4 &trans);
     const std::vector<Triangle> &getTriangles() const;

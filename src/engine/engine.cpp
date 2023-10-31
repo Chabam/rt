@@ -1,20 +1,27 @@
 #include "engine.h"
-#include "logger/logger.h"
+
 #include <chrono>
 #include <functional>
+#include <glm/gtc/type_ptr.hpp>
+#include <logger/logger.h>
 #include <thread>
 
-Engine::Engine(const Shader &shader, const Window &window) : m_window(window), m_shader(shader), m_fps(60)
+Engine::Engine(const Shader &shader, const Window &window)
+    : m_window(window)
+    , m_shader(shader)
+    , m_fps(60)
 {
 }
 
-Engine::RenderTarget::RenderTarget(const Mesh &mesh, Buffer &&buffer) : m_mesh(mesh), m_buffer(std::move(buffer))
+Engine::RenderTarget::RenderTarget(const Mesh &mesh, Buffer &&buffer)
+    : m_mesh(mesh)
+    , m_buffer(std::move(buffer))
 {
 }
 
 void Engine::init()
 {
-    LOG_INFO("Starting program!");
+    Logger::info("Starting program!");
 
     // GLFW
     m_window.init();
@@ -34,7 +41,7 @@ void Engine::start()
 {
     if (m_renderTargets.empty())
     {
-        LOG_WARN("Nothing to draw!");
+        Logger::warn("Nothing to draw!");
         return;
     }
 
@@ -58,15 +65,16 @@ void Engine::start()
 
 void Engine::render()
 {
-    static Color::Normalized BLACK = {0.0f, 0.0f, 0.0f, 0.0f};
-    glClearBufferfv(GL_COLOR, 0, BLACK.data());
+    static glm::vec4 BLACK = {0.0f, 0.0f, 0.0f, 0.0f};
+    glClearBufferfv(GL_COLOR, 0, glm::value_ptr(BLACK));
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     for (RenderTarget &renderTarget : m_renderTargets)
     {
         m_shader.bind();
-        m_shader.setUniforms(renderTarget.m_mesh.getMaterial(), renderTarget.m_mesh.getModel(), VIEW_MATRIX, PROJECTION_MATRIX);
+        m_shader.setUniforms(renderTarget.m_mesh.getMaterial(), renderTarget.m_mesh.getModel(), VIEW_MATRIX,
+                             PROJECTION_MATRIX);
         glDrawArrays(GL_TRIANGLES, 0, renderTarget.m_mesh.getTriangleCount() * 3);
         m_shader.unbind();
     }
@@ -87,11 +95,11 @@ void Engine::handleKeyPress(Engine *engine, int keyCode)
     switch (keyCode)
     {
     case GLFW_KEY_Q:
-        LOG_INFO("Closing!");
+        Logger::info("Closing!");
         engine->m_window.setToClose();
         break;
     case GLFW_KEY_R:
-        LOG_INFO("Reloading shaders");
+        Logger::info("Reloading shaders");
         engine->m_shader.reload();
         break;
     }
@@ -107,20 +115,22 @@ void Engine::handleResize(Engine *engine, int width, int height)
 void Engine::handleGlError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                            const GLchar *message, const void *userParam)
 {
+    Logger::Level level;
     switch (severity)
     {
     case GL_DEBUG_SEVERITY_HIGH:
-        LOG_ERROR("OpenGL: " << message);
+        level = Logger::Level::ERROR;
         break;
     case GL_DEBUG_SEVERITY_MEDIUM:
-        LOG_WARN("OpenGL: " << message);
+        level = Logger::Level::WARN;
         break;
     default:
     case GL_DEBUG_SEVERITY_LOW:
     case GL_DEBUG_SEVERITY_NOTIFICATION:
-        LOG_DEBUG("OpenGL: " << message);
+        level = Logger::Level::DEBUG;
         return;
     }
+    Logger(level) << "OpenGL: " << message;
 
     throw std::runtime_error("OpenGL fatal error!");
 }

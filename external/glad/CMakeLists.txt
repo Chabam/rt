@@ -8,3 +8,8 @@ target_sources(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/include/KHR/khrplatform.h
         ${CMAKE_CURRENT_SOURCE_DIR}/src/glad.c
 )
+
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)

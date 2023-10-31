@@ -1,11 +1,15 @@
-#include "glContext/window.h"
-#include "glContext/buffer.h"
-#include "glContext/shader.h"
-#include "logger/logger.h"
+#include "window.h"
+
+#include <glContext/buffer.h>
+#include <glContext/shader.h>
+#include <logger/logger.h>
 #include <math.h>
 
 Window::Window(int width, int height, const char *title)
-    : m_width(width), m_height(height), m_title(title), m_impl(nullptr)
+    : m_width(width)
+    , m_height(height)
+    , m_title(title)
+    , m_impl(nullptr)
 {
 }
 
@@ -23,7 +27,7 @@ void Window::setSize(int width, int height)
 
 void Window::setToClose()
 {
-    LOG_INFO("Closing window");
+    Logger::info("Closing window");
     glfwSetWindowShouldClose(m_impl, GLFW_TRUE);
 }
 
@@ -47,7 +51,7 @@ void Window::keyCallback(GLFWwindow *glfwWindow, int key, int scancode, int acti
     Window *window = static_cast<Window *>(glfwGetWindowUserPointer(glfwWindow));
     if (window == NULL)
     {
-        LOG_ERROR("Provided pointer to window is NULL!");
+        Logger::error("Provided pointer to window is NULL!");
         return;
     }
 
@@ -62,7 +66,7 @@ void Window::resizeCallback(GLFWwindow *glfwWindow, int width, int height)
     Window *window = static_cast<Window *>(glfwGetWindowUserPointer(glfwWindow));
     if (window == NULL)
     {
-        LOG_ERROR("Provided pointer to window is NULL!");
+        Logger::error("Provided pointer to window is NULL!");
         return;
     }
 
@@ -89,7 +93,7 @@ void Window::init()
     glfwSetWindowSizeCallback(m_impl, resizeCallback);
     glfwMakeContextCurrent(m_impl);
 
-    LOG_INFO("Window succesfully initialized");
+    Logger::info("Window succesfully initialized");
 }
 
 void Window::setResizeCallback(WindowResizeCallback cb)

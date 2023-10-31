@@ -1,8 +1,9 @@
-#include "glContext/shader.h"
-#include "glContext/window.h"
-#include "logger/logger.h"
+#include "shader.h"
+
 #include <filesystem>
+#include <glContext/window.h>
 #include <glm/gtc/type_ptr.hpp>
+#include <logger/logger.h>
 
 Shader::Shader(const char *vertPath, const char *fragPath)
     : m_vertPath(vertPath)
@@ -26,7 +27,7 @@ const std::string Shader::readFromFile(const char *relativePath)
 
     if (!file.is_open())
     {
-        std::string error_message = std::string("File not found: ") + path.u8string() + "\n";
+        std::string error_message = std::string("File not found: ") + path.string() + "\n";
         throw std::runtime_error(error_message.c_str());
     }
 
@@ -73,10 +74,10 @@ void Shader::load()
     // Compiling shaders
 
     compileShaderSource(m_vertUid, GL_VERTEX_SHADER, readFromFile(m_vertPath).c_str());
-    LOG_INFO("Vertex shader compiled");
+    Logger::info("Vertex shader compiled");
 
     compileShaderSource(m_fragUid, GL_FRAGMENT_SHADER, readFromFile(m_fragPath).c_str());
-    LOG_INFO("Fragment shader compiled");
+    Logger::info("Fragment shader compiled");
 
     m_programUid = glCreateProgram();
 
@@ -109,7 +110,7 @@ void Shader::load()
 
         throw std::runtime_error(out.str());
     }
-    LOG_INFO("Program linked");
+    Logger::info("Program linked");
 
     glDetachShader(m_programUid, m_vertUid);
     glDetachShader(m_programUid, m_fragUid);
@@ -155,7 +156,7 @@ void Shader::reload()
     }
     catch (std::runtime_error e)
     {
-        LOG_ERROR("Failed reloading the shaders: " << e.what());
-        LOG_INFO("Keeping previous version!");
+        Logger::error("Failed reloading the shaders: ") << e.what();
+        Logger::info("Keeping previous version!");
     }
 }
