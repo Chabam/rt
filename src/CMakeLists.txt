@@ -10,6 +10,7 @@ add_subdirectory(engine)
 add_subdirectory(glContext)
 add_subdirectory(logger)
 add_subdirectory(object)
+add_subdirectory(scene)
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     main.cpp

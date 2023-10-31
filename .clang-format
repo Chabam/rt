@@ -1,3 +1,4 @@
 BasedOnStyle: Microsoft
 Standard: Cpp11
 BreakConstructorInitializers: BeforeComma
+PointerAlignment: Left

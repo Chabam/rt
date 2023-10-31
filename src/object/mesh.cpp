@@ -3,40 +3,31 @@
 #include <algorithm>
 #include <logger/logger.h>
 
-Mesh::Mesh(const std::vector<Triangle> &triangles, const Material &material)
-    : m_triangles(triangles)
-    , m_model(1.f)
-    , m_material(material)
+Mesh::Mesh(const std::vector<TrianglePrimitive>& triangles, const std::shared_ptr<Shader>& shader, const Material& material,
+           const glm::mat4 model)
+    : Object3d(Buffer(Mesh::getVertices(triangles)), shader, material, model)
+    , m_triangles(triangles)
 {
 }
 
-Mesh::Mesh(const Mesh &other)
-    : m_triangles(other.m_triangles)
-    , m_model(other.m_model)
-    , m_material(other.m_material)
+Mesh::Mesh(const Mesh& other)
+    : Object3d(Mesh::getVertices(other.getTriangles()), other.m_shader, other.m_material, other.m_model)
+    , m_triangles(other.m_triangles)
 {
 }
 
-Mesh::Mesh()
-    : m_triangles()
-    , m_model(1.f)
-    , m_material()
+Mesh& Mesh::operator=(const Mesh& other)
 {
-}
-
-Mesh &Mesh::operator=(const Mesh &other)
-{
+    Object3d::operator=(other);
     m_triangles = other.m_triangles;
-    m_model = other.m_model;
-    m_material = other.m_material;
 
     return *this;
 }
 
-std::vector<glm::vec3> Mesh::getVertices() const
+std::vector<glm::vec3> Mesh::getVertices(const std::vector<TrianglePrimitive>& triangles)
 {
     std::vector<glm::vec3> vertices;
-    for (const Triangle &triangle : m_triangles)
+    for (const TrianglePrimitive& triangle : triangles)
     {
         vertices.insert(vertices.begin(), {triangle.m_p[0], triangle.m_p[1], triangle.m_p[2]});
     }
@@ -48,22 +39,7 @@ uint32_t Mesh::getTriangleCount() const
     return m_triangles.size();
 }
 
-const glm::mat4 &Mesh::getModel() const
-{
-    return m_model;
-}
-
-void Mesh::applyTransformation(const glm::mat4 &trans)
-{
-    m_model = m_model * trans;
-}
-
-const std::vector<Triangle> &Mesh::getTriangles() const
+const std::vector<TrianglePrimitive>& Mesh::getTriangles() const
 {
     return m_triangles;
-}
-
-const Material &Mesh::getMaterial() const
-{
-    return m_material;
 }

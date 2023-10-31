@@ -1,28 +1,26 @@
 #pragma once
 #include <glContext/buffer.h>
 #include <object/material.h>
-#include <object/triangle.h>
+#include <object/object3d.h>
+#include <object/trianglePrimitive.h>
 
 #include <glm/glm.hpp>
 #include <vector>
 
-class Mesh
+class Mesh : public Object3d
 {
   public:
-    Mesh(const std::vector<Triangle> &triangles, const Material &material = Material());
-    Mesh(const Mesh &other);
-    Mesh &operator=(const Mesh &other);
+    Mesh(const std::vector<TrianglePrimitive>& triangles, const std::shared_ptr<Shader>& shader,
+         const Material& material = Material(), const glm::mat4 model = glm::mat4(1));
+    Mesh(const Mesh& other);
+    Mesh& operator=(const Mesh& other);
 
-    uint32_t getTriangleCount() const;
-    std::vector<glm::vec3> getVertices() const;
-    const glm::mat4 &getModel() const;
-    void applyTransformation(const glm::mat4 &trans);
-    const std::vector<Triangle> &getTriangles() const;
-    const Material &getMaterial() const;
+    uint32_t getTriangleCount() const override;
+    const std::vector<TrianglePrimitive>& getTriangles() const;
 
   protected:
-    Mesh();
-    std::vector<Triangle> m_triangles;
-    glm::mat4 m_model;
-    Material m_material;
+    std::vector<TrianglePrimitive> m_triangles;
+    
+    static std::vector<glm::vec3> getVertices(const std::vector<TrianglePrimitive>& triangles);
+
 };

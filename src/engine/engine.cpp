@@ -6,16 +6,9 @@
 #include <logger/logger.h>
 #include <thread>
 
-Engine::Engine(const Shader &shader, const Window &window)
+Engine::Engine(const Window& window)
     : m_window(window)
-    , m_shader(shader)
     , m_fps(60)
-{
-}
-
-Engine::RenderTarget::RenderTarget(const Mesh &mesh, Buffer &&buffer)
-    : m_mesh(mesh)
-    , m_buffer(std::move(buffer))
 {
 }
 
@@ -30,16 +23,14 @@ void Engine::init()
         m_window.setKeyPressCallback(std::bind(Engine::handleKeyPress, this, _1));
         m_window.setResizeCallback(std::bind(Engine::handleResize, this, _1, _2));
     }
-
-    m_shader.init();
-
-    glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(handleGlError, nullptr);
+    // Move this somewhere else
+    // glEnable(GL_DEBUG_OUTPUT);
+    // glDebugMessageCallback(handleGlError, nullptr);
 }
 
 void Engine::start()
 {
-    if (m_renderTargets.empty())
+    if (m_scene.empty())
     {
         Logger::warn("Nothing to draw!");
         return;
@@ -52,7 +43,8 @@ void Engine::start()
         using namespace std::chrono_literals;
         auto beforeRender = std::chrono::system_clock::now();
 
-        render();
+        m_scene.render();
+        m_window.swapBuffers();
         glfwPollEvents();
 
         auto afterRender = std::chrono::system_clock::now();
@@ -63,34 +55,12 @@ void Engine::start()
     }
 }
 
-void Engine::render()
+void Engine::setScene(const Scene& scene)
 {
-    static glm::vec4 BLACK = {0.0f, 0.0f, 0.0f, 0.0f};
-    glClearBufferfv(GL_COLOR, 0, glm::value_ptr(BLACK));
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    for (RenderTarget &renderTarget : m_renderTargets)
-    {
-        m_shader.bind();
-        m_shader.setUniforms(renderTarget.m_mesh.getMaterial(), renderTarget.m_mesh.getModel(), VIEW_MATRIX,
-                             PROJECTION_MATRIX);
-        glDrawArrays(GL_TRIANGLES, 0, renderTarget.m_mesh.getTriangleCount() * 3);
-        m_shader.unbind();
-    }
-
-    m_window.swapBuffers();
+    m_scene = scene;
 }
 
-void Engine::setMeshes(const std::vector<Mesh> &meshes)
-{
-    for (const Mesh &mesh : meshes)
-    {
-        m_renderTargets.emplace_back(mesh, mesh.getVertices());
-    }
-}
-
-void Engine::handleKeyPress(Engine *engine, int keyCode)
+void Engine::handleKeyPress(Engine* engine, int keyCode)
 {
     switch (keyCode)
     {
@@ -98,22 +68,19 @@ void Engine::handleKeyPress(Engine *engine, int keyCode)
         Logger::info("Closing!");
         engine->m_window.setToClose();
         break;
-    case GLFW_KEY_R:
-        Logger::info("Reloading shaders");
-        engine->m_shader.reload();
-        break;
     }
 }
 
-void Engine::handleResize(Engine *engine, int width, int height)
+void Engine::handleResize(Engine* engine, int width, int height)
 {
     engine->m_window.setSize(width, height);
-    engine->PROJECTION_MATRIX = glm::perspective(glm::radians(90.f), static_cast<float>(width) / height, 0.1f, 100.0f);
-    engine->render();
+    engine->m_scene.changeProjectionMatrix(
+        glm::perspective(glm::radians(90.f), static_cast<float>(width) / height, 0.1f, 100.0f));
+    engine->m_scene.render();
 }
 
 void Engine::handleGlError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
-                           const GLchar *message, const void *userParam)
+                           const GLchar* message, const void* userParam)
 {
     Logger::Level level;
     switch (severity)
