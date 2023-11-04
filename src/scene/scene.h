@@ -12,11 +12,11 @@ class Scene
     void render();
     bool empty();
     void changeProjectionMatrix(glm::mat4 matrix);
-    void addObject(const Object3d* object);
-    const std::vector<const Object3d*>& getObjects();
+    void addObject(const std::shared_ptr<Object3d>& object);
+    const std::vector<std::shared_ptr<Object3d>>& getObjects();
 
   private:
-    std::vector<const Object3d*> m_objects;
+    std::vector<std::shared_ptr<Object3d>> m_objects;
 
     glm::mat4 m_viewMatrix;
     glm::mat4 m_projectionMatrix;

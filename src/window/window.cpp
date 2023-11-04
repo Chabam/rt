@@ -1,16 +1,16 @@
 #include "window.h"
 
 #include <GLFW/glfw3.h>
-#include <logger/logger.h>
+#include <utils/logger.h>
 #include <math.h>
 
 struct Window::Impl
 {
 
-    GLFWwindow* m_windowPtr;
 
     static void keyCallback(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
     {
+        Logger::debug("Creating window");
         Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
         if (window == nullptr)
         {
@@ -38,6 +38,8 @@ struct Window::Impl
         window->m_height = height;
     }
 
+    GLFWwindow* m_windowPtr;
+
     Impl(Window& window, unsigned int width, unsigned int height, const char* title)
     {
         m_windowPtr = glfwCreateWindow(width, height, title, nullptr, nullptr);
@@ -46,7 +48,6 @@ struct Window::Impl
         {
             throw std::runtime_error("Could not create a GLWF window!");
         }
-
         glfwSetWindowAspectRatio(m_windowPtr, 16, 9);
 
         // Events
@@ -76,8 +77,8 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
     , m_height(height)
     , m_title(title)
     , m_impl(std::make_unique<Window::Impl>(*this, width, height, title))
-    , m_windowResizeCallback()
-    , m_windowKeyPressCallback()
+    , m_windowResizeCallback([](int, int) {})
+    , m_windowKeyPressCallback([](int) {})
 {
 }
 

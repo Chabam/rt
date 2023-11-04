@@ -1,7 +1,7 @@
 #include "scene.h"
-#include <glad/glad.h>
+
 #include <glm/gtc/type_ptr.hpp>
-#include <glm/vec4.hpp>
+#include <glm/vec2.hpp>
 
 const auto DEFAULT_VIEW_MATRIX = glm::lookAt(glm::vec3(0, 0, 4),   // Camera is at (4,3,3), in World Space
                                              glm::vec3(0, 0, 0),   // and looks at the origin
@@ -33,12 +33,7 @@ Scene& Scene::operator=(const Scene& other)
 
 void Scene::render()
 {
-    static glm::vec4 BLACK = {0.0f, 0.0f, 0.0f, 0.0f};
-    glClearBufferfv(GL_COLOR, 0, glm::value_ptr(BLACK));
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    for (const Object3d* object : m_objects)
+    for (const auto& object : m_objects)
     {
         object->render(m_viewMatrix, m_projectionMatrix);
     }
@@ -54,12 +49,12 @@ void Scene::changeProjectionMatrix(glm::mat4 matrix)
     m_projectionMatrix = matrix;
 }
 
-void Scene::addObject(const Object3d* object)
+void Scene::addObject(const std::shared_ptr<Object3d>& object)
 {
     m_objects.push_back(object);
 }
 
-const std::vector<const Object3d*>& Scene::getObjects()
+const std::vector<std::shared_ptr<Object3d>>& Scene::getObjects()
 {
     return m_objects;
 }

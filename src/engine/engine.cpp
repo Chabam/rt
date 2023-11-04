@@ -5,11 +5,11 @@
 #include <functional>
 #include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
-#include <logger/logger.h>
 #include <thread>
+#include <utils/logger.h>
 
 Engine::Engine()
-    : m_window(800, 600, "rt")
+    : m_window(1280, 720, "rt")
     , m_fps(60)
 {
     using namespace std::placeholders;
@@ -22,17 +22,15 @@ Engine::Engine()
         throw std::runtime_error("Could not initialize glad!");
     }
     Logger::debug("glad ok!");
-    
+
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(handleGlError, nullptr);
 }
 
 void Engine::init()
 {
-    Logger::info("Starting program!");
 
     Logger::debug("Init glfw");
-
     if (!glfwInit())
     {
         throw std::runtime_error("Could not initialize GLWF!");
@@ -55,8 +53,14 @@ void Engine::start()
         using namespace std::chrono_literals;
         auto beforeRender = std::chrono::system_clock::now();
 
+        constexpr glm::vec4 BLACK = {1.0f, 1.0f, 0.0f, 1.0f};
+        glClearBufferfv(GL_COLOR, 0, glm::value_ptr(BLACK));
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         m_scene.render();
         m_window.swapBuffers();
+
         glfwPollEvents();
 
         auto afterRender = std::chrono::system_clock::now();

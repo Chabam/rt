@@ -9,22 +9,17 @@
 class Shader
 {
   public:
-    Shader(const char* vertPath, const char* fragPath);
+    Shader(const char* vertSrc, const char* fragSrc);
     ~Shader();
     void bind() const;
     void unbind() const;
-    void setUniforms(const Material& material, const glm::mat4& model, const glm::mat4& view,
-                     const glm::mat4& projection);
+    void setMatrixUniform(const char* varName, const glm::mat4& matrix);
+    void setVectorUniform(const char* varName, const glm::vec4& vector);
 
   private:
-    const char* m_vertPath;
-    const char* m_fragPath;
     GLuint m_vertUid;
     GLuint m_fragUid;
     GLuint m_programUid;
 
-    void load();
-
-    static const std::string readFromFile(const char* relativePath);
     static void compileShaderSource(GLuint& shaderUid, GLenum type, const GLchar* source);
 };

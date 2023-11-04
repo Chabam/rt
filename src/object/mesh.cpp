@@ -1,7 +1,7 @@
 #include "mesh.h"
 
 #include <algorithm>
-#include <logger/logger.h>
+#include <utils/logger.h>
 
 Mesh::Mesh(const std::vector<TrianglePrimitive>& triangles, const std::shared_ptr<Shader>& shader, const Material& material,
            const glm::mat4 model)

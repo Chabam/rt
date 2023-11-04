@@ -1,7 +1,7 @@
 #include "buffer.h"
 
 #include <algorithm>
-#include <logger/logger.h>
+#include <utils/logger.h>
 
 Buffer::Buffer(const std::vector<glm::vec3>& vertices)
     : m_VAO()

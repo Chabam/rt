@@ -2,9 +2,9 @@
 
 #include <glad/glad.h>
 
-Object3d::Object3d(const Buffer& buffer, const std::shared_ptr<Shader>& shader, const Material& material,
+Object3d::Object3d(Buffer&& buffer, const std::shared_ptr<Shader>& shader, const Material& material,
                    const glm::mat4 model)
-    : m_buffer(buffer)
+    : m_buffer(std::move(buffer))
     , m_shader(shader)
     , m_material(material)
     , m_model(model)
@@ -48,7 +48,13 @@ void Object3d::render(const glm::mat4& viewMatrix, const glm::mat4 projectionMat
 {
     m_shader->bind();
     m_buffer.bind();
+
+    m_shader->setMatrixUniform("view", viewMatrix);
+    m_shader->setMatrixUniform("projection", projectionMatrix);
+    m_shader->setMatrixUniform("model", m_model);
+    m_shader->setVectorUniform("color", m_material.m_color);
+
     glDrawArrays(GL_TRIANGLES, 0, getTriangleCount() * 3);
-    m_shader->setUniforms(m_material, m_model, viewMatrix, projectionMatrix);
+
     m_shader->unbind();
 }

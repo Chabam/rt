@@ -1,6 +1,6 @@
 #include <glContext/buffer.h>
 #include <glContext/shader.h>
-#include <glContext/window.h>
+#include <window/window.h>
 #include <glm/gtx/transform.hpp>
 #include <scene/scene.h>
 class Engine

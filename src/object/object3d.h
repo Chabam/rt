@@ -7,7 +7,7 @@
 class Object3d
 {
   public:
-    Object3d(const Buffer& buffer, const std::shared_ptr<Shader>& shader, const Material& material = Material(),
+    Object3d(Buffer&& buffer, const std::shared_ptr<Shader>& shader, const Material& material = Material(),
              const glm::mat4 model = glm::mat4(1));
     Object3d(const Object3d& other);
     Object3d& operator=(const Object3d& other);
