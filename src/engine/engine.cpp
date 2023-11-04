@@ -53,8 +53,8 @@ void Engine::start()
         using namespace std::chrono_literals;
         auto beforeRender = std::chrono::system_clock::now();
 
-        constexpr glm::vec4 BLACK = {1.0f, 1.0f, 0.0f, 1.0f};
-        glClearBufferfv(GL_COLOR, 0, glm::value_ptr(BLACK));
+        constexpr glm::vec4 BLACK = {0.0f, 0.0f, 0.0f, 1.0f};
+        glClearColor(BLACK.r, BLACK.g, BLACK.b, BLACK.a);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

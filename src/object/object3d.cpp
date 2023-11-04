@@ -53,8 +53,6 @@ void Object3d::render(const glm::mat4& viewMatrix, const glm::mat4 projectionMat
     m_shader->setMatrixUniform("projection", projectionMatrix);
     m_shader->setMatrixUniform("model", m_model);
     m_shader->setVectorUniform("color", m_material.m_color);
-
+   
     glDrawArrays(GL_TRIANGLES, 0, getTriangleCount() * 3);
-
-    m_shader->unbind();
 }
