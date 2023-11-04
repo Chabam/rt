@@ -11,8 +11,6 @@ class Shader
   public:
     Shader(const char* vertPath, const char* fragPath);
     ~Shader();
-    void init();
-    void reload();
     void bind() const;
     void unbind() const;
     void setUniforms(const Material& material, const glm::mat4& model, const glm::mat4& view,

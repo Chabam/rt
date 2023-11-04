@@ -6,9 +6,9 @@
 class Engine
 {
   public:
-    Engine(const Window& window = Window(1920, 1080));
+    Engine();
 
-    void init();
+    static void init();
     void setScene(const Scene& scene);
     void start();
 
@@ -17,8 +17,8 @@ class Engine
     Scene m_scene;
     uint8_t m_fps;
 
-    static void handleKeyPress(Engine* engine, int keyCode);
-    static void handleResize(Engine* engine, int width, int height);
+    void handleKeyPress(int keyCode);
+    void handleResize(int width, int height);
     static void handleGlError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                               const GLchar* message, const void* userParam);
 };

@@ -1,31 +1,43 @@
 #include "engine.h"
 
+#include <GLFW/glfw3.h>
 #include <chrono>
 #include <functional>
+#include <glad/glad.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <logger/logger.h>
 #include <thread>
 
-Engine::Engine(const Window& window)
-    : m_window(window)
+Engine::Engine()
+    : m_window(800, 600, "rt")
     , m_fps(60)
 {
+    using namespace std::placeholders;
+    m_window.setResizeCallback(std::bind(&Engine::handleResize, this, _1, _2));
+    m_window.setKeyPressCallback(std::bind(&Engine::handleKeyPress, this, _1));
+
+    Logger::debug("Init glad");
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        throw std::runtime_error("Could not initialize glad!");
+    }
+    Logger::debug("glad ok!");
+    
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(handleGlError, nullptr);
 }
 
 void Engine::init()
 {
     Logger::info("Starting program!");
 
-    // GLFW
-    m_window.init();
+    Logger::debug("Init glfw");
+
+    if (!glfwInit())
     {
-        using namespace std::placeholders;
-        m_window.setKeyPressCallback(std::bind(Engine::handleKeyPress, this, _1));
-        m_window.setResizeCallback(std::bind(Engine::handleResize, this, _1, _2));
+        throw std::runtime_error("Could not initialize GLWF!");
     }
-    // Move this somewhere else
-    // glEnable(GL_DEBUG_OUTPUT);
-    // glDebugMessageCallback(handleGlError, nullptr);
+    Logger::debug("glfw ok!");
 }
 
 void Engine::start()
@@ -60,23 +72,27 @@ void Engine::setScene(const Scene& scene)
     m_scene = scene;
 }
 
-void Engine::handleKeyPress(Engine* engine, int keyCode)
+void Engine::handleKeyPress(int keyCode)
 {
     switch (keyCode)
     {
     case GLFW_KEY_Q:
         Logger::info("Closing!");
-        engine->m_window.setToClose();
+        m_window.setToClose();
         break;
     }
 }
 
-void Engine::handleResize(Engine* engine, int width, int height)
+void Engine::handleResize(int width, int height)
 {
-    engine->m_window.setSize(width, height);
-    engine->m_scene.changeProjectionMatrix(
+    if (height == 0 || width == 0)
+    {
+        return;
+    }
+    glViewport(0, 0, width, height);
+    m_scene.changeProjectionMatrix(
         glm::perspective(glm::radians(90.f), static_cast<float>(width) / height, 0.1f, 100.0f));
-    engine->m_scene.render();
+    m_scene.render();
 }
 
 void Engine::handleGlError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,

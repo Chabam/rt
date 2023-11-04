@@ -10,13 +10,12 @@
 
 int main(void)
 {
-    Engine engine{};
     try
     {
-        engine.init();
+        Engine::init();
+        Engine engine{};
         std::shared_ptr<Shader> shader =
             std::make_shared<Shader>("../../src/shaders/shader.vert", "../../src/shaders/shader.frag");
-        shader->init();
 
         Scene scene;
         Cube cube = Cube(2, 2, 2, shader);

@@ -2,10 +2,12 @@
 
 #include <filesystem>
 #include <glContext/window.h>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <logger/logger.h>
 
-Shader::Shader(const char *vertPath, const char *fragPath)
+Shader::Shader(const char* vertPath, const char* fragPath)
     : m_vertPath(vertPath)
     , m_fragPath(fragPath)
     , m_vertUid()
@@ -18,7 +20,7 @@ Shader::~Shader()
 {
 }
 
-const std::string Shader::readFromFile(const char *relativePath)
+const std::string Shader::readFromFile(const char* relativePath)
 {
     std::filesystem::path path = std::filesystem::current_path().append(relativePath);
     std::ifstream file = std::ifstream(path);
@@ -39,7 +41,7 @@ const std::string Shader::readFromFile(const char *relativePath)
     return fileContent.str();
 }
 
-void Shader::compileShaderSource(GLuint &shaderUid, GLenum type, const GLchar *source)
+void Shader::compileShaderSource(GLuint& shaderUid, GLenum type, const GLchar* source)
 {
     shaderUid = glCreateShader(type);
     glShaderSource(shaderUid, 1, &source, 0);
@@ -60,7 +62,7 @@ void Shader::compileShaderSource(GLuint &shaderUid, GLenum type, const GLchar *s
         std::ostringstream out;
         out << (type == GL_FRAGMENT_SHADER ? "Fragment" : "Vertex");
         out << " shader compilation failed :" << std::endl;
-        for (auto &character : infoLog)
+        for (auto& character : infoLog)
         {
             out << character;
         }
@@ -87,7 +89,7 @@ void Shader::load()
     glLinkProgram(m_programUid);
 
     GLint isLinked = 0;
-    glGetProgramiv(m_programUid, GL_LINK_STATUS, (int *)&isLinked);
+    glGetProgramiv(m_programUid, GL_LINK_STATUS, (int*)&isLinked);
     if (isLinked == GL_FALSE)
     {
         GLint maxLength = 0;
@@ -103,7 +105,7 @@ void Shader::load()
 
         std::ostringstream out;
         out << "Linking error: ";
-        for (auto &character : infoLog)
+        for (auto& character : infoLog)
         {
             out << character;
         }
@@ -126,8 +128,8 @@ void Shader::unbind() const
     glUseProgram(0);
 }
 
-void Shader::setUniforms(const Material &material, const glm::mat4 &model, const glm::mat4 &view,
-                         const glm::mat4 &projection)
+void Shader::setUniforms(const Material& material, const glm::mat4& model, const glm::mat4& view,
+                         const glm::mat4& projection)
 {
     int projectionMatrixLocation = glGetUniformLocation(m_programUid, "projection");
     int viewMatrixLocation = glGetUniformLocation(m_programUid, "view");
@@ -138,25 +140,4 @@ void Shader::setUniforms(const Material &material, const glm::mat4 &model, const
     glUniformMatrix4fv(viewMatrixLocation, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(modelMatrixLocation, 1, GL_FALSE, glm::value_ptr(projection));
     glUniform4f(colorLocation, material.m_color.r, material.m_color.g, material.m_color.b, material.m_color.a);
-}
-
-void Shader::init()
-{
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-        throw std::runtime_error("Could not initialize GLEW!");
-
-    load();
-}
-
-void Shader::reload()
-{
-    try
-    {
-        load();
-    }
-    catch (std::runtime_error e)
-    {
-        Logger::error("Failed reloading the shaders: ") << e.what();
-        Logger::info("Keeping previous version!");
-    }
 }
