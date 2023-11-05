@@ -1,13 +1,11 @@
 #include <engine/engine.h>
 #include <object/cube.h>
-#include <scene/scene.h>
+#include <glContext/shader.h>
 #include <utils/fileHelper.h>
 #include <utils/logger.h>
-
-#include <array>
-#include <memory>
-#include <stdexcept>
-#include <vector>
+#include <glm/mat4x4.hpp>
+#include <glm/gtx/transform.hpp>
+#include <exception>
 
 int main(void)
 {

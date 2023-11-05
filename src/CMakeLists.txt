@@ -12,6 +12,7 @@ add_subdirectory(utils)
 add_subdirectory(object)
 add_subdirectory(scene)
 add_subdirectory(window)
+add_subdirectory(shaders)
 
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     main.cpp

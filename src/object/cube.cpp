@@ -1,15 +1,19 @@
 #include "cube.h"
 
-#include <object/quad.h>
-
-Cube::Cube(uint8_t width, uint8_t height, uint8_t depth, const std::shared_ptr<Shader>& shader,
+Cube::Cube(unsigned int width, unsigned int height, unsigned int depth, const std::shared_ptr<Shader>& shader,
            const Material& material, const glm::mat4 model)
-    : Mesh(getTrianglesFromQuads(generateQuads(width, height, depth)), shader, material, model)
+    : Mesh(shader, material)
     , m_quads(generateQuads(width, height, depth))
 {
+    std::vector<Triangle> triangles;
+    for (const Quad& quad : m_quads)
+    {
+        triangles.insert(triangles.end(), quad.m_triangleParts.begin(), quad.m_triangleParts.end());
+    }
+    setTriangles(triangles);
 }
 
-std::array<QuadPrimitive, 6> Cube::generateQuads(uint8_t width, uint8_t height, uint8_t depth)
+std::array<Quad, 6> Cube::generateQuads(unsigned int width, unsigned int height, unsigned int depth)
 {
     const float halfWidth = width / 2.f;
     const float halfHeight = height / 2.f;
@@ -25,23 +29,12 @@ std::array<QuadPrimitive, 6> Cube::generateQuads(uint8_t width, uint8_t height, 
 
     // clang-format off
     return {
-		QuadPrimitive(p1, p2, p3, p4),
-		QuadPrimitive(p6, p5, p2, p1),
-		QuadPrimitive(p7, p8, p5, p6),
-		QuadPrimitive(p4, p3, p8, p7),
-		QuadPrimitive(p3, p2, p5, p8),
-		QuadPrimitive(p1, p4, p7, p6)
+		Quad(p1, p2, p3, p4),
+		Quad(p6, p5, p2, p1),
+		Quad(p7, p8, p5, p6),
+		Quad(p4, p3, p8, p7),
+		Quad(p3, p2, p5, p8),
+		Quad(p1, p4, p7, p6)
 	};
     // clang-format on
-}
-
-std::vector<TrianglePrimitive> Cube::getTrianglesFromQuads(std::array<QuadPrimitive, 6> quads)
-{
-    std::vector<TrianglePrimitive> triangles;
-    for (const QuadPrimitive& quad : quads)
-    {
-        const auto& quadsTriangles = quad.m_triangles;
-        triangles.insert(triangles.end(), quadsTriangles.begin(), quadsTriangles.end());
-    }
-    return triangles;
 }

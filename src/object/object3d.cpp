@@ -1,14 +1,19 @@
 #include "object3d.h"
 
-#include <glad/glad.h>
+#include <glContext/buffer.h>
+#include <glContext/shader.h>
+#include <glm/mat4x4.hpp>
 #include <iostream>
 
-Object3d::Object3d(const std::vector<glm::vec3>& vertices, const std::shared_ptr<Shader>& shader, const Material& material,
-                   const glm::mat4 model)
-    : m_buffer(std::make_unique<Buffer>(vertices))
-    , m_shader(shader)
+Object3d::Object3d(const std::shared_ptr<Shader>& shader, const Material& material)
+    : m_shader(shader)
     , m_material(material)
-    , m_model(model)
+    , m_model(glm::mat4(1.f))
+    , m_buffer()
+{
+}
+
+Object3d::~Object3d()
 {
 }
 
@@ -29,6 +34,11 @@ const Material& Object3d::getMaterial() const
 
 void Object3d::render(const glm::mat4& viewMatrix, const glm::mat4 projectionMatrix) const
 {
+    if (!m_buffer)
+    {
+        throw std::runtime_error("Buffer for object not set!");
+    }
+
     m_shader->use();
     m_shader->setVectorUniform("color", m_material.m_color);
     m_shader->setMatrixUniform("view", viewMatrix);

@@ -1,23 +1,28 @@
 #include "mesh.h"
 
+#include <object/triangle.h>
 #include <algorithm>
 #include <utils/logger.h>
 
-Mesh::Mesh(const std::vector<TrianglePrimitive>& triangles, const std::shared_ptr<Shader>& shader, const Material& material,
-           const glm::mat4 model)
-    : Object3d(Mesh::getVertices(triangles), shader, material, model)
-    , m_triangles(triangles)
+Mesh::Mesh(const std::shared_ptr<Shader>& shader, const Material& material)
+    : Object3d(shader, material)
+    , m_triangles()
 {
 }
 
-std::vector<glm::vec3> Mesh::getVertices(const std::vector<TrianglePrimitive>& triangles)
+void Mesh::setTriangles(const std::vector<Triangle>& triangles)
 {
+    m_triangles = triangles;
     std::vector<glm::vec3> vertices;
-    for (const TrianglePrimitive& triangle : triangles)
+    vertices.reserve(triangles.size() * std::tuple_size<decltype(Triangle::m_p)>::value);
+
+    for (const Triangle& triangle : m_triangles)
     {
-        vertices.insert(vertices.begin(), {triangle.m_p[0], triangle.m_p[1], triangle.m_p[2]});
+        std::vector<glm::vec3> triangleVec{triangle};
+        vertices.insert(vertices.end(), triangleVec.begin(), triangleVec.end());
     }
-    return vertices;
+    
+    m_buffer = std::make_unique<Buffer>(vertices);
 }
 
 uint32_t Mesh::getTriangleCount() const
@@ -25,7 +30,7 @@ uint32_t Mesh::getTriangleCount() const
     return m_triangles.size();
 }
 
-const std::vector<TrianglePrimitive>& Mesh::getTriangles() const
+const std::vector<Triangle>& Mesh::getTriangles() const
 {
     return m_triangles;
 }

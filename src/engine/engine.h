@@ -1,8 +1,9 @@
-#include <glContext/buffer.h>
-#include <glContext/shader.h>
-#include <window/window.h>
-#include <glm/gtx/transform.hpp>
+#pragma once
+
+#include <glad/glad.h>
 #include <scene/scene.h>
+#include <window/window.h>
+
 class Engine
 {
   public:
@@ -15,7 +16,7 @@ class Engine
   private:
     Window m_window;
     Scene m_scene;
-    uint8_t m_fps;
+    unsigned int m_fps;
 
     void handleKeyPress(int keyCode);
     void handleResize(int width, int height);

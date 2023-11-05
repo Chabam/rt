@@ -1,6 +1,4 @@
-#include <iostream>
 #include <sstream>
-#include <string>
 
 class Logger
 {
@@ -13,7 +11,7 @@ class Logger
         ERROR
     };
     Logger(Level level);
-    Logger(Logger &&other);
+    Logger(Logger &&other) noexcept;
     ~Logger();
 
     Logger &&operator<<(const char *text);

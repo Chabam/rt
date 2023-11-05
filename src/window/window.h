@@ -1,7 +1,6 @@
-#include <exception>
+#pragma once
 #include <functional>
 #include <memory>
-#include <vector>
 
 class Window
 {

@@ -4,12 +4,12 @@
 #include <chrono>
 #include <functional>
 #include <glad/glad.h>
-#include <glm/gtc/type_ptr.hpp>
-#include <thread>
+#include <glm/ext/matrix_clip_space.hpp>
 #include <utils/logger.h>
 
 Engine::Engine()
     : m_window(1280, 720, "rt")
+    , m_scene()
     , m_fps(60)
 {
     using namespace std::placeholders;
