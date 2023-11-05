@@ -13,12 +13,12 @@ Mesh::Mesh(const std::shared_ptr<Shader>& shader, const Material& material)
 void Mesh::setTriangles(const std::vector<Triangle>& triangles)
 {
     m_triangles = triangles;
-    std::vector<glm::vec3> vertices;
+    std::vector<VerticeBufferData> vertices;
     vertices.reserve(triangles.size() * std::tuple_size<decltype(Triangle::m_p)>::value);
 
     for (const Triangle& triangle : m_triangles)
     {
-        std::vector<glm::vec3> triangleVec{triangle};
+        std::vector<VerticeBufferData> triangleVec{triangle};
         vertices.insert(vertices.end(), triangleVec.begin(), triangleVec.end());
     }
     

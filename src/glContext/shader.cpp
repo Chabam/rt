@@ -107,3 +107,15 @@ void Shader::setVectorUniform(const char* varName, const glm::vec4& vector)
     const int uniformLocation = glGetUniformLocation(m_programUid, varName);
     glUniform4f(uniformLocation, vector.r, vector.g, vector.b, vector.a);
 }
+
+void Shader::setVectorUniform(const char* varName, const glm::vec3& vector)
+{
+    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
+    glUniform3f(uniformLocation, vector.r, vector.g, vector.b);
+}
+
+void Shader::setFloatUniform(const char* varName, float value)
+{
+    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
+    glUniform1f(uniformLocation, value);
+}

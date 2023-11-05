@@ -1,16 +1,18 @@
 #version 460
 
 in vec3 inPos;
+in vec3 inNorm;
 
-uniform vec4 color;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-out vec4 outColor;
+out vec3 normal;
+out vec3 fragPos;
 
 void main()
 {
     gl_Position = projection * view * model * vec4(inPos, 1.0);
-    outColor = color; // set ourColor to the input color we got from the vertex data
+    fragPos = vec3(model * vec4(inPos, 1.0));
+    normal = inNorm;
 }

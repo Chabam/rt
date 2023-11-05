@@ -28,10 +28,10 @@ void Quad::swap(Quad& other) noexcept
     std::swap(other.m_triangleParts, m_triangleParts);
 }
 
-Quad::operator std::vector<glm::vec3, std::allocator<glm::vec3>>() const
+Quad::operator std::vector<VerticeBufferData>() const
 {
-    std::vector<glm::vec3> result{m_triangleParts[0]};
-    const std::vector<glm::vec3> vec2{m_triangleParts[1]};
+    std::vector<VerticeBufferData> result{m_triangleParts[0]};
+    const std::vector<VerticeBufferData> vec2{m_triangleParts[1]};
     result.insert(result.end(), vec2.begin(), vec2.end());
 
     return result;

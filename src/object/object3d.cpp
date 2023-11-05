@@ -32,7 +32,7 @@ const Material& Object3d::getMaterial() const
     return m_material;
 }
 
-void Object3d::render(const glm::mat4& viewMatrix, const glm::mat4 projectionMatrix) const
+void Object3d::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const Light& light) const
 {
     if (!m_buffer)
     {
@@ -40,10 +40,16 @@ void Object3d::render(const glm::mat4& viewMatrix, const glm::mat4 projectionMat
     }
 
     m_shader->use();
-    m_shader->setVectorUniform("color", m_material.m_color);
+
     m_shader->setMatrixUniform("view", viewMatrix);
     m_shader->setMatrixUniform("model", m_model);
     m_shader->setMatrixUniform("projection", projectionMatrix);
+ 
+    m_shader->setVectorUniform("color", m_material.m_color);
+
+    m_shader->setFloatUniform("ambient", light.m_ambient);
+    m_shader->setVectorUniform("lightPos", light.m_pos);
+    m_shader->setVectorUniform("lightColor", light.m_color);
 
     m_buffer->bind();
     glDrawArrays(GL_TRIANGLES, 0, getTriangleCount() * 3);

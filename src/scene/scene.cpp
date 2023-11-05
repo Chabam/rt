@@ -10,6 +10,7 @@ const auto DEFAULT_PROJECTION_MATRIX = glm::perspective(glm::radians(90.f), 16 /
 
 Scene::Scene()
     : m_objects()
+    , m_light()
     , m_viewMatrix(DEFAULT_VIEW_MATRIX)
     , m_projectionMatrix(DEFAULT_PROJECTION_MATRIX)
 {
@@ -17,6 +18,7 @@ Scene::Scene()
 
 Scene::Scene(const Scene& other)
     : m_objects(other.m_objects)
+    , m_light(other.m_light)
     , m_viewMatrix(other.m_viewMatrix)
     , m_projectionMatrix(other.m_projectionMatrix)
 {
@@ -24,18 +26,24 @@ Scene::Scene(const Scene& other)
 
 Scene& Scene::operator=(const Scene& other)
 {
-    m_objects = other.m_objects;
-    m_viewMatrix = other.m_viewMatrix;
-    m_projectionMatrix = other.m_projectionMatrix;
+    Scene(other).swap(*this);
 
     return *this;
+}
+
+void Scene::swap(Scene& other)
+{
+    std::swap(other.m_objects, m_objects);
+    std::swap(other.m_viewMatrix, m_viewMatrix);
+    std::swap(other.m_projectionMatrix, m_projectionMatrix);
+    std::swap(other.m_light, m_light);
 }
 
 void Scene::render()
 {
     for (const auto& object : m_objects)
     {
-        object->render(m_viewMatrix, m_projectionMatrix);
+        object->render(m_viewMatrix, m_projectionMatrix, m_light);
     }
 }
 
@@ -52,6 +60,11 @@ void Scene::changeProjectionMatrix(glm::mat4 matrix)
 void Scene::addObject(const std::shared_ptr<Object3d>& object)
 {
     m_objects.push_back(object);
+}
+
+void Scene::setLight(const Light& light)
+{
+    m_light = light;
 }
 
 const std::vector<std::shared_ptr<Object3d>>& Scene::getObjects()

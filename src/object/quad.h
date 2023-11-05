@@ -11,7 +11,7 @@ class Quad
     Quad& operator=(const Quad& other);
     void swap(Quad& other) noexcept;
 
-    operator std::vector<glm::vec3>() const;
+    operator std::vector<VerticeBufferData>() const;
 
     std::array<glm::vec3, 4> m_p;
     std::array<Triangle, 2> m_triangleParts;

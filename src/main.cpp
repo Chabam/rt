@@ -1,11 +1,11 @@
 #include <engine/engine.h>
-#include <object/cube.h>
+#include <exception>
 #include <glContext/shader.h>
+#include <glm/gtx/transform.hpp>
+#include <glm/mat4x4.hpp>
+#include <object/cube.h>
 #include <utils/fileHelper.h>
 #include <utils/logger.h>
-#include <glm/mat4x4.hpp>
-#include <glm/gtx/transform.hpp>
-#include <exception>
 
 int main(void)
 {
@@ -17,7 +17,6 @@ int main(void)
         std::shared_ptr<Shader> shader =
             std::make_shared<Shader>(FileHelper::readFromFile("../../src/shaders/shader.vert").c_str(),
                                      FileHelper::readFromFile("../../src/shaders/shader.frag").c_str());
-
         Scene scene;
         {
             auto cube = std::make_shared<Cube>(2, 2, 2, shader);
@@ -26,10 +25,13 @@ int main(void)
         }
 
         {
-            auto cube = std::make_shared<Cube>(4, 2, 2, shader, Material({0.f, 0.f, 1.f, 1.f}));
+            auto cube = std::make_shared<Cube>(4, 2, 2, shader, Material({0.f, 0.f, 1.f}));
             cube->applyTransformation(glm::translate(glm::mat4(1.f), glm::vec3(2.f, 0.f, 0.f)));
             scene.addObject(cube);
         }
+
+        scene.setLight(
+            {.m_ambient = 0.1f, .m_pos = glm::vec3(0.0f, 3.0f, 3.0f), .m_color = glm::vec3(1.0f, 1.0f, 1.0f)});
 
         engine.setScene(scene);
         engine.start();

@@ -1,8 +1,9 @@
 #pragma once
+#include <glContext/buffer.h>
 #include <glm/mat4x4.hpp>
 #include <memory>
 #include <object/material.h>
-#include <glContext/buffer.h>
+#include <object/light.h>
 
 class Shader;
 
@@ -15,7 +16,7 @@ class Object3d
     void applyTransformation(const glm::mat4& trans);
     const Material& getMaterial() const;
     const glm::mat4& getModel() const;
-    void render(const glm::mat4& viewMatrix, const glm::mat4 projectionMatrix) const;
+    void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const Light& light) const;
 
     virtual uint32_t getTriangleCount() const = 0;
 

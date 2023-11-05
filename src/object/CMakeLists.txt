@@ -1,6 +1,7 @@
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     cube.h
     cube.cpp
+    light.h
     material.h
     material.cpp
     mesh.h
