@@ -6,22 +6,23 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <utils/logger.h>
 #include <window/window.h>
+#include <iostream>
 
 Shader::Shader(const char* vertSrc, const char* fragSrc)
-    : m_vertUid()
-    , m_fragUid()
-    , m_programUid()
+    : m_programUid()
 {
-    compileShaderSource(m_vertUid, GL_VERTEX_SHADER, vertSrc);
+    GLuint vertUid;
+    compileShaderSource(vertUid, GL_VERTEX_SHADER, vertSrc);
     Logger::debug("Vertex shader compiled");
 
-    compileShaderSource(m_fragUid, GL_FRAGMENT_SHADER, fragSrc);
+    GLuint fragUid;
+    compileShaderSource(fragUid, GL_FRAGMENT_SHADER, fragSrc);
     Logger::debug("Fragment shader compiled");
 
     m_programUid = glCreateProgram();
 
-    glAttachShader(m_programUid, m_vertUid);
-    glAttachShader(m_programUid, m_fragUid);
+    glAttachShader(m_programUid, vertUid);
+    glAttachShader(m_programUid, fragUid);
 
     glLinkProgram(m_programUid);
 
@@ -37,8 +38,8 @@ Shader::Shader(const char* vertSrc, const char* fragSrc)
 
         glDeleteProgram(m_programUid);
 
-        glDeleteShader(m_vertUid);
-        glDeleteShader(m_fragUid);
+        glDeleteShader(vertUid);
+        glDeleteShader(fragUid);
 
         std::ostringstream out;
         out << "Linking error: ";
@@ -51,8 +52,8 @@ Shader::Shader(const char* vertSrc, const char* fragSrc)
     }
     Logger::debug("Program linked");
 
-    glDetachShader(m_programUid, m_vertUid);
-    glDetachShader(m_programUid, m_fragUid);
+    glDeleteShader(vertUid);
+    glDeleteShader(fragUid);
 }
 
 Shader::~Shader()
@@ -90,14 +91,9 @@ void Shader::compileShaderSource(GLuint& shaderUid, GLenum type, const GLchar* s
     }
 }
 
-void Shader::bind() const
+void Shader::use() const
 {
     glUseProgram(m_programUid);
-}
-
-void Shader::unbind() const
-{
-    glUseProgram(0);
 }
 
 void Shader::setMatrixUniform(const char* varName, const glm::mat4& matrix)

@@ -55,7 +55,6 @@ void Engine::start()
 
         constexpr glm::vec4 BLACK = {0.0f, 0.0f, 0.0f, 1.0f};
         glClearColor(BLACK.r, BLACK.g, BLACK.b, BLACK.a);
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_scene.render();

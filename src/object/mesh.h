@@ -12,8 +12,6 @@ class Mesh : public Object3d
   public:
     Mesh(const std::vector<TrianglePrimitive>& triangles, const std::shared_ptr<Shader>& shader,
          const Material& material = Material(), const glm::mat4 model = glm::mat4(1));
-    Mesh(const Mesh& other);
-    Mesh& operator=(const Mesh& other);
 
     uint32_t getTriangleCount() const override;
     const std::vector<TrianglePrimitive>& getTriangles() const;

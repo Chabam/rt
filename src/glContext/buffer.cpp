@@ -8,27 +8,12 @@ Buffer::Buffer(const std::vector<glm::vec3>& vertices)
     , m_VBO()
     , m_data()
 {
-    // Converting the vertice object to a flat array of GLfloat
     for (const glm::vec3& vertice : vertices)
     {
         m_data.push_back({vertice.x, vertice.y, vertice.z});
     }
 
     generateGlBuffers();
-}
-
-Buffer::Buffer(const Buffer& other)
-    : m_data(other.m_data)
-{
-    generateGlBuffers();
-}
-
-Buffer& Buffer::operator=(const Buffer& other)
-{
-    m_data = other.m_data;
-    generateGlBuffers();
-
-    return *this;
 }
 
 Buffer::~Buffer()
@@ -39,20 +24,20 @@ Buffer::~Buffer()
 
 void Buffer::generateGlBuffers()
 {
-    glGenBuffers(1, &m_VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-
     glGenVertexArrays(1, &m_VAO);
-    glBindVertexArray(m_VAO);
+    glGenBuffers(1, &m_VBO);
 
     const auto VERTICES_COUNT = m_data.size();
     const auto TOTAL_DATA_SIZE = VERTICES_COUNT * VERTICE_DATA_SIZE * sizeof(GLfloat);
     const auto START_COORD = (void*)0;
+    
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, TOTAL_DATA_SIZE, m_data.data(), GL_STATIC_DRAW);
+
+    glBindVertexArray(m_VAO);
 
     glVertexAttribPointer(0, COORD_DATA, GL_FLOAT, GL_FALSE, VERTICE_POINTER_SIZE, START_COORD);
     glEnableVertexAttribArray(0);
-
-    glBufferData(GL_ARRAY_BUFFER, TOTAL_DATA_SIZE, m_data.data(), GL_STATIC_DRAW);
 }
 
 void Buffer::bind() const

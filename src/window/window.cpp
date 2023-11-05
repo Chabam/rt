@@ -6,8 +6,6 @@
 
 struct Window::Impl
 {
-
-
     static void keyCallback(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
     {
         Logger::debug("Creating window");
@@ -41,9 +39,8 @@ struct Window::Impl
     GLFWwindow* m_windowPtr;
 
     Impl(Window& window, unsigned int width, unsigned int height, const char* title)
+        : m_windowPtr(glfwCreateWindow(width, height, title, nullptr, nullptr))
     {
-        m_windowPtr = glfwCreateWindow(width, height, title, nullptr, nullptr);
-
         if (!m_windowPtr)
         {
             throw std::runtime_error("Could not create a GLWF window!");
@@ -55,6 +52,10 @@ struct Window::Impl
         glfwSetKeyCallback(m_windowPtr, Window::Impl::keyCallback);
         glfwSetWindowSizeCallback(m_windowPtr, Window::Impl::resizeCallback);
         glfwMakeContextCurrent(m_windowPtr);
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
     }
 
     ~Impl()
@@ -116,12 +117,6 @@ unsigned int Window::getWidth() const
 unsigned int Window::getHeight() const
 {
     return m_height;
-}
-
-void Window::init()
-{
-
-    Logger::info("Window succesfully initialized");
 }
 
 void Window::setResizeCallback(WindowResizeCallback cb)

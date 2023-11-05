@@ -1,4 +1,4 @@
-#version 400
+#version 460
 
 in vec3 inPos;
 
@@ -11,6 +11,6 @@ out vec4 outColor;
 
 void main()
 {
-    gl_Position = model * view * projection * vec4(inPos, 1.0);
+    gl_Position = projection * view * model * vec4(inPos, 1.0);
     outColor = color; // set ourColor to the input color we got from the vertex data
 }

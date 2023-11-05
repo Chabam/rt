@@ -13,7 +13,6 @@ class Window
     Window(unsigned int width, unsigned int height, const char* title);
     ~Window();
 
-    void init();
     void setToClose();
     bool shouldClose();
     void setSize(int width, int height);
@@ -22,7 +21,6 @@ class Window
     void setResizeCallback(WindowResizeCallback cb);
     void setKeyPressCallback(KeyPressCallback cb);
     void swapBuffers();
-    float getAspectRatio() const;
 
   private:
     unsigned int m_width;
