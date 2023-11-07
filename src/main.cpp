@@ -21,33 +21,33 @@ int main(void)
         Scene scene;
         {
             auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({1.f, 0.f, 0.f}));
-            cube->applyTransformation(glm::translate(glm::vec3(-2.f, 0.f, 0.f)));
+            cube->applyTransformation(glm::translate(glm::vec3(-1.f, 0.f, 0.f)));
             scene.addObject(cube);
         }
 
         {
             auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({0.f, 0.f, 0.75f}, 1.f));
-            cube->applyTransformation(glm::translate(glm::vec3(2.f, 0.f, 0.f)));
+            cube->applyTransformation(glm::translate(glm::vec3(1.f, 0.f, 0.f)));
             scene.addObject(cube);
         }
 
         {
             // clang-format off
             auto quad = std::make_shared<QuadMesh>(
-                glm::vec3{ -5.f,  -1.1f, -5.f },
-                glm::vec3{  5.f,  -1.1f, -5.f },
-                glm::vec3{  5.f,  -1.1f,  5.f },
-                glm::vec3{ -5.f,  -1.1f,  5.f },
-                shader, Material({0.f, 1.f, 0.f}, 0.f)
+                glm::vec3{ -5.f, -.51f, -5.f },
+                glm::vec3{ -5.f, -.51f,  5.f },
+                glm::vec3{  5.f, -.51f,  5.f },
+                glm::vec3{  5.f, -.51f, -5.f },
+                shader, Material({0.f, 0.7f, 0.f}, 1.f)
             );
             // clang-format on
             scene.addObject(quad);
         }
         {
-            glm::vec3 ligthPosition(0.f, 1.f, 1.f);
+            glm::vec3 ligthPosition(0.f, 1.f, 0.75f);
             auto lightIndicator = std::make_shared<Cube>(1, 1, 1, shader, Material({1.f, 1.f, 1.f}));
-            lightIndicator->applyTransformation(glm::scale(glm::vec3(0.1f, 0.1f, 0.1f)));
             lightIndicator->applyTransformation(glm::translate(ligthPosition));
+            lightIndicator->applyTransformation(glm::scale(glm::vec3(0.1f, 0.1f, 0.1f)));
             scene.addObject(lightIndicator);
 
             scene.setLight({.m_ambient = 0.1f, .m_pos = ligthPosition, .m_color = glm::vec3(1.f, 1.f, 1.f)});
