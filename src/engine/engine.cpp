@@ -62,13 +62,15 @@ void Engine::start()
         m_scene.render();
         m_window.swapBuffers();
 
-        glfwPollEvents();
-
-        auto afterRender = std::chrono::system_clock::now();
-        miliseconds elapsed = afterRender - beforeRender;
+        const auto afterRender = std::chrono::system_clock::now();
+        const miliseconds elapsed = afterRender - beforeRender;
         const miliseconds maxTimePerFrame(1000ms / m_fps);
+        const auto timeUntilNextFrame = afterRender + (maxTimePerFrame - elapsed);
 
-        std::this_thread::sleep_for(maxTimePerFrame - elapsed);
+        while (std::chrono::system_clock::now() < timeUntilNextFrame)
+        {
+            glfwPollEvents();
+        }
     }
 }
 
