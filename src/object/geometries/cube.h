@@ -11,7 +11,7 @@ class Cube : public Mesh
          const Material& material = Material(), const glm::mat4 model = glm::mat4(1));
 
   private:
-    std::array<Quad, 6> m_quads;
+    std::array<Quad, 6> m_quadParts;
 
     static std::array<Quad, 6> generateQuads(unsigned int width, unsigned int height, unsigned int depth);
 };

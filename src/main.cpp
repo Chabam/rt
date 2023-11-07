@@ -20,32 +20,38 @@ int main(void)
                                      FileHelper::readFromFile("../../src/shaders/shader.frag").c_str());
         Scene scene;
         {
-            auto cube = std::make_shared<Cube>(2, 2, 2, shader);
-            cube->applyTransformation(glm::translate(glm::mat4(1.f), glm::vec3(-2.f, 0.f, 0.f)));
+            auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({1.f, 0.f, 0.f}));
+            cube->applyTransformation(glm::translate(glm::vec3(-2.f, 0.f, 0.f)));
             scene.addObject(cube);
         }
 
         {
-            auto cube = std::make_shared<Cube>(4, 2, 2, shader, Material({0.f, 0.f, 1.f}, 1.f));
-            cube->applyTransformation(glm::translate(glm::mat4(1.f), glm::vec3(2.f, 0.f, 0.f)));
+            auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({0.f, 0.f, 0.75f}, 1.f));
+            cube->applyTransformation(glm::translate(glm::vec3(2.f, 0.f, 0.f)));
             scene.addObject(cube);
         }
 
         {
             // clang-format off
             auto quad = std::make_shared<QuadMesh>(
-                glm::vec3{ -5.f,  -1.f, -5.f },
-                glm::vec3{  5.f,  -1.f, -5.f },
-                glm::vec3{  5.f,  -1.f,  5.f },
-                glm::vec3{ -5.f,  -1.f,  5.f },
-                shader, Material({0.f, 1.f, 0.f}, 1.f)
+                glm::vec3{ -5.f,  -1.1f, -5.f },
+                glm::vec3{  5.f,  -1.1f, -5.f },
+                glm::vec3{  5.f,  -1.1f,  5.f },
+                glm::vec3{ -5.f,  -1.1f,  5.f },
+                shader, Material({0.f, 1.f, 0.f}, 0.f)
             );
             // clang-format on
             scene.addObject(quad);
         }
+        {
+            glm::vec3 ligthPosition(0.f, 1.f, 1.f);
+            auto lightIndicator = std::make_shared<Cube>(1, 1, 1, shader, Material({1.f, 1.f, 1.f}));
+            lightIndicator->applyTransformation(glm::scale(glm::vec3(0.1f, 0.1f, 0.1f)));
+            lightIndicator->applyTransformation(glm::translate(ligthPosition));
+            scene.addObject(lightIndicator);
 
-        scene.setLight(
-            {.m_ambient = 0.1f, .m_pos = glm::vec3(0.0f, 6.0f, 0.0f), .m_color = glm::vec3(1.0f, 1.0f, 1.0f)});
+            scene.setLight({.m_ambient = 0.1f, .m_pos = ligthPosition, .m_color = glm::vec3(1.f, 1.f, 1.f)});
+        }
 
         engine.setScene(scene);
         engine.start();

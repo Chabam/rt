@@ -5,7 +5,7 @@
 
 Quad::Quad(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4)
     : m_p{p1, p2, p3, p4}
-    , m_triangleParts({Triangle(p1, p2, p3), Triangle(p1, p3, p4)})
+    , m_triangleParts({Triangle(p1, p2, p3), Triangle(p3, p4, p1)})
 {
 }
 

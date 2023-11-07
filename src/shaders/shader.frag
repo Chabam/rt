@@ -6,7 +6,7 @@ in vec3 fragPos;
 uniform vec3 color;
 uniform float specularStr;
 
-uniform float ambient;
+uniform float ambientStr;
 uniform vec3 lightPos;
 uniform vec3 lightColor;
 
@@ -16,8 +16,9 @@ out vec4 fragColor;
 
 void main()
 {
+    vec3 ambient = ambientStr * lightColor;
+    
     vec3 lightDir = normalize(lightPos - fragPos);
-
     vec3 diffuse = max(dot(normal, lightDir), 0.0) * lightColor;
     
     vec3 viewDir = normalize(cameraPos - fragPos);

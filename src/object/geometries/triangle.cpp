@@ -3,7 +3,7 @@
 
 Triangle::Triangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3)
     : m_p({p1, p2, p3})
-    , m_normal(glm::normalize(glm::cross(p1 - p2, p3 - p2)))
+    , m_normal(glm::normalize(glm::cross(p3 - p2, p1 - p2)))
 {
 }
 
