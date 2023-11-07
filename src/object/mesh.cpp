@@ -1,6 +1,6 @@
 #include "mesh.h"
 
-#include <object/triangle.h>
+#include <object/geometries/triangle.h>
 #include <algorithm>
 #include <utils/logger.h>
 

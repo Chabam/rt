@@ -3,7 +3,7 @@
 #include <glm/mat4x4.hpp>
 #include <memory>
 #include <object/material.h>
-#include <object/light.h>
+#include <object/light/light.h>
 
 class Shader;
 

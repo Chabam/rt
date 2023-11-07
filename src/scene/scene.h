@@ -1,5 +1,5 @@
 #pragma once
-#include <object/light.h>
+#include <object/light/light.h>
 #include <object/object3d.h>
 #include <vector>
 

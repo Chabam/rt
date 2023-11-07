@@ -1,5 +1,5 @@
 #pragma once
-#include <object/triangle.h>
+#include <object/geometries/triangle.h>
 
 #include <array>
 

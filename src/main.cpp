@@ -3,7 +3,7 @@
 #include <glContext/shader.h>
 #include <glm/gtx/transform.hpp>
 #include <glm/mat4x4.hpp>
-#include <object/cube.h>
+#include <object/geometries/cube.h>
 #include <utils/fileHelper.h>
 #include <utils/logger.h>
 
