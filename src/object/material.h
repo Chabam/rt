@@ -5,7 +5,7 @@
 class Material
 {
   public:
-    Material(const glm::vec3& color = glm::vec3(1.f, 0.f, 0.f), float diffuse = 1, float specular = 1);
+    Material(const glm::vec3& color = glm::vec3(1.f, 0.f, 0.f), float specular = 0);
     Material(const Material& other);
     Material& operator=(const Material& other);
 

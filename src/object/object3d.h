@@ -16,7 +16,7 @@ class Object3d
     void applyTransformation(const glm::mat4& trans);
     const Material& getMaterial() const;
     const glm::mat4& getModel() const;
-    void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const Light& light) const;
+    void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const glm::vec3 cameraPos, const Light& light) const;
 
     virtual uint32_t getTriangleCount() const = 0;
 

@@ -1,6 +1,6 @@
 #include "material.h"
 
-Material::Material(const glm::vec3& color, float diffuse, float specular)
+Material::Material(const glm::vec3& color, float specular)
     : m_color(color)
     , m_specular(specular)
 {

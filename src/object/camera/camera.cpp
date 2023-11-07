@@ -30,27 +30,32 @@ const glm::mat4 Camera::getProjectionMatrix() const
     return m_projectionMatrix;
 }
 
+const glm::vec3 Camera::getPosition() const
+{
+    return m_position;
+}
+
 void Camera::move(const glm::vec3& direction)
 {
     m_position += m_speed * direction;
 }
 
-const glm::vec3& Camera::getUp()
+const glm::vec3& Camera::getUp() const
 {
     return m_up;
 }
 
-const glm::vec3& Camera::getFront()
+const glm::vec3& Camera::getFront() const
 {
     return m_front;
 }
 
-double Camera::getYaw()
+double Camera::getYaw() const
 {
     return m_yaw;
 }
 
-double Camera::getPitch()
+double Camera::getPitch() const
 {
     return m_pitch;
 }

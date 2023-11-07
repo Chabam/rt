@@ -30,7 +30,7 @@ void Scene::render()
 {
     for (const auto& object : m_objects)
     {
-        object->render(m_camera.getViewMatrix(), m_camera.getProjectionMatrix(), m_light);
+        object->render(m_camera.getViewMatrix(), m_camera.getProjectionMatrix(), m_camera.getPosition(), m_light);
     }
 }
 
