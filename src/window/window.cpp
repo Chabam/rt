@@ -8,7 +8,6 @@ struct Window::Impl
 {
     static void keyCallback(GLFWwindow* glfwWindow, int key, int scancode, int action, int mods)
     {
-        Logger::debug("Creating window");
         Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
         if (window == nullptr)
         {

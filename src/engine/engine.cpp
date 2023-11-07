@@ -4,7 +4,6 @@
 #include <chrono>
 #include <functional>
 #include <glad/glad.h>
-#include <glm/ext/matrix_clip_space.hpp>
 #include <utils/logger.h>
 
 Engine::Engine()
@@ -77,9 +76,26 @@ void Engine::setScene(const Scene& scene)
 
 void Engine::handleKeyPress(int keyCode)
 {
+    Camera& camera = m_scene.getCamera();
     switch (keyCode)
     {
-    case GLFW_KEY_Q:
+    case GLFW_KEY_UP:
+    case GLFW_KEY_W:
+        camera.move(camera.getFront());
+        break;
+    case GLFW_KEY_DOWN:
+    case GLFW_KEY_S:
+        camera.move(-camera.getFront());
+        break;
+    case GLFW_KEY_LEFT:
+    case GLFW_KEY_A:
+        camera.move(-glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+        break;
+    case GLFW_KEY_RIGHT:
+    case GLFW_KEY_D:
+        camera.move(glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+        break;
+    case GLFW_KEY_ESCAPE:
         Logger::info("Closing!");
         m_window.setToClose();
         break;
@@ -93,8 +109,7 @@ void Engine::handleResize(int width, int height)
         return;
     }
     glViewport(0, 0, width, height);
-    m_scene.changeProjectionMatrix(
-        glm::perspective(glm::radians(90.f), static_cast<float>(width) / height, 0.1f, 100.0f));
+    m_scene.getCamera().setAspectRatio(width, height);
     m_scene.render();
 }
 

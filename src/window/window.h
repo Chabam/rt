@@ -7,6 +7,7 @@ class Window
   public:
     typedef std::function<void(int)> KeyPressCallback;
     typedef std::function<void(int, int)> WindowResizeCallback;
+    typedef std::function<void(int, int)> WindowResizeCallback;
 
     Window();
     Window(unsigned int width, unsigned int height, const char* title);
