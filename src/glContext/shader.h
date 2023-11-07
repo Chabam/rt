@@ -10,6 +10,7 @@ class Shader
     ~Shader();
     void use() const;
     void setMatrixUniform(const char* varName, const glm::mat4& matrix);
+    void setMatrixUniform(const char* varName, const glm::mat3& matrix);
     void setVectorUniform(const char* varName, const glm::vec4& vector);
     void setVectorUniform(const char* varName, const glm::vec3& vector);
     void setFloatUniform(const char* varName, float value);

@@ -29,8 +29,3 @@ uint32_t Mesh::getTriangleCount() const
 {
     return m_triangles.size();
 }
-
-const std::vector<Triangle>& Mesh::getTriangles() const
-{
-    return m_triangles;
-}

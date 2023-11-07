@@ -12,8 +12,6 @@ class Mesh : public Object3d
     Mesh(const std::shared_ptr<Shader>& shader, const Material& material = Material());
 
     uint32_t getTriangleCount() const override;
-    const std::vector<Triangle>& getTriangles() const;
-
   protected:
     void setTriangles(const std::vector<Triangle>& triangles);
     std::vector<Triangle> m_triangles;

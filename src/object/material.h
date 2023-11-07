@@ -10,6 +10,5 @@ class Material
     Material& operator=(const Material& other);
 
     glm::vec3 m_color;
-    float m_diffuse;
     float m_specular;
 };

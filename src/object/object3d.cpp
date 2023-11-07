@@ -9,6 +9,7 @@ Object3d::Object3d(const std::shared_ptr<Shader>& shader, const Material& materi
     : m_shader(shader)
     , m_material(material)
     , m_model(glm::mat4(1.f))
+    , m_normalMatrix(glm::transpose(glm::inverse(m_model)))
     , m_buffer()
 {
 }
@@ -25,6 +26,7 @@ const glm::mat4& Object3d::getModel() const
 void Object3d::applyTransformation(const glm::mat4& trans)
 {
     m_model = m_model * trans;
+    m_normalMatrix = glm::transpose(glm::inverse(m_model));
 }
 
 const Material& Object3d::getMaterial() const
@@ -44,6 +46,7 @@ void Object3d::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMa
     m_shader->setMatrixUniform("view", viewMatrix);
     m_shader->setMatrixUniform("model", m_model);
     m_shader->setMatrixUniform("projection", projectionMatrix);
+    m_shader->setMatrixUniform("normalMatrix", m_normalMatrix);
  
     m_shader->setVectorUniform("color", m_material.m_color);
 

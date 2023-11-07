@@ -14,7 +14,7 @@ QuadMesh::QuadMesh(const QuadMesh& other)
     : Quad(other)
     , Mesh(other.m_shader, other.m_material)
 {
-    setTriangles(other.getTriangles());
+    setTriangles(other.m_triangles);
 }
 
 QuadMesh& QuadMesh::operator=(const QuadMesh& other)

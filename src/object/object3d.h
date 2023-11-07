@@ -25,4 +25,5 @@ class Object3d
     Material m_material;
     glm::mat4 m_model;
     std::unique_ptr<Buffer> m_buffer;
+    glm::mat3 m_normalMatrix;
 };
