@@ -7,7 +7,8 @@ class Window
   public:
     typedef std::function<void(int)> KeyPressCallback;
     typedef std::function<void(int, int)> WindowResizeCallback;
-    typedef std::function<void(int, int)> WindowResizeCallback;
+    typedef std::function<void(int, int, int)> MouseButtonPressedCallback;
+    typedef std::function<void(double, double)> MousePositionChangedCallback;
 
     Window();
     Window(unsigned int width, unsigned int height, const char* title);
@@ -20,6 +21,8 @@ class Window
     unsigned int getHeight() const;
     void setResizeCallback(WindowResizeCallback cb);
     void setKeyPressCallback(KeyPressCallback cb);
+    void setMouseButtonPressedCallback(MouseButtonPressedCallback cb);
+    void setMousePositionChangedCallback(MousePositionChangedCallback cb);
     void swapBuffers();
 
   private:
@@ -31,4 +34,6 @@ class Window
 
     WindowResizeCallback m_windowResizeCallback;
     KeyPressCallback m_windowKeyPressCallback;
+    MouseButtonPressedCallback m_mouseButtonPressedCallback;
+    MousePositionChangedCallback m_mousePositionChangedCallback;
 };

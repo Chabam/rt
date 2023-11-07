@@ -1,8 +1,8 @@
 #include "window.h"
 
 #include <GLFW/glfw3.h>
-#include <utils/logger.h>
 #include <math.h>
+#include <utils/logger.h>
 
 struct Window::Impl
 {
@@ -35,6 +35,30 @@ struct Window::Impl
         window->m_height = height;
     }
 
+    static void mouseButtonPressedCallback(GLFWwindow* glfwWindow, int button, int action, int mods)
+    {
+        Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
+        if (window == nullptr)
+        {
+            Logger::error("Provided pointer to window is NULL!");
+            return;
+        }
+
+        window->m_mouseButtonPressedCallback(button, action, mods);
+    }
+
+    static void mousePositionChangedCallback(GLFWwindow* glfwWindow, double xpos, double ypos)
+    {
+        Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
+        if (window == nullptr)
+        {
+            Logger::error("Provided pointer to window is NULL!");
+            return;
+        }
+
+        window->m_mousePositionChangedCallback(xpos, ypos);
+    }
+
     GLFWwindow* m_windowPtr;
 
     Impl(Window& window, unsigned int width, unsigned int height, const char* title)
@@ -50,11 +74,14 @@ struct Window::Impl
         glfwSetWindowUserPointer(m_windowPtr, &window);
         glfwSetKeyCallback(m_windowPtr, Window::Impl::keyCallback);
         glfwSetWindowSizeCallback(m_windowPtr, Window::Impl::resizeCallback);
-        glfwMakeContextCurrent(m_windowPtr);
+        glfwSetCursorPosCallback(m_windowPtr, Window::Impl::mousePositionChangedCallback);
+        glfwSetMouseButtonCallback(m_windowPtr, Window::Impl::mouseButtonPressedCallback);
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+
+        glfwMakeContextCurrent(m_windowPtr);
     }
 
     ~Impl()
@@ -69,6 +96,8 @@ Window::Window()
     , m_title("New window")
     , m_windowResizeCallback([](int, int) {})
     , m_windowKeyPressCallback([](int) {})
+    , m_mouseButtonPressedCallback([](int, int, int) {})
+    , m_mousePositionChangedCallback([](double, double) {})
 {
 }
 
@@ -79,6 +108,8 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
     , m_impl(std::make_unique<Window::Impl>(*this, width, height, title))
     , m_windowResizeCallback([](int, int) {})
     , m_windowKeyPressCallback([](int) {})
+    , m_mouseButtonPressedCallback([](int, int, int) {})
+    , m_mousePositionChangedCallback([](double, double) {})
 {
 }
 
@@ -126,4 +157,14 @@ void Window::setResizeCallback(WindowResizeCallback cb)
 void Window::setKeyPressCallback(KeyPressCallback cb)
 {
     m_windowKeyPressCallback = cb;
+}
+
+void Window::setMousePositionChangedCallback(MousePositionChangedCallback cb)
+{
+    m_mousePositionChangedCallback = cb;
+}
+
+void Window::setMouseButtonPressedCallback(MouseButtonPressedCallback cb)
+{
+    m_mouseButtonPressedCallback = cb;
 }

@@ -10,10 +10,13 @@ Engine::Engine()
     : m_window(1280, 720, "rt")
     , m_scene()
     , m_fps(60)
+    , m_mouseInfo()
 {
     using namespace std::placeholders;
     m_window.setResizeCallback(std::bind(&Engine::handleResize, this, _1, _2));
     m_window.setKeyPressCallback(std::bind(&Engine::handleKeyPress, this, _1));
+    m_window.setMouseButtonPressedCallback(std::bind(&Engine::handleMouseButtonPressed, this, _1, _2, _3));
+    m_window.setMousePositionChangedCallback(std::bind(&Engine::handleMousePositionChanged, this, _1, _2));
 
     Logger::debug("Init glad");
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -95,11 +98,44 @@ void Engine::handleKeyPress(int keyCode)
     case GLFW_KEY_D:
         camera.move(glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
         break;
+    case GLFW_KEY_SPACE:
+        camera.move(camera.getUp());
+        break;
+    case GLFW_KEY_LEFT_SHIFT:
+        camera.move(-camera.getUp());
+        break;
     case GLFW_KEY_ESCAPE:
         Logger::info("Closing!");
         m_window.setToClose();
         break;
     }
+}
+
+void Engine::handleMousePositionChanged(double xPos, double yPos)
+{
+    if (m_mouseInfo.m_pressed)
+    {
+        double deltaX = xPos - m_mouseInfo.m_lastX;
+        double deltaY = yPos - m_mouseInfo.m_lastY;
+
+        constexpr auto sensitivity = 0.1f;
+
+        deltaX *= sensitivity;
+        deltaY *= sensitivity;
+
+        Camera& camera = m_scene.getCamera();
+        camera.setYaw(camera.getYaw() + deltaX);
+        camera.setPitch(camera.getPitch() + deltaY);
+        camera.updateFront();
+    }
+
+    m_mouseInfo.m_lastX = xPos;
+    m_mouseInfo.m_lastY = yPos;
+}
+
+void Engine::handleMouseButtonPressed(int key, int action, int mod)
+{
+    m_mouseInfo.m_pressed = key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
 }
 
 void Engine::handleResize(int width, int height)
