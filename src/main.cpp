@@ -16,8 +16,8 @@ int main(void)
 
         Engine engine;
         std::shared_ptr<Shader> shader =
-            std::make_shared<Shader>(FileHelper::readFromFile("../../src/shaders/shader.vert").c_str(),
-                                     FileHelper::readFromFile("../../src/shaders/shader.frag").c_str());
+            std::make_shared<Shader>(FileHelper::readFromFile("./resources/shaders/blinn-phong.vert").c_str(),
+                                     FileHelper::readFromFile("./resources/shaders/blinn-phong.frag").c_str());
         Scene scene;
         {
             auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({1.f, 0.f, 0.f}));

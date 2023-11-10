@@ -1,5 +1,5 @@
 #include "cube.h"
-#include <assert.h>
+#include <cassert>
 
 Cube::Cube(unsigned int width, unsigned int height, unsigned int depth, const std::shared_ptr<Shader>& shader,
            const Material& material, const glm::mat4 model)
@@ -9,7 +9,7 @@ Cube::Cube(unsigned int width, unsigned int height, unsigned int depth, const st
     std::vector<Triangle> triangles;
     for (const Quad& quad : m_quadParts)
     {
-        assert(quad.m_triangleParts[0].m_normal == quad.m_triangleParts[1].m_normal, "Normal not set correctly");
+        assert(quad.m_triangleParts[0].m_normal == quad.m_triangleParts[1].m_normal); // "Normal not set correctly"
         triangles.insert(triangles.end(), quad.m_triangleParts.begin(), quad.m_triangleParts.end());
     }
     setTriangles(triangles);

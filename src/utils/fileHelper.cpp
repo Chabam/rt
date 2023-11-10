@@ -5,7 +5,7 @@
 
 std::string FileHelper::readFromFile(const char* path)
 {
-    std::filesystem::path pathObject = std::filesystem::absolute(std::filesystem::current_path().append(path));
+    std::filesystem::path pathObject = std::filesystem::absolute(path);
     std::ifstream file = std::ifstream(path);
     std::ostringstream fileContent;
     std::string line;
