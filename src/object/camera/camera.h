@@ -22,6 +22,8 @@ class Camera
     double getYaw() const;
     double getPitch() const;
 
+    void setSpeed(float speed);
+
     void updateFront();
   private:
     glm::vec3 m_position;

@@ -4,17 +4,20 @@
 #include <chrono>
 #include <functional>
 #include <glad/glad.h>
+#include <ratio>
 #include <utils/logger.h>
 
 Engine::Engine()
     : m_window(1280, 720, "rt")
     , m_scene()
     , m_fps(60)
+    , m_frameTime()
     , m_mouseInfo()
+    , m_keyboardInfo()
 {
     using namespace std::placeholders;
     m_window.setResizeCallback(std::bind(&Engine::handleResize, this, _1, _2));
-    m_window.setKeyPressCallback(std::bind(&Engine::handleKeyPress, this, _1));
+    m_window.setKeyPressCallback(std::bind(&Engine::handleKeyPress, this, _1, _2));
     m_window.setMouseButtonPressedCallback(std::bind(&Engine::handleMouseButtonPressed, this, _1, _2, _3));
     m_window.setMousePositionChangedCallback(std::bind(&Engine::handleMousePositionChanged, this, _1, _2));
 
@@ -48,11 +51,10 @@ void Engine::start()
         return;
     }
 
+    auto lastFrame = std::chrono::system_clock::now();
     glEnable(GL_DEPTH_TEST);
     while (!m_window.shouldClose())
     {
-        typedef std::chrono::duration<double, std::milli> miliseconds;
-        using namespace std::chrono_literals;
         auto beforeRender = std::chrono::system_clock::now();
 
         constexpr glm::vec4 BLACK = {0.0f, 0.0f, 0.0f, 1.0f};
@@ -63,14 +65,20 @@ void Engine::start()
         m_window.swapBuffers();
 
         const auto afterRender = std::chrono::system_clock::now();
-        const miliseconds elapsed = afterRender - beforeRender;
-        const miliseconds maxTimePerFrame(1000ms / m_fps);
+        m_frameTime = std::chrono::duration<double>(afterRender - lastFrame);
+        lastFrame = afterRender;
+
+
+        glfwPollEvents();
+        processInputs();
+
+        const auto elapsed = afterRender - beforeRender;
+        const auto maxTimePerFrame = std::chrono::seconds(1) / m_fps;
         const auto timeUntilNextFrame = afterRender + (maxTimePerFrame - elapsed);
 
-        while (std::chrono::system_clock::now() < timeUntilNextFrame)
-        {
-            glfwPollEvents();
-        }
+        Logger::debug("Frame took: ") << std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(elapsed);
+
+        std::this_thread::sleep_until(timeUntilNextFrame);
     }
 }
 
@@ -79,32 +87,69 @@ void Engine::setScene(const Scene& scene)
     m_scene = scene;
 }
 
-void Engine::handleKeyPress(int keyCode)
+void Engine::processInputs()
 {
     Camera& camera = m_scene.getCamera();
+    camera.setSpeed(m_frameTime.count() * 2.5f);
+
+    if (m_keyboardInfo.m_forwardKeyPressed)
+    {
+        camera.move(camera.getFront());
+    }
+
+    if (m_keyboardInfo.m_backwardKeyPressed)
+    {
+        camera.move(-camera.getFront());
+    }
+
+    if (m_keyboardInfo.m_leftKeyPressed)
+    {
+        camera.move(-glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+    }
+
+    if (m_keyboardInfo.m_rightKeyPressed)
+    {
+        camera.move(glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+    }
+
+    if (m_keyboardInfo.m_upKeyPressed)
+    {
+        camera.move(camera.getUp());
+    }
+
+    if (m_keyboardInfo.m_downKeyPressed)
+    {
+        camera.move(-camera.getUp());
+    }
+}
+
+void Engine::handleKeyPress(int keyCode, int action)
+{
+    const bool isPressed = action != GLFW_RELEASE;
+
     switch (keyCode)
     {
     case GLFW_KEY_UP:
     case GLFW_KEY_W:
-        camera.move(camera.getFront());
+        m_keyboardInfo.m_forwardKeyPressed = isPressed;
         break;
     case GLFW_KEY_DOWN:
     case GLFW_KEY_S:
-        camera.move(-camera.getFront());
+        m_keyboardInfo.m_backwardKeyPressed = isPressed;
         break;
     case GLFW_KEY_LEFT:
     case GLFW_KEY_A:
-        camera.move(-glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+        m_keyboardInfo.m_leftKeyPressed = isPressed;
         break;
     case GLFW_KEY_RIGHT:
     case GLFW_KEY_D:
-        camera.move(glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+        m_keyboardInfo.m_rightKeyPressed = isPressed;
         break;
     case GLFW_KEY_SPACE:
-        camera.move(camera.getUp());
+        m_keyboardInfo.m_upKeyPressed = isPressed;
         break;
     case GLFW_KEY_LEFT_SHIFT:
-        camera.move(-camera.getUp());
+        m_keyboardInfo.m_downKeyPressed = isPressed;
         break;
     case GLFW_KEY_ESCAPE:
         Logger::info("Closing!");
@@ -118,7 +163,7 @@ void Engine::handleMousePositionChanged(double xPos, double yPos)
     if (m_mouseInfo.m_pressed)
     {
         double deltaX = xPos - m_mouseInfo.m_lastX;
-        double deltaY = yPos - m_mouseInfo.m_lastY;
+        double deltaY = m_mouseInfo.m_lastY - yPos;
 
         constexpr auto sensitivity = 0.1f;
 

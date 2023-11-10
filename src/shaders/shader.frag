@@ -5,6 +5,7 @@ in vec3 fragPos;
 
 uniform vec3 color;
 uniform float specularStr;
+uniform int shininess;
 
 uniform float ambientStr;
 uniform vec3 lightPos;
@@ -22,8 +23,9 @@ void main()
     vec3 diffuse = max(dot(normal, lightDir), 0.0) * lightColor;
     
     vec3 viewDir = normalize(cameraPos - fragPos);
+    vec3 halfwayDir = normalize(lightDir + viewDir);
     vec3 reflectionDir = reflect(-lightDir, normal);
-    vec3 specular = pow(max(dot(viewDir, reflectionDir), 0.0), 32) * specularStr * lightColor;
+    vec3 specular = pow(max(dot(viewDir, halfwayDir), 0.0), shininess) * specularStr * lightColor;
     
     fragColor = vec4((ambient + diffuse + specular) * color, 1.0);
 }

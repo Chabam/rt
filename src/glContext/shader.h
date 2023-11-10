@@ -14,6 +14,7 @@ class Shader
     void setVectorUniform(const char* varName, const glm::vec4& vector);
     void setVectorUniform(const char* varName, const glm::vec3& vector);
     void setFloatUniform(const char* varName, float value);
+    void setIntUniform(const char* varName, int value);
 
   private:
     GLuint m_programUid;

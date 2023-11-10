@@ -1,5 +1,6 @@
 #include "camera.h"
 
+#include <algorithm>
 #include <cmath>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
@@ -62,12 +63,12 @@ double Camera::getPitch() const
 
 void Camera::setYaw(double yaw)
 {
-    m_yaw = std::min(89.0, yaw);
+    m_yaw = yaw;
 }
 
 void Camera::setPitch(double pitch)
 {
-    m_pitch = std::max(-89.0, pitch);
+    m_pitch = std::clamp(pitch, -89.0, 89.0);
 }
 
 void Camera::updateFront()
@@ -77,4 +78,9 @@ void Camera::updateFront()
     m_front.z = std::sin(glm::radians(m_yaw)) * std::cos(glm::radians(m_pitch));
 
     glm::normalize(m_front);
+}
+
+void Camera::setSpeed(float speed)
+{
+    m_speed = speed;
 }

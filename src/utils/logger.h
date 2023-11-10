@@ -14,8 +14,13 @@ class Logger
     Logger(Logger &&other) noexcept;
     ~Logger();
 
-    Logger &&operator<<(const char *text);
-    Logger &&operator<<(const std::ostringstream &stream);
+    template<typename T>
+    Logger&& operator<<(const T& text)
+    {
+        m_stream << text;
+
+        return std::move(*this);
+    }
 
     static Logger debug(const char *text);
     static Logger info(const char *text);

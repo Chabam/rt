@@ -15,10 +15,7 @@ struct Window::Impl
             return;
         }
 
-        if (action == GLFW_PRESS || action == GLFW_REPEAT)
-        {
-            window->m_windowKeyPressCallback(key);
-        }
+        window->m_windowKeyPressCallback(key, action);
     }
 
     static void resizeCallback(GLFWwindow* glfwWindow, int width, int height)
@@ -95,7 +92,7 @@ Window::Window()
     , m_height()
     , m_title("New window")
     , m_windowResizeCallback([](int, int) {})
-    , m_windowKeyPressCallback([](int) {})
+    , m_windowKeyPressCallback([](int, int) {})
     , m_mouseButtonPressedCallback([](int, int, int) {})
     , m_mousePositionChangedCallback([](double, double) {})
 {
@@ -107,7 +104,7 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
     , m_title(title)
     , m_impl(std::make_unique<Window::Impl>(*this, width, height, title))
     , m_windowResizeCallback([](int, int) {})
-    , m_windowKeyPressCallback([](int) {})
+    , m_windowKeyPressCallback([](int, int) {})
     , m_mouseButtonPressedCallback([](int, int, int) {})
     , m_mousePositionChangedCallback([](double, double) {})
 {

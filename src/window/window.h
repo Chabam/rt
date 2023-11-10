@@ -5,7 +5,7 @@
 class Window
 {
   public:
-    typedef std::function<void(int)> KeyPressCallback;
+    typedef std::function<void(int, int)> KeyPressCallback;
     typedef std::function<void(int, int)> WindowResizeCallback;
     typedef std::function<void(int, int, int)> MouseButtonPressedCallback;
     typedef std::function<void(double, double)> MousePositionChangedCallback;

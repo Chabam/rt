@@ -26,7 +26,7 @@ int main(void)
         }
 
         {
-            auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({0.f, 0.f, 0.75f}, 1.f));
+            auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({0.f, 0.f, 0.75f}, 1.f, 128));
             cube->applyTransformation(glm::translate(glm::vec3(1.f, 0.f, 0.f)));
             scene.addObject(cube);
         }
@@ -38,7 +38,7 @@ int main(void)
                 glm::vec3{ -5.f, -.51f,  5.f },
                 glm::vec3{  5.f, -.51f,  5.f },
                 glm::vec3{  5.f, -.51f, -5.f },
-                shader, Material({0.f, 0.7f, 0.f}, 1.f)
+                shader, Material({0.1f, 0.1f, 0.1f}, 1.f, 32)
             );
             // clang-format on
             scene.addObject(quad);

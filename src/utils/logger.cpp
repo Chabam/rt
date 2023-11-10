@@ -71,20 +71,6 @@ const char* Logger::levelToText(Level level)
     }
 }
 
-Logger&& Logger::operator<<(const char* text)
-{
-    m_stream << text;
-
-    return std::move(*this);
-}
-
-Logger&& Logger::operator<<(const std::ostringstream& stream)
-{
-    m_stream << stream.str();
-
-    return std::move(*this);
-}
-
 void Logger::flush()
 {
     static const char* WHITE = "\033[0m";
