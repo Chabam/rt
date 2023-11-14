@@ -1,13 +1,13 @@
 #pragma once
 #include <glContext/buffer.h>
-#include <glm/mat4x4.hpp>
+#include <glContext/renderable.h>
 #include <memory>
-#include <object/material.h>
 #include <object/light/light.h>
+#include <object/material.h>
 
 class Shader;
 
-class Object3d
+class Object3d : public Renderable
 {
   public:
     Object3d(const std::shared_ptr<Shader>& shader, const Material& material = Material());
@@ -16,9 +16,6 @@ class Object3d
     void applyTransformation(const glm::mat4& trans);
     const Material& getMaterial() const;
     const glm::mat4& getModel() const;
-    void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const glm::vec3 cameraPos, const Light& light) const;
-
-    virtual uint32_t getTriangleCount() const = 0;
 
   protected:
     std::shared_ptr<Shader> m_shader;

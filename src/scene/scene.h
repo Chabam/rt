@@ -1,8 +1,9 @@
 #pragma once
 #include <object/camera/camera.h>
 #include <object/light/light.h>
-#include <object/object3d.h>
+#include <glContext/renderable.h>
 #include <vector>
+#include <memory>
 
 class Scene
 {
@@ -15,15 +16,15 @@ class Scene
 
     void render();
     bool empty();
-    void addObject(const std::shared_ptr<Object3d>& object);
+    void addObject(const std::shared_ptr<Renderable>& object);
     void setLight(const Light& light);
     void setCamera(const Camera& camera);
     Camera& getCamera();
     const Camera& getCamera() const;
-    const std::vector<std::shared_ptr<Object3d>>& getObjects();
+    const std::vector<std::shared_ptr<Renderable>>& getObjects();
 
   private:
-    std::vector<std::shared_ptr<Object3d>> m_objects;
+    std::vector<std::shared_ptr<Renderable>> m_objects;
     Camera m_camera;
     Light m_light;
 };
