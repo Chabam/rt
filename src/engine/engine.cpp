@@ -5,6 +5,7 @@
 #include <functional>
 #include <glad/glad.h>
 #include <ratio>
+#include <thread>
 #include <utils/logger.h>
 
 Engine::Engine()
@@ -67,7 +68,6 @@ void Engine::start()
         const auto afterRender = std::chrono::system_clock::now();
         m_frameTime = std::chrono::duration<double>(afterRender - lastFrame);
         lastFrame = afterRender;
-
 
         glfwPollEvents();
         processInputs();

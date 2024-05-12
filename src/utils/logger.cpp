@@ -1,6 +1,7 @@
 #include "logger.h"
 
 #include <assert.h>
+
 #include <iostream>
 
 Logger::Logger(Level level)
@@ -93,5 +94,8 @@ void Logger::flush()
         break;
     }
 
-    std::cout << color << "[ " << levelToText(m_level) << " ] " << WHITE << m_stream.str() << std::endl;
+    std::ostringstream log{};
+    log << color << "[ " << levelToText(m_level) << " ] " << WHITE << m_stream.str() << std::endl;
+
+    std::cout << log.str();
 }

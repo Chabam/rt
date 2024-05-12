@@ -35,9 +35,8 @@ class Engine
         bool m_rightKeyPressed;
         bool m_upKeyPressed;
         bool m_downKeyPressed;
-    
-    } m_keyboardInfo;
 
+    } m_keyboardInfo;
 
     void handleKeyPress(int keyCode, int action);
     void handleResize(int width, int height);

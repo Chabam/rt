@@ -77,7 +77,7 @@ void Camera::updateFront()
     m_front.y = std::sin(glm::radians(m_pitch));
     m_front.z = std::sin(glm::radians(m_yaw)) * std::cos(glm::radians(m_pitch));
 
-    glm::normalize(m_front);
+    m_front = glm::normalize(m_front);
 }
 
 void Camera::setSpeed(float speed)
