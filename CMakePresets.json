@@ -7,7 +7,7 @@
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/_build",
             "cacheVariables": {
-                "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_TOOLCHAIN_FILE": "./vcpkg/scripts/buildsystems/vcpkg.cmake",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true
             }
         },
@@ -30,25 +30,19 @@
             }
         },
         {
-            "name": "win-x64-clang",
-            "inherits": "win-x64",
-            "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "clang++.exe"
-            }
+            "name": "win-x64",
+            "inherits": "win-x64"
         },
         {
-            "name": "win-x64-clang-vs",
-            "inherits": "win-x64-clang",
-            "generator": "Visual Studio 17 2022",
-            "cacheVariables": {
-                "CMAKE_CXX_COMPILER": "clang++.exe"
-            }
+            "name": "win-x64-vs",
+            "inherits": "win-x64",
+            "generator": "Visual Studio 17 2022"
         }
     ],
     "buildPresets": [
         {
-            "name": "win-x64-clang",
-            "configurePreset": "win-x64-clang"
+            "name": "win-x64",
+            "configurePreset": "win-x64"
         }
     ]
 }
