@@ -15,15 +15,10 @@ Scene::Scene(const Scene& other)
 
 Scene& Scene::operator=(const Scene& other)
 {
-    Scene(other).swap(*this);
+    m_objects = other.m_objects;
+    m_light = other.m_light;
 
     return *this;
-}
-
-void Scene::swap(Scene& other)
-{
-    std::swap(other.m_objects, m_objects);
-    std::swap(other.m_light, m_light);
 }
 
 void Scene::render()

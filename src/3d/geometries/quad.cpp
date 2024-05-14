@@ -17,15 +17,10 @@ Quad::Quad(const Quad& other)
 
 Quad& Quad::operator=(const Quad& other)
 {
-    Quad(other).swap(*this);
+    m_p = other.m_p;
+    m_triangleParts = other.m_triangleParts;
 
     return *this;
-}
-
-void Quad::swap(Quad& other) noexcept
-{
-    std::swap(other.m_p, m_p);
-    std::swap(other.m_triangleParts, m_triangleParts);
 }
 
 Quad::operator std::vector<VerticeBufferData>() const

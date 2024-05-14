@@ -2,14 +2,10 @@
 
 #include <glm/vec3.hpp>
 
-class Material
+struct Material
 {
-  public:
-    Material(const glm::vec3& color = glm::vec3(1.f, 0.f, 0.f), float specular = 0, int shininess = 1);
-    Material(const Material& other);
-    Material& operator=(const Material& other);
-
-    glm::vec3 m_color;
-    float m_specular;
-    unsigned int m_shininess;
+    glm::vec3 m_color = glm::vec3(1.f);
+    float m_specular = 0.f;
+    uint32_t m_shininess = 1;
+    bool m_emitsLight = false;
 };

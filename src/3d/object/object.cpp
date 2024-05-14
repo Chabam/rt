@@ -23,9 +23,9 @@ const glm::mat4& Object3d::getModel() const
     return m_model;
 }
 
-void Object3d::applyTransformation(const glm::mat4& trans)
+void Object3d::setModel(const glm::mat4& trans)
 {
-    m_model = m_model * trans;
+    m_model = trans;
     m_normalMatrix = glm::transpose(glm::inverse(m_model));
 }
 

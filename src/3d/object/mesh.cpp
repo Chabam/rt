@@ -51,6 +51,7 @@ void Mesh::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix
     m_shader->setVectorUniform("color", m_material.m_color);
     m_shader->setFloatUniform("specularStr", m_material.m_specular);
     m_shader->setIntUniform("shininess", m_material.m_shininess);
+    m_shader->setIntUniform("emitsLight", m_material.m_emitsLight);
 
     m_shader->setFloatUniform("ambientStr", light.m_ambient);
     m_shader->setVectorUniform("lightPos", light.m_pos);
