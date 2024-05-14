@@ -1,4 +1,5 @@
-#include "engine.h"
+#include <rt/engine/engine.hpp>
+#include <rt/logger/logger.hpp>
 
 #include <GLFW/glfw3.h>
 #include <chrono>
@@ -6,7 +7,6 @@
 #include <glad/glad.h>
 #include <ratio>
 #include <thread>
-#include <utils/logger.h>
 
 Engine::Engine()
     : m_window(1280, 720, "rt")

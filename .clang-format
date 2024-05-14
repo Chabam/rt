@@ -2,3 +2,9 @@ BasedOnStyle: Microsoft
 Standard: Cpp11
 BreakConstructorInitializers: BeforeComma
 PointerAlignment: Left
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex:           '^<rt/'
+    Priority:        2
+    SortPriority:    2
+    CaseSensitive:   true

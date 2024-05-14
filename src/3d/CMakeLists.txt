@@ -1,0 +1,4 @@
+add_subdirectory(camera)
+add_subdirectory(geometries)
+add_subdirectory(object)
+add_subdirectory(scene)

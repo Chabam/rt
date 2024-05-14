@@ -14,7 +14,6 @@
         {
             "name": "win-x64",
             "inherits": "default",
-            "hidden": true,
             "condition": {
                 "type": "equals",
                 "lhs": "${hostSystemName}",
@@ -28,10 +27,6 @@
                 "value": "host=x64",
                 "strategy": "external"
             }
-        },
-        {
-            "name": "win-x64",
-            "inherits": "win-x64"
         },
         {
             "name": "win-x64-vs",

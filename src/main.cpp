@@ -1,13 +1,13 @@
-#include <engine/engine.h>
+#include <rt/3d/geometries/cube.hpp>
+#include <rt/3d/geometries/quadMesh.hpp>
+#include <rt/engine/engine.hpp>
+#include <rt/graphics/gl/shader.hpp>
+#include <rt/logger/logger.hpp>
+#include <rt/resource_loader/resource_loader.hpp>
 
-import <exception>;
-#include <glContext/shader.h>
+#include <exception>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/mat4x4.hpp>
-#include <object/geometries/cube.h>
-#include <object/geometries/quadMesh.h>
-#include <utils/fileHelper.h>
-#include <utils/logger.h>
 
 int main(void)
 {
@@ -17,8 +17,8 @@ int main(void)
 
         Engine engine;
         std::shared_ptr<Shader> shader =
-            std::make_shared<Shader>(FileHelper::readFromFile("./resources/shaders/blinn-phong.vert").c_str(),
-                                     FileHelper::readFromFile("./resources/shaders/blinn-phong.frag").c_str());
+            std::make_shared<Shader>(ResourceLoader::read_file("./resources/shaders/blinn-phong.vert").c_str(),
+                                     ResourceLoader::read_file("./resources/shaders/blinn-phong.frag").c_str());
         Scene scene;
         {
             auto cube = std::make_shared<Cube>(1, 1, 1, shader, Material({1.f, 0.f, 0.f}));
