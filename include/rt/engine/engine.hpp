@@ -1,9 +1,11 @@
 #pragma once
 
-#include <chrono>
-#include <glad/glad.h>
 #include <rt/3d/scene/scene.hpp>
 #include <rt/graphics/window/window.hpp>
+
+#include <chrono>
+#include <glad/gl.h>
+
 
 class Engine
 {

@@ -9,3 +9,4 @@ _deps/
 CMakeSettings.json
 out/
 _build/
+.vscode/

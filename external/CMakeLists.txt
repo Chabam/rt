@@ -1,0 +1,34 @@
+# add_subdirectory(glad)
+
+include(FetchContent)
+
+FetchContent_Declare(
+  glfw
+  GIT_REPOSITORY https://github.com/glfw/glfw.git
+  GIT_SHALLOW    TRUE
+  GIT_PROGRESS   TRUE
+)
+
+FetchContent_Declare(
+  glm
+  GIT_REPOSITORY https://github.com/g-truc/glm.git
+  GIT_SHALLOW    TRUE
+  GIT_PROGRESS   TRUE
+)
+
+FetchContent_Declare(
+  glad
+  GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+  GIT_TAG        glad2
+  GIT_SHALLOW    TRUE
+  GIT_PROGRESS   TRUE
+)
+
+FetchContent_GetProperties(glad)
+if (NOT glad_POPULATED)
+  FetchContent_Populate(glad)
+  add_subdirectory(${glad_SOURCE_DIR}/cmake ${glad_BINARY_DIR})
+  glad_add_library(glad STATIC REPRODUCIBLE LOADER LANGUAGE C API gl:core=4.6)
+endif()
+
+FetchContent_MakeAvailable(glfw glm glad)

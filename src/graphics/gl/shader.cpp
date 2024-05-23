@@ -3,7 +3,7 @@
 #include <rt/logger/logger.hpp>
 
 #include <filesystem>
-#include <glad/glad.h>
+#include <glad/gl.h>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 

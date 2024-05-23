@@ -1,16 +1,14 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(rt CXX)
+project(rt)
 
-find_package(glad CONFIG REQUIRED)
-find_package(glfw3 CONFIG REQUIRED)
-find_package(glm CONFIG REQUIRED)
+add_subdirectory(external)
 
 add_executable(${CMAKE_PROJECT_NAME})
 
 add_subdirectory(src)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glad::glad glfw glm::glm-header-only)
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glad glfw glm)
 set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
 if (CMAKE_GENERATOR MATCHES "Visual Studio*")

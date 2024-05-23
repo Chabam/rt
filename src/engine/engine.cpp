@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <chrono>
 #include <functional>
-#include <glad/glad.h>
+#include <glad/gl.h>
 #include <ratio>
 #include <thread>
 
@@ -23,7 +23,7 @@ Engine::Engine()
     m_window.setMousePositionChangedCallback(std::bind(&Engine::handleMousePositionChanged, this, _1, _2));
 
     Logger::debug("Init glad");
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
     {
         throw std::runtime_error("Could not initialize glad!");
     }

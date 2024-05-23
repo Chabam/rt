@@ -1,6 +1,6 @@
 #include <rt/graphics/gl/verticeBufferData.hpp>
 
-#include <glad/glad.h>
+#include <glad/gl.h>
 
 VerticeBufferData::operator FloatValues() const
 {

@@ -1,8 +1,10 @@
 #pragma once
-#include <glad/glad.h>
-#include <glm/vec3.hpp>
 #include <rt/graphics/gl/verticeBufferData.hpp>
+
+#include <glad/gl.h>
+#include <glm/vec3.hpp>
 #include <vector>
+
 
 class Buffer
 {
