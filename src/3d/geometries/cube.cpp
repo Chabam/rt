@@ -2,7 +2,7 @@
 
 #include <cassert>
 #include <glm/ext/matrix_transform.hpp>
-
+#include <ranges>
 std::array<Quad, 6> generateDefaultQuads()
 {
     constexpr glm::vec3 p1 = {1.f, 1.f, -1.f};
@@ -24,18 +24,27 @@ std::array<Quad, 6> generateDefaultQuads()
     };
 }
 
-Cube::Cube(float width, float height, float depth, const std::shared_ptr<Shader>& shader, const Material& material,
-           const glm::mat4 model)
+Cube::Cube(float width, float height, float depth, const std::shared_ptr<Shader>& shader, const Material& material)
     : Mesh(shader, material)
     , m_quadParts(generateDefaultQuads())
 {
-    std::vector<Triangle> triangles;
-    triangles.reserve(m_quadParts.size() * 2);
+    setModel(glm::scale(m_model, glm::vec3(width, height, depth)));
+}
+
+uint32_t Cube::getTriangleCount() const
+{
+    return m_quadParts.size() * Quad::TRIANGLE_COUNT;
+}
+
+std::vector<VerticeBufferData> Cube::getVerticeBufferData() const
+{
+    std::vector<VerticeBufferData> data{};
+    data.reserve(m_quadParts.size() * Quad::VERTICE_COUNT);
+
     for (const Quad& quad : m_quadParts)
     {
-        assert(quad.m_triangleParts[0].m_normal == quad.m_triangleParts[1].m_normal && "Normals not set correctly!");
-        triangles.insert(triangles.end(), quad.m_triangleParts.begin(), quad.m_triangleParts.end());
+        std::ranges::move(quad.getVerticeBufferData(), std::back_inserter(data));
     }
-    setTriangles(triangles);
-    m_model = glm::scale(m_model, glm::vec3(width, height, depth));
+
+    return data;
 }

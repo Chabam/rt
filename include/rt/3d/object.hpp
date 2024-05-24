@@ -1,18 +1,16 @@
 #pragma once
 #include <rt/3d/material.hpp>
-#include <rt/graphics/gl/buffer.hpp>
 #include <rt/graphics/gl/renderable.hpp>
 
 #include <memory>
 
-
 class Shader;
-
+class Buffer;
 class Object3d : public Renderable
 {
   public:
     Object3d(const std::shared_ptr<Shader>& shader, const Material& material = Material());
-    ~Object3d();
+    virtual ~Object3d();
 
     void setModel(const glm::mat4& trans);
     const Material& getMaterial() const;
@@ -20,8 +18,8 @@ class Object3d : public Renderable
 
   protected:
     std::shared_ptr<Shader> m_shader;
+    std::unique_ptr<Buffer> m_buffer;
     Material m_material;
     glm::mat4 m_model;
-    std::unique_ptr<Buffer> m_buffer;
     glm::mat3 m_normalMatrix;
 };

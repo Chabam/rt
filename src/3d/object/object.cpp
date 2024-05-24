@@ -7,10 +7,10 @@
 
 Object3d::Object3d(const std::shared_ptr<Shader>& shader, const Material& material)
     : m_shader(shader)
+    , m_buffer()
     , m_material(material)
     , m_model(glm::mat4(1.f))
     , m_normalMatrix(glm::transpose(glm::inverse(m_model)))
-    , m_buffer()
 {
 }
 

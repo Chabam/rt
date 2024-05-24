@@ -3,7 +3,7 @@
 #include <rt/engine/engine.hpp>
 #include <rt/graphics/gl/shader.hpp>
 #include <rt/logger/logger.hpp>
-#include <rt/resource_loader/resource_loader.hpp>
+#include <rt/resourceLoader/resourceLoader.hpp>
 
 #include <exception>
 #include <glm/ext/matrix_transform.hpp>
@@ -21,7 +21,7 @@ int main(void)
                                      ResourceLoader::read_file("./resources/shaders/blinn-phong.frag").c_str());
         Material matRed{.m_color = {1.f, 0.f, 0.f}};
         Material shinyBlue{.m_color = {0.f, 0.f, 0.75f}, .m_specular = 1.f, .m_shininess = 128};
-        Material groundGreen{.m_color = {0.f, 0.75f, 0.f}, .m_specular = 1.f, .m_shininess = 256};
+        Material groundGreen{.m_color = {0.f, 0.75f, 0.f}, .m_specular = 1.f, .m_shininess = 128};
         Material light{.m_emitsLight = true};
 
         Scene scene;
@@ -45,7 +45,7 @@ int main(void)
             scene.addObject(ground);
         }
         {
-            glm::vec3 ligthPosition(0.f, 1.5f, 1.f);
+            glm::vec3 ligthPosition(0.f, 0.2f, 0.5f);
             auto lightIndicator = std::make_shared<Cube>(1, 1, 1, shader, light);
             lightIndicator->setModel(glm::translate(lightIndicator->getModel(), ligthPosition));
             lightIndicator->setModel(glm::scale(lightIndicator->getModel(), glm::vec3(0.1f, 0.1f, 0.1f)));

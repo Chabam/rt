@@ -4,11 +4,14 @@
 
 #include <array>
 
-class Cube : public Mesh
+class Cube final : public Mesh
 {
   public:
     Cube(float width, float height, float depth, const std::shared_ptr<Shader>& shader,
-         const Material& material = Material(), const glm::mat4 model = glm::mat4(1));
+         const Material& material = Material());
+
+    uint32_t getTriangleCount() const override;
+    std::vector<VerticeBufferData> getVerticeBufferData() const override;
 
   private:
     std::array<Quad, 6> m_quadParts;

@@ -1,5 +1,6 @@
 #include <rt/3d/geometries/triangle.hpp>
 #include <rt/3d/mesh.hpp>
+#include <rt/graphics/gl/buffer.hpp>
 #include <rt/graphics/gl/shader.hpp>
 #include <rt/logger/logger.hpp>
 
@@ -7,36 +8,15 @@
 
 Mesh::Mesh(const std::shared_ptr<Shader>& shader, const Material& material)
     : Object3d(shader, material)
-    , m_triangles()
 {
-}
-
-void Mesh::setTriangles(const std::vector<Triangle>& triangles)
-{
-    m_triangles = triangles;
-    std::vector<VerticeBufferData> vertices;
-    vertices.reserve(triangles.size() * std::tuple_size<decltype(Triangle::m_p)>::value);
-
-    for (const Triangle& triangle : m_triangles)
-    {
-        std::vector<VerticeBufferData> triangleVec{triangle};
-        vertices.insert(vertices.end(), triangleVec.begin(), triangleVec.end());
-    }
-
-    m_buffer = std::make_unique<Buffer>(vertices);
-}
-
-uint32_t Mesh::getTriangleCount() const
-{
-    return m_triangles.size();
 }
 
 void Mesh::render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const glm::vec3 cameraPos,
-                  const Light& light) const
+                  const Light& light)
 {
     if (!m_buffer)
     {
-        throw std::runtime_error("Buffer for object not set!");
+        m_buffer = std::make_unique<Buffer>(getVerticeBufferData());
     }
 
     m_shader->use();

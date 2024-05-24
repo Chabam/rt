@@ -1,4 +1,4 @@
-#include <rt/resource_loader/resource_loader.hpp>
+#include <rt/resourceLoader/resourceLoader.hpp>
 
 #include <filesystem>
 #include <fstream>

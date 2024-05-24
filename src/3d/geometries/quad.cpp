@@ -23,11 +23,16 @@ Quad& Quad::operator=(const Quad& other)
     return *this;
 }
 
-Quad::operator std::vector<VerticeBufferData>() const
+std::array<VerticeBufferData, Quad::VERTICE_COUNT> Quad::getVerticeBufferData() const
 {
-    std::vector<VerticeBufferData> result{m_triangleParts[0]};
-    const std::vector<VerticeBufferData> vec2{m_triangleParts[1]};
-    result.insert(result.end(), vec2.begin(), vec2.end());
+    std::array<VerticeBufferData, VERTICE_COUNT> verticeData;
 
-    return result;
+    auto verticeOffset = 0;
+    for (const auto& triangle : m_triangleParts)
+    {
+        std::ranges::move(triangle.getVerticeBufferData(), verticeData.begin() + verticeOffset);
+        verticeOffset += Triangle::VERTICE_COUNT;
+    }
+
+    return verticeData;
 }

@@ -1,5 +1,6 @@
 #include <rt/3d/geometries/triangle.hpp>
 
+#include <algorithm>
 #include <glm/geometric.hpp>
 
 Triangle::Triangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3)
@@ -14,6 +15,12 @@ Triangle::Triangle(const Triangle& other)
 {
 }
 
+Triangle::Triangle(Triangle&& other)
+    : m_p(std::move(other.m_p))
+    , m_normal(std::move(other.m_normal))
+{
+}
+
 Triangle& Triangle::operator=(const Triangle& other)
 {
     m_p = other.m_p;
@@ -21,15 +28,12 @@ Triangle& Triangle::operator=(const Triangle& other)
     return *this;
 }
 
-Triangle::operator std::vector<VerticeBufferData>() const
+std::array<VerticeBufferData, Triangle::VERTICE_COUNT> Triangle::getVerticeBufferData() const
 {
-    std::vector<VerticeBufferData> verticeData;
+    std::array<VerticeBufferData, 3> verticeData;
 
-    verticeData.reserve(std::tuple_size<decltype(m_p)>::value);
-    for (const auto& point : m_p)
-    {
-        verticeData.emplace_back(point, m_normal);
-    }
+    std::ranges::transform(m_p, verticeData.begin(),
+                           [this](const glm::vec3& point) { return VerticeBufferData{point, m_normal}; });
 
     return verticeData;
 }

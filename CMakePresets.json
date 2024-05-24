@@ -28,6 +28,31 @@
             }
         },
         {
+            "name": "linux-x64",
+            "inherits": "default",
+            "hidden": true,
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            },
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            },
+            "toolset": {
+                "value": "host=x64",
+                "strategy": "external"
+            }
+        },
+        {
+            "name": "linux-x64-dbg",
+            "inherits": "linux-x64",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "DEBUG"
+            }
+        },
+        {
             "name": "win-x64-vs",
             "inherits": "win-x64",
             "generator": "Visual Studio 17 2022"
