@@ -1,14 +1,26 @@
 #ifndef RT_MATERIAL_H
 #define RT_MATERIAL_H
 
-#include <glm/vec3.hpp>
+#include <rt/3d/light/light.hpp>
 
-struct Material
+#include <glm/mat4x4.hpp>
+#include <glm/vec3.hpp>
+#include <memory>
+
+class ShaderProgram;
+
+class Material
 {
-    glm::vec3 m_color = glm::vec3(1.f);
-    float m_specular = 0.f;
-    uint32_t m_shininess = 1;
-    bool m_emitsLight = false;
+  public:
+    Material(const std::shared_ptr<ShaderProgram>& shader);
+
+    void forwardUniforms(const glm::mat4& viewMatrix, const glm::mat4& modelMatrix, const glm::mat3& normalMatrix,
+                         const glm::mat4& projectionMatrix, const glm::vec3 cameraPos, const Light& light) const;
+
+  protected:
+    virtual void forwardPropertiesUniforms() const = 0;
+
+    std::shared_ptr<ShaderProgram> m_shader;
 };
 
 #endif // RT_MATERIAL_H

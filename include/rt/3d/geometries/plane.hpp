@@ -7,7 +7,7 @@
 class Plane final : public Mesh
 {
   public:
-    Plane(float width, float height, const std::shared_ptr<Shader>& shader, const Material& material = Material());
+    Plane(float width, float height, const Material& material);
     Plane(const Plane& other);
     Plane& operator=(const Plane& other);
 

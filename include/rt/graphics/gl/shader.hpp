@@ -2,26 +2,33 @@
 #define RT_SHADER_H
 
 #include <glad/gl.h>
-#include <glm/mat4x4.hpp>
-#include <glm/vec4.hpp>
+#include <optional>
+#include <string>
 
 class Shader
 {
   public:
-    Shader(const char* vertSrc, const char* fragSrc);
+    enum class Type
+    {
+        Vertex,
+        Fragment
+    };
+
+    Shader(Type type, const char* source);
     ~Shader();
-    void use() const;
-    void setMatrixUniform(const char* varName, const glm::mat4& matrix);
-    void setMatrixUniform(const char* varName, const glm::mat3& matrix);
-    void setVectorUniform(const char* varName, const glm::vec4& vector);
-    void setVectorUniform(const char* varName, const glm::vec3& vector);
-    void setFloatUniform(const char* varName, float value);
-    void setIntUniform(const char* varName, int value);
+
+    Shader(Shader&&);
+    Shader& operator=(Shader&&);
+
+    Shader(Shader&) = delete;
+    Shader& operator=(Shader&) = delete;
+
+    GLuint getId() const { return m_id; }
+
+    static std::optional<Shader> tryCompile(Type type, const char* source) noexcept;
 
   private:
-    GLuint m_programUid;
-
-    static void compileShaderSource(GLuint& shaderUid, GLenum type, const GLchar* source);
+    GLuint m_id;
 };
 
 #endif // RT_SHADER_H

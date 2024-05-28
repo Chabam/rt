@@ -3,9 +3,8 @@
 
 #include <string>
 
-class ResourceLoader
+struct ResourceLoader
 {
-  public:
     static std::string read_file(const char* path);
 };
 

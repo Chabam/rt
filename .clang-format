@@ -8,3 +8,5 @@ IncludeCategories:
     Priority:        2
     SortPriority:    2
     CaseSensitive:   true
+AllowShortFunctionsOnASingleLine: InlineOnly
+# AllowShortCaseExpressionOnASingleLine: Enabled

@@ -1,3 +1,4 @@
+#include <rt/3d/object.hpp>
 #include <rt/3d/scene/scene.hpp>
 
 Scene::Scene()
@@ -34,7 +35,7 @@ bool Scene::empty()
     return m_objects.empty();
 }
 
-void Scene::addObject(const std::shared_ptr<Renderable>& object)
+void Scene::addObject(const std::shared_ptr<Object3d>& object)
 {
     m_objects.push_back(object);
 }
@@ -59,7 +60,7 @@ const Camera& Scene::getCamera() const
     return m_camera;
 }
 
-const std::vector<std::shared_ptr<Renderable>>& Scene::getObjects()
+const std::vector<std::shared_ptr<Object3d>>& Scene::getObjects()
 {
     return m_objects;
 }

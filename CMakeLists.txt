@@ -17,7 +17,7 @@ if (CMAKE_GENERATOR MATCHES "Visual Studio*")
     source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${RT_SOURCES})
 endif()
 
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include)
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
 
 add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/resources $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/resources

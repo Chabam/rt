@@ -8,11 +8,12 @@
 #include <vector>
 
 class Triangle;
+class Light;
 
 class Mesh : public Object3d
 {
   public:
-    Mesh(const std::shared_ptr<Shader>& shader, const Material& material = Material());
+    Mesh(const Material& material);
 
     virtual uint32_t getTriangleCount() const = 0;
     virtual std::vector<VerticeBufferData> getVerticeBufferData() const = 0;

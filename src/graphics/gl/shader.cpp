@@ -1,5 +1,4 @@
 #include <rt/graphics/gl/shader.hpp>
-#include <rt/graphics/window/window.hpp>
 #include <rt/logger/logger.hpp>
 
 #include <filesystem>
@@ -7,41 +6,52 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
-Shader::Shader(const char* vertSrc, const char* fragSrc)
-    : m_programUid()
+GLenum convertToGlEnum(Shader::Type type)
 {
-    GLuint vertUid;
-    compileShaderSource(vertUid, GL_VERTEX_SHADER, vertSrc);
-    Logger::debug("Vertex shader compiled");
+    switch (type)
+    {
+    case Shader::Type::Fragment:
+        return GL_FRAGMENT_SHADER;
+    case Shader::Type::Vertex:
+        return GL_VERTEX_SHADER;
+    default:
+        throw std::runtime_error("Invalid shader type provided");
+    }
+}
 
-    GLuint fragUid;
-    compileShaderSource(fragUid, GL_FRAGMENT_SHADER, fragSrc);
-    Logger::debug("Fragment shader compiled");
+const char* shaderTypeDisplayName(Shader::Type type)
+{
+    switch (type)
+    {
+    case Shader::Type::Fragment:
+        return "Fragment";
+    case Shader::Type::Vertex:
+        return "Vertex";
+    default:
+        throw std::runtime_error("Invalid shader type provided");
+    }
+}
 
-    m_programUid = glCreateProgram();
+Shader::Shader(Type type, const char* source)
+    : m_id(glCreateShader(convertToGlEnum(type)))
+{
+    glShaderSource(m_id, 1, &source, 0);
+    glCompileShader(m_id);
 
-    glAttachShader(m_programUid, vertUid);
-    glAttachShader(m_programUid, fragUid);
-
-    glLinkProgram(m_programUid);
-
-    GLint isLinked = 0;
-    glGetProgramiv(m_programUid, GL_LINK_STATUS, (int*)&isLinked);
-    if (isLinked == GL_FALSE)
+    GLint isCompiled = 0;
+    glGetShaderiv(m_id, GL_COMPILE_STATUS, &isCompiled);
+    if (isCompiled == GL_FALSE)
     {
         GLint maxLength = 0;
-        glGetProgramiv(m_programUid, GL_INFO_LOG_LENGTH, &maxLength);
+        glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &maxLength);
 
         std::vector<GLchar> infoLog(maxLength);
-        glGetProgramInfoLog(m_programUid, maxLength, &maxLength, &infoLog[0]);
+        glGetShaderInfoLog(m_id, maxLength, &maxLength, &infoLog[0]);
 
-        glDeleteProgram(m_programUid);
-
-        glDeleteShader(vertUid);
-        glDeleteShader(fragUid);
+        glDeleteShader(m_id);
 
         std::ostringstream out;
-        out << "Linking error: ";
+        out << shaderTypeDisplayName(type);
         for (auto& character : infoLog)
         {
             out << character;
@@ -49,84 +59,37 @@ Shader::Shader(const char* vertSrc, const char* fragSrc)
 
         throw std::runtime_error(out.str());
     }
-    Logger::debug("Program linked");
-
-    glDeleteShader(vertUid);
-    glDeleteShader(fragUid);
 }
 
 Shader::~Shader()
 {
-    glDeleteProgram(m_programUid);
+    glDeleteShader(m_id);
 }
 
-void Shader::compileShaderSource(GLuint& shaderUid, GLenum type, const GLchar* source)
+Shader::Shader(Shader&& other)
 {
-    shaderUid = glCreateShader(type);
-    glShaderSource(shaderUid, 1, &source, 0);
-    glCompileShader(shaderUid);
+    m_id = std::move(other.m_id);
+}
 
-    GLint isCompiled = 0;
-    glGetShaderiv(shaderUid, GL_COMPILE_STATUS, &isCompiled);
-    if (isCompiled == GL_FALSE)
+Shader& Shader::operator=(Shader&& other)
+{
+    m_id = std::move(other.m_id);
+
+    return *this;
+}
+
+std::optional<Shader> Shader::tryCompile(Type type, const char* source) noexcept
+{
+    std::optional<Shader> shaderOutput;
+    try
     {
-        GLint maxLength = 0;
-        glGetShaderiv(shaderUid, GL_INFO_LOG_LENGTH, &maxLength);
-
-        std::vector<GLchar> infoLog(maxLength);
-        glGetShaderInfoLog(shaderUid, maxLength, &maxLength, &infoLog[0]);
-
-        glDeleteShader(shaderUid);
-
-        std::ostringstream out;
-        out << (type == GL_FRAGMENT_SHADER ? "Fragment" : "Vertex");
-        out << " shader compilation failed :" << std::endl;
-        for (auto& character : infoLog)
-        {
-            out << character;
-        }
-
-        throw std::runtime_error(out.str());
+        shaderOutput = Shader{type, source};
+        Logger::debug(shaderTypeDisplayName(type)) << " shader compiled with success";
     }
-}
+    catch (const std::exception& e)
+    {
+        std::cerr << "Shader compilation failed:\n" << e.what() << '\n';
+    }
 
-void Shader::use() const
-{
-    glUseProgram(m_programUid);
-}
-
-void Shader::setMatrixUniform(const char* varName, const glm::mat4& matrix)
-{
-    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
-    glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
-}
-
-void Shader::setMatrixUniform(const char* varName, const glm::mat3& matrix)
-{
-    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
-    glUniformMatrix3fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
-}
-
-void Shader::setVectorUniform(const char* varName, const glm::vec4& vector)
-{
-    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
-    glUniform4f(uniformLocation, vector.r, vector.g, vector.b, vector.a);
-}
-
-void Shader::setVectorUniform(const char* varName, const glm::vec3& vector)
-{
-    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
-    glUniform3f(uniformLocation, vector.r, vector.g, vector.b);
-}
-
-void Shader::setFloatUniform(const char* varName, float value)
-{
-    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
-    glUniform1f(uniformLocation, value);
-}
-
-void Shader::setIntUniform(const char* varName, int value)
-{
-    const int uniformLocation = glGetUniformLocation(m_programUid, varName);
-    glUniform1i(uniformLocation, value);
+    return shaderOutput;
 }

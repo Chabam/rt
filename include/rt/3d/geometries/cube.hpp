@@ -9,8 +9,7 @@
 class Cube final : public Mesh
 {
   public:
-    Cube(float width, float height, float depth, const std::shared_ptr<Shader>& shader,
-         const Material& material = Material());
+    Cube(float width, float height, float depth, const Material& material);
 
     uint32_t getTriangleCount() const override;
     std::vector<VerticeBufferData> getVerticeBufferData() const override;

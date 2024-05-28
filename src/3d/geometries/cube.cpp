@@ -24,8 +24,8 @@ std::array<Quad, 6> generateDefaultQuads()
     };
 }
 
-Cube::Cube(float width, float height, float depth, const std::shared_ptr<Shader>& shader, const Material& material)
-    : Mesh(shader, material)
+Cube::Cube(float width, float height, float depth, const Material& material)
+    : Mesh(material)
     , m_quadParts(generateDefaultQuads())
 {
     setModel(glm::scale(m_model, glm::vec3(width, height, depth)));

@@ -1,5 +1,6 @@
 #include <rt/3d/geometries/cube.hpp>
 #include <rt/3d/geometries/plane.hpp>
+#include <rt/3d/materials/blinnPhong.hpp>
 #include <rt/engine/engine.hpp>
 #include <rt/graphics/gl/shader.hpp>
 #include <rt/logger/logger.hpp>
@@ -16,29 +17,26 @@ int main(void)
         Engine::init();
 
         Engine engine;
-        std::shared_ptr<Shader> shader =
-            std::make_shared<Shader>(ResourceLoader::read_file("./resources/shaders/blinn-phong.vert").c_str(),
-                                     ResourceLoader::read_file("./resources/shaders/blinn-phong.frag").c_str());
-        Material matRed{.m_color = {1.f, 0.f, 0.f}};
-        Material shinyBlue{.m_color = {0.f, 0.f, 0.75f}, .m_specular = 1.f, .m_shininess = 128};
-        Material groundGreen{.m_color = {0.f, 0.75f, 0.f}, .m_specular = 1.f, .m_shininess = 128};
-        Material light{.m_emitsLight = true};
+        BlinnPhong matRed{{.m_color = {1.f, 0.f, 0.f}}};
+        BlinnPhong shinyBlue{{.m_color = {0.f, 0.f, 0.75f}, .m_specular = 1.f, .m_shininess = 128}};
+        BlinnPhong groundGreen{{.m_color = {0.f, 0.75f, 0.f}, .m_specular = 1.f, .m_shininess = 128}};
+        BlinnPhong light{{.m_emitsLight = true}};
 
         Scene scene;
         {
-            auto cube = std::make_shared<Cube>(0.5f, 0.5f, 0.5f, shader, matRed);
+            auto cube = std::make_shared<Cube>(0.5f, 0.5f, 0.5f, matRed);
             cube->setModel(glm::translate(cube->getModel(), glm::vec3(-2.f, -1.f, 0.f)));
             scene.addObject(cube);
         }
 
         {
-            auto cube = std::make_shared<Cube>(1, 1, 1, shader, shinyBlue);
+            auto cube = std::make_shared<Cube>(1, 1, 1, shinyBlue);
             cube->setModel(glm::translate(cube->getModel(), glm::vec3(2.f, 0.f, 0.f)));
             scene.addObject(cube);
         }
 
         {
-            auto ground = std::make_shared<Plane>(1, 1, shader, groundGreen);
+            auto ground = std::make_shared<Plane>(1, 1, groundGreen);
             ground->setModel(glm::translate(ground->getModel(), glm::vec3(0.f, -1.01f, 0.f)));
             ground->setModel(glm::rotate(ground->getModel(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
             ground->setModel(glm::scale(ground->getModel(), glm::vec3(5.f, 5.f, 5.f)));
@@ -46,7 +44,7 @@ int main(void)
         }
         {
             glm::vec3 ligthPosition(0.f, 0.2f, 0.5f);
-            auto lightIndicator = std::make_shared<Cube>(1, 1, 1, shader, light);
+            auto lightIndicator = std::make_shared<Cube>(1, 1, 1, light);
             lightIndicator->setModel(glm::translate(lightIndicator->getModel(), ligthPosition));
             lightIndicator->setModel(glm::scale(lightIndicator->getModel(), glm::vec3(0.1f, 0.1f, 0.1f)));
             scene.addObject(lightIndicator);
