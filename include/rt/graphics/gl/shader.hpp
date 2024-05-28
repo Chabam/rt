@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_SHADER_H
+#define RT_SHADER_H
+
 #include <glad/gl.h>
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
@@ -21,3 +23,5 @@ class Shader
 
     static void compileShaderSource(GLuint& shaderUid, GLenum type, const GLchar* source);
 };
+
+#endif // RT_SHADER_H

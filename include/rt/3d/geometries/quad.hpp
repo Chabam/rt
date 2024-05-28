@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_QUAD_H
+#define RT_QUAD_H
+
 #include <rt/3d/geometries/triangle.hpp>
 
 #include <array>
@@ -17,3 +19,5 @@ class Quad
     std::array<glm::vec3, 4> m_p;
     std::array<Triangle, TRIANGLE_COUNT> m_triangleParts;
 };
+
+#endif // RT_QUAD_H

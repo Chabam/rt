@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_OBJECT_H
+#define RT_OBJECT_H
+
 #include <rt/3d/material.hpp>
 #include <rt/graphics/gl/renderable.hpp>
 
@@ -23,3 +25,5 @@ class Object3d : public Renderable
     glm::mat4 m_model;
     glm::mat3 m_normalMatrix;
 };
+
+#endif // RT_OBJECT_H

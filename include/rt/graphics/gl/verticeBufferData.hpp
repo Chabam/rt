@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_VERTICE_BUFFER_DATA_H
+#define RT_VERTICE_BUFFER_DATA_H
+
 #include <array>
 #include <glad/gl.h>
 #include <glm/vec3.hpp>
@@ -11,3 +13,5 @@ struct VerticeBufferData
     using FloatValues = std::array<GLfloat, decltype(m_position)::length() + decltype(m_normal)::length()>;
     operator FloatValues() const;
 };
+
+#endif // RT_VERTICE_BUFFER_DATA_H

@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_TRIANGLE_H
+#define RT_TRIANGLE_H
+
 #include <rt/graphics/gl/verticeBufferData.hpp>
 
 #include <array>
@@ -19,3 +21,5 @@ class Triangle
 
     std::array<VerticeBufferData, VERTICE_COUNT> getVerticeBufferData() const;
 };
+
+#endif // RT_TRIANGLE_H

@@ -1,11 +1,11 @@
-#pragma once
+#ifndef RT_ENGINE_H
+#define RT_ENGINE_H
 
 #include <rt/3d/scene/scene.hpp>
 #include <rt/graphics/window/window.hpp>
 
 #include <chrono>
 #include <glad/gl.h>
-
 
 class Engine
 {
@@ -50,3 +50,5 @@ class Engine
     static void handleGlError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                               const GLchar* message, const void* userParam);
 };
+
+#endif // RT_ENGINE_H

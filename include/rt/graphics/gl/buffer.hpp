@@ -1,10 +1,11 @@
-#pragma once
+#ifndef RT_BUFFER_H
+#define RT_BUFFER_H
+
 #include <rt/graphics/gl/verticeBufferData.hpp>
 
 #include <glad/gl.h>
 #include <glm/vec3.hpp>
 #include <vector>
-
 
 class Buffer
 {
@@ -21,3 +22,5 @@ class Buffer
 
     void generateGlBuffers();
 };
+
+#endif // RT_BUFFER_H

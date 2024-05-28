@@ -1,11 +1,12 @@
-#pragma once
+#ifndef RT_SCENE_H
+#define RT_SCENE_H
+
 #include <rt/3d/camera/camera.hpp>
 #include <rt/3d/light/light.hpp>
 #include <rt/graphics/gl/renderable.hpp>
 
 #include <memory>
 #include <vector>
-
 
 class Scene
 {
@@ -28,3 +29,5 @@ class Scene
     Camera m_camera;
     Light m_light;
 };
+
+#endif // RT_SCENE_H

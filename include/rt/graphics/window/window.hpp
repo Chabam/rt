@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_WINDOW_H
+#define RT_WINDOW_H
+
 #include <functional>
 #include <memory>
 
@@ -37,3 +39,5 @@ class Window
     MouseButtonPressedCallback m_mouseButtonPressedCallback;
     MousePositionChangedCallback m_mousePositionChangedCallback;
 };
+
+#endif // RT_WINDOW_H

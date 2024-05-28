@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_MESH_H
+#define RT_MESH_H
+
 #include <rt/3d/object.hpp>
 
 #include <glm/glm.hpp>
@@ -18,3 +20,5 @@ class Mesh : public Object3d
     void render(const glm::mat4& viewMatrix, const glm::mat4& projectionMatrix, const glm::vec3 cameraPos,
                 const Light& light);
 };
+
+#endif // RT_MESH_H

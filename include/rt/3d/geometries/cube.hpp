@@ -1,4 +1,6 @@
-#pragma once
+#ifndef RT_CUBE_H
+#define RT_CUBE_H
+
 #include <rt/3d/geometries/quad.hpp>
 #include <rt/3d/mesh.hpp>
 
@@ -16,3 +18,5 @@ class Cube final : public Mesh
   private:
     std::array<Quad, 6> m_quadParts;
 };
+
+#endif // RT_CUBE_H

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RT_MATERIAL_H
+#define RT_MATERIAL_H
 
 #include <glm/vec3.hpp>
 
@@ -9,3 +10,5 @@ struct Material
     uint32_t m_shininess = 1;
     bool m_emitsLight = false;
 };
+
+#endif // RT_MATERIAL_H
