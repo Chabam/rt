@@ -12,7 +12,6 @@ class Plane final : public Mesh
     Plane& operator=(const Plane& other);
 
     uint32_t getTriangleCount() const override;
-    std::vector<VerticeBufferData> getVerticeBufferData() const override;
 
   private:
     Quad m_quad;

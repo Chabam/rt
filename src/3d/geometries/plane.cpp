@@ -1,4 +1,5 @@
 #include <rt/3d/geometries/plane.hpp>
+#include <rt/graphics/gl/buffer.hpp>
 
 #include <algorithm>
 #include <glm/ext/matrix_transform.hpp>
@@ -13,6 +14,8 @@ Plane::Plane(float width, float height, const Material& material)
     , m_quad(p1, p2, p3, p4)
 {
     m_model *= glm::scale(m_model, glm::vec3(width, height, 1.f));
+
+    m_buffer = std::make_unique<Buffer>(m_quad.getVerticeBufferData());
 }
 
 Plane::Plane(const Plane& other)
@@ -31,10 +34,4 @@ Plane& Plane::operator=(const Plane& other)
 uint32_t Plane::getTriangleCount() const
 {
     return Quad::TRIANGLE_COUNT;
-}
-
-std::vector<VerticeBufferData> Plane::getVerticeBufferData() const
-{
-    const auto& temp = m_quad.getVerticeBufferData();
-    return {temp.cbegin(), temp.cend()};
 }

@@ -1,22 +1,23 @@
-#include <rt/3d/object.hpp>
+#include <rt/3d/mesh.hpp>
 #include <rt/3d/scene/scene.hpp>
 
+
 Scene::Scene()
-    : m_objects()
+    : m_meshes()
     , m_light()
     , m_camera()
 {
 }
 
 Scene::Scene(const Scene& other)
-    : m_objects(other.m_objects)
+    : m_meshes(other.m_meshes)
     , m_light(other.m_light)
 {
 }
 
 Scene& Scene::operator=(const Scene& other)
 {
-    m_objects = other.m_objects;
+    m_meshes = other.m_meshes;
     m_light = other.m_light;
 
     return *this;
@@ -24,20 +25,20 @@ Scene& Scene::operator=(const Scene& other)
 
 void Scene::render()
 {
-    for (const auto& object : m_objects)
+    for (const auto& mesh : m_meshes)
     {
-        object->render(m_camera.getViewMatrix(), m_camera.getProjectionMatrix(), m_camera.getPosition(), m_light);
+        mesh->render(m_camera, m_light);
     }
 }
 
 bool Scene::empty()
 {
-    return m_objects.empty();
+    return m_meshes.empty();
 }
 
-void Scene::addObject(const std::shared_ptr<Object3d>& object)
+void Scene::addMesh(const std::shared_ptr<Mesh>& mesh)
 {
-    m_objects.push_back(object);
+    m_meshes.push_back(mesh);
 }
 
 void Scene::setLight(const Light& light)
@@ -60,7 +61,7 @@ const Camera& Scene::getCamera() const
     return m_camera;
 }
 
-const std::vector<std::shared_ptr<Object3d>>& Scene::getObjects()
+const std::vector<std::shared_ptr<Mesh>>& Scene::getMeshes()
 {
-    return m_objects;
+    return m_meshes;
 }

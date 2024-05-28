@@ -5,12 +5,12 @@
 
 #include <glad/gl.h>
 #include <glm/vec3.hpp>
-#include <vector>
+#include <span>
 
 class Buffer
 {
   public:
-    Buffer(const std::vector<VerticeBufferData>& vertices);
+    Buffer(std::span<const VerticeBufferData> vertices);
     ~Buffer();
 
     void bind() const;
@@ -18,9 +18,7 @@ class Buffer
   private:
     GLuint m_VAO;
     GLuint m_VBO;
-    std::vector<VerticeBufferData> m_data;
-
-    void generateGlBuffers();
+    std::vector<GLfloat> m_data;
 };
 
 #endif // RT_BUFFER_H

@@ -1,8 +1,12 @@
 #include <rt/3d/geometries/cube.hpp>
+#include <rt/graphics/gl/buffer.hpp>
 
+#include <algorithm>
 #include <cassert>
 #include <glm/ext/matrix_transform.hpp>
-#include <ranges>
+#include <iterator>
+
+
 std::array<Quad, 6> generateDefaultQuads()
 {
     constexpr glm::vec3 p1 = {1.f, 1.f, -1.f};
@@ -29,22 +33,20 @@ Cube::Cube(float width, float height, float depth, const Material& material)
     , m_quadParts(generateDefaultQuads())
 {
     setModel(glm::scale(m_model, glm::vec3(width, height, depth)));
+
+    std::array<VerticeBufferData, std::tuple_size<decltype(m_quadParts)>::value * Quad::VERTICE_COUNT> data;
+
+    auto verticeOffset = 0;
+    for (const Quad& quad : m_quadParts)
+    {
+        std::ranges::move(quad.getVerticeBufferData(), data.begin() + verticeOffset);
+        verticeOffset += Quad::VERTICE_COUNT;
+    }
+
+    m_buffer = std::make_unique<Buffer>(data);
 }
 
 uint32_t Cube::getTriangleCount() const
 {
     return m_quadParts.size() * Quad::TRIANGLE_COUNT;
-}
-
-std::vector<VerticeBufferData> Cube::getVerticeBufferData() const
-{
-    std::vector<VerticeBufferData> data{};
-    data.reserve(m_quadParts.size() * Quad::VERTICE_COUNT);
-
-    for (const Quad& quad : m_quadParts)
-    {
-        std::ranges::move(quad.getVerticeBufferData(), std::back_inserter(data));
-    }
-
-    return data;
 }

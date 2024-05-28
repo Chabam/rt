@@ -4,21 +4,10 @@
 #include <algorithm>
 #include <array>
 
-Buffer::Buffer(const std::vector<VerticeBufferData>& vertices)
+Buffer::Buffer(std::span<const VerticeBufferData> vertices)
     : m_VAO()
     , m_VBO()
-    , m_data(vertices)
-{
-    generateGlBuffers();
-}
-
-Buffer::~Buffer()
-{
-    glDeleteBuffers(1, &m_VBO);
-    glDeleteVertexArrays(1, &m_VAO);
-}
-
-void Buffer::generateGlBuffers()
+    , m_data()
 {
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
@@ -28,20 +17,20 @@ void Buffer::generateGlBuffers()
     constexpr auto VERTICE_DATA_SIZE = POSITION_SIZE + NORMAL_SIZE;
     constexpr auto VERTICE_POINTER_SIZE = VERTICE_DATA_SIZE * sizeof(GLfloat);
 
-    const auto VERTICES_COUNT = m_data.size();
+    const auto VERTICES_COUNT = vertices.size();
     const auto TOTAL_DATA_SIZE = VERTICES_COUNT * VERTICE_DATA_SIZE * sizeof(GLfloat);
     const auto START_COORD = (void*)0;
     const auto START_NORMAL = (void*)(3 * sizeof(float));
 
-    std::vector<GLfloat> data;
-    for (const auto& verticeData : m_data)
+    m_data.reserve(vertices.size());
+    for (const auto& verticeData : vertices)
     {
         VerticeBufferData::FloatValues floatValues(verticeData);
-        data.insert(data.end(), floatValues.begin(), floatValues.end());
+        m_data.insert(m_data.end(), floatValues.begin(), floatValues.end());
     }
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, TOTAL_DATA_SIZE, data.data(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, TOTAL_DATA_SIZE, m_data.data(), GL_STATIC_DRAW);
 
     glBindVertexArray(m_VAO);
 
@@ -52,6 +41,12 @@ void Buffer::generateGlBuffers()
     // Normal
     glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, VERTICE_POINTER_SIZE, START_NORMAL);
     glEnableVertexAttribArray(1);
+}
+
+Buffer::~Buffer()
+{
+    glDeleteBuffers(1, &m_VBO);
+    glDeleteVertexArrays(1, &m_VAO);
 }
 
 void Buffer::bind() const

@@ -12,7 +12,6 @@ class Cube final : public Mesh
     Cube(float width, float height, float depth, const Material& material);
 
     uint32_t getTriangleCount() const override;
-    std::vector<VerticeBufferData> getVerticeBufferData() const override;
 
   private:
     std::array<Quad, 6> m_quadParts;

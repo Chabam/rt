@@ -26,13 +26,13 @@ int main(void)
         {
             auto cube = std::make_shared<Cube>(0.5f, 0.5f, 0.5f, matRed);
             cube->setModel(glm::translate(cube->getModel(), glm::vec3(-2.f, -1.f, 0.f)));
-            scene.addObject(cube);
+            scene.addMesh(cube);
         }
 
         {
             auto cube = std::make_shared<Cube>(1, 1, 1, shinyBlue);
             cube->setModel(glm::translate(cube->getModel(), glm::vec3(2.f, 0.f, 0.f)));
-            scene.addObject(cube);
+            scene.addMesh(cube);
         }
 
         {
@@ -40,14 +40,14 @@ int main(void)
             ground->setModel(glm::translate(ground->getModel(), glm::vec3(0.f, -1.01f, 0.f)));
             ground->setModel(glm::rotate(ground->getModel(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
             ground->setModel(glm::scale(ground->getModel(), glm::vec3(5.f, 5.f, 5.f)));
-            scene.addObject(ground);
+            scene.addMesh(ground);
         }
         {
             glm::vec3 ligthPosition(0.f, 0.2f, 0.5f);
             auto lightIndicator = std::make_shared<Cube>(1, 1, 1, light);
             lightIndicator->setModel(glm::translate(lightIndicator->getModel(), ligthPosition));
             lightIndicator->setModel(glm::scale(lightIndicator->getModel(), glm::vec3(0.1f, 0.1f, 0.1f)));
-            scene.addObject(lightIndicator);
+            scene.addMesh(lightIndicator);
 
             scene.setLight({.m_ambient = 0.1f, .m_pos = ligthPosition, .m_color = glm::vec3(1.f, 1.f, 1.f)});
         }

@@ -76,7 +76,8 @@ void Engine::start()
         const auto maxTimePerFrame = std::chrono::seconds(1) / m_fps;
         const auto timeUntilNextFrame = afterRender + (maxTimePerFrame - elapsed);
 
-        Logger::debug("Frame took: ") << std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(elapsed);
+        // Logger::debug("Frame took: ") << std::chrono::duration_cast<std::chrono::duration<double,
+        // std::milli>>(elapsed);
 
         std::this_thread::sleep_until(timeUntilNextFrame);
     }

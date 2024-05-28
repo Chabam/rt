@@ -7,7 +7,7 @@
 #include <memory>
 #include <vector>
 
-class Object3d;
+class Mesh;
 
 class Scene
 {
@@ -18,15 +18,15 @@ class Scene
 
     void render();
     bool empty();
-    void addObject(const std::shared_ptr<Object3d>& object);
+    void addMesh(const std::shared_ptr<Mesh>& mesh);
     void setLight(const Light& light);
     void setCamera(const Camera& camera);
     Camera& getCamera();
     const Camera& getCamera() const;
-    const std::vector<std::shared_ptr<Object3d>>& getObjects();
+    const std::vector<std::shared_ptr<Mesh>>& getMeshes();
 
   private:
-    std::vector<std::shared_ptr<Object3d>> m_objects;
+    std::vector<std::shared_ptr<Mesh>> m_meshes;
     Camera m_camera;
     Light m_light;
 };
