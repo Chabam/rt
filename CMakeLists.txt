@@ -13,6 +13,11 @@ set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
 
-add_custom_command(TARGET ${CMAKE_PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/resources $<TARGET_FILE_DIR:${CMAKE_PROJECT_NAME}>/resources
-)
+if (UNIX)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources)
+else()
+    # Windows is a good software
+    file(TO_NATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/resources RES_SRC)
+    file(TO_NATIVE_PATH ${CMAKE_BINARY_DIR}/resources RES_DEST)
+    execute_process(COMMAND cmd.exe /c mklink /j ${RES_DEST} ${RES_SRC})
+endif()
