@@ -15,7 +15,7 @@ Plane::Plane(float width, float height, const Material& material)
 {
     m_model *= glm::scale(m_model, glm::vec3(width, height, 1.f));
 
-    m_buffer = std::make_unique<Buffer>(m_quad.getVerticeBufferData());
+    m_buffer = std::make_unique<Buffer>(m_quad.getVertices());
 }
 
 Plane::Plane(const Plane& other)

@@ -1,7 +1,7 @@
 #ifndef RT_BUFFER_H
 #define RT_BUFFER_H
 
-#include <rt/graphics/gl/verticeBufferData.hpp>
+#include <rt/graphics/gl/vertex.hpp>
 
 #include <glad/gl.h>
 #include <glm/vec3.hpp>
@@ -10,7 +10,7 @@
 class Buffer
 {
   public:
-    Buffer(std::span<const VerticeBufferData> vertices);
+    Buffer(const std::span<const Vertex>& vertices);
     ~Buffer();
 
     void bind() const;
@@ -18,7 +18,7 @@ class Buffer
   private:
     GLuint m_VAO;
     GLuint m_VBO;
-    std::vector<GLfloat> m_data;
+    std::span<const Vertex> m_data;
 };
 
 #endif // RT_BUFFER_H

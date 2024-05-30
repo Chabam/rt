@@ -23,14 +23,14 @@ Quad& Quad::operator=(const Quad& other)
     return *this;
 }
 
-std::array<VerticeBufferData, Quad::VERTICE_COUNT> Quad::getVerticeBufferData() const
+std::array<Vertex, Quad::VERTICE_COUNT> Quad::getVertices() const
 {
-    std::array<VerticeBufferData, VERTICE_COUNT> verticeData;
+    std::array<Vertex, VERTICE_COUNT> verticeData;
 
     auto verticeOffset = 0;
     for (const auto& triangle : m_triangleParts)
     {
-        std::ranges::move(triangle.getVerticeBufferData(), verticeData.begin() + verticeOffset);
+        std::ranges::move(triangle.getVertices(), verticeData.begin() + verticeOffset);
         verticeOffset += Triangle::VERTICE_COUNT;
     }
 

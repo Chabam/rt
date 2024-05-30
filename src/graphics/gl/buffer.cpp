@@ -3,44 +3,27 @@
 
 #include <algorithm>
 #include <array>
+#include <cstddef>
 
-Buffer::Buffer(std::span<const VerticeBufferData> vertices)
+Buffer::Buffer(const std::span<const Vertex>& vertices)
     : m_VAO()
     , m_VBO()
-    , m_data()
+    , m_data(vertices)
 {
-    glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
+    glCreateBuffers(1, &m_VBO);
+    glNamedBufferStorage(m_VBO, sizeof(Vertex) * m_data.size(), m_data.data(), GL_DYNAMIC_STORAGE_BIT);
 
-    constexpr auto POSITION_SIZE = decltype(VerticeBufferData::m_position)::length();
-    constexpr auto NORMAL_SIZE = decltype(VerticeBufferData::m_normal)::length();
-    constexpr auto VERTICE_DATA_SIZE = POSITION_SIZE + NORMAL_SIZE;
-    constexpr auto VERTICE_POINTER_SIZE = VERTICE_DATA_SIZE * sizeof(GLfloat);
+    glCreateVertexArrays(1, &m_VAO);
 
-    const auto VERTICES_COUNT = vertices.size();
-    const auto TOTAL_DATA_SIZE = VERTICES_COUNT * VERTICE_DATA_SIZE * sizeof(GLfloat);
-    const auto START_COORD = (void*)0;
-    const auto START_NORMAL = (void*)(3 * sizeof(float));
+    glVertexArrayVertexBuffer(m_VAO, 0, m_VBO, 0, sizeof(Vertex));
 
-    m_data.reserve(vertices.size());
-    for (const auto& verticeData : vertices)
+    for (const VertexAttributeDescription& verticesAttribute : Vertex::getAttributesDescription())
     {
-        VerticeBufferData::FloatValues floatValues(verticeData);
-        m_data.insert(m_data.end(), floatValues.begin(), floatValues.end());
+        glEnableVertexArrayAttrib(m_VAO, verticesAttribute.m_location);
+        glVertexArrayAttribFormat(m_VAO, verticesAttribute.m_location, verticesAttribute.m_count,
+                                  verticesAttribute.m_type, GL_FALSE, verticesAttribute.m_offset);
+        glVertexArrayAttribBinding(m_VAO, verticesAttribute.m_location, 0);
     }
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, TOTAL_DATA_SIZE, m_data.data(), GL_STATIC_DRAW);
-
-    glBindVertexArray(m_VAO);
-
-    // Position
-    glVertexAttribPointer(0, POSITION_SIZE, GL_FLOAT, GL_FALSE, VERTICE_POINTER_SIZE, START_COORD);
-    glEnableVertexAttribArray(0);
-
-    // Normal
-    glVertexAttribPointer(1, NORMAL_SIZE, GL_FLOAT, GL_FALSE, VERTICE_POINTER_SIZE, START_NORMAL);
-    glEnableVertexAttribArray(1);
 }
 
 Buffer::~Buffer()

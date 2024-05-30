@@ -6,7 +6,6 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <iterator>
 
-
 std::array<Quad, 6> generateDefaultQuads()
 {
     constexpr glm::vec3 p1 = {1.f, 1.f, -1.f};
@@ -34,12 +33,12 @@ Cube::Cube(float width, float height, float depth, const Material& material)
 {
     setModel(glm::scale(m_model, glm::vec3(width, height, depth)));
 
-    std::array<VerticeBufferData, std::tuple_size<decltype(m_quadParts)>::value * Quad::VERTICE_COUNT> data;
+    std::array<Vertex, std::tuple_size<decltype(m_quadParts)>::value * Quad::VERTICE_COUNT> data;
 
     auto verticeOffset = 0;
     for (const Quad& quad : m_quadParts)
     {
-        std::ranges::move(quad.getVerticeBufferData(), data.begin() + verticeOffset);
+        std::ranges::move(quad.getVertices(), data.begin() + verticeOffset);
         verticeOffset += Quad::VERTICE_COUNT;
     }
 

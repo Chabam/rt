@@ -1,7 +1,7 @@
 #ifndef RT_MESH_H
 #define RT_MESH_H
 
-#include <rt/graphics/gl/verticeBufferData.hpp>
+#include <rt/graphics/gl/vertex.hpp>
 
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>

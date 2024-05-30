@@ -28,12 +28,11 @@ Triangle& Triangle::operator=(const Triangle& other)
     return *this;
 }
 
-std::array<VerticeBufferData, Triangle::VERTICE_COUNT> Triangle::getVerticeBufferData() const
+std::array<Vertex, Triangle::VERTICE_COUNT> Triangle::getVertices() const
 {
-    std::array<VerticeBufferData, 3> verticeData;
+    std::array<Vertex, 3> vertices;
 
-    std::ranges::transform(m_p, verticeData.begin(),
-                           [this](const glm::vec3& point) { return VerticeBufferData{point, m_normal}; });
+    std::ranges::transform(m_p, vertices.begin(), [this](const glm::vec3& point) { return Vertex{point, m_normal}; });
 
-    return verticeData;
+    return vertices;
 }

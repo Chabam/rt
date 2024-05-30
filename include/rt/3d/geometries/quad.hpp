@@ -14,7 +14,7 @@ class Quad
     Quad(const Quad& other);
     Quad& operator=(const Quad& other);
 
-    std::array<VerticeBufferData, VERTICE_COUNT> getVerticeBufferData() const;
+    std::array<Vertex, VERTICE_COUNT> getVertices() const;
 
     std::array<glm::vec3, 4> m_p;
     std::array<Triangle, TRIANGLE_COUNT> m_triangleParts;

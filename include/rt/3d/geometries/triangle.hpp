@@ -1,7 +1,7 @@
 #ifndef RT_TRIANGLE_H
 #define RT_TRIANGLE_H
 
-#include <rt/graphics/gl/verticeBufferData.hpp>
+#include <rt/graphics/gl/vertex.hpp>
 
 #include <array>
 #include <glm/vec3.hpp>
@@ -19,7 +19,7 @@ class Triangle
     std::array<glm::vec3, 3> m_p;
     glm::vec3 m_normal;
 
-    std::array<VerticeBufferData, VERTICE_COUNT> getVerticeBufferData() const;
+    std::array<Vertex, VERTICE_COUNT> getVertices() const;
 };
 
 #endif // RT_TRIANGLE_H
