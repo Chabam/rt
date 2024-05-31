@@ -143,22 +143,22 @@ unsigned int Window::get_height() const
     return m_height;
 }
 
-void Window::set_resize_callback(WindowResizeCallback cb)
+void Window::set_resize_callback(const WindowResizeCallback& cb)
 {
     m_window_resize_callback = cb;
 }
 
-void Window::set_key_press_callback(KeyPressCallback cb)
+void Window::set_key_press_callback(const KeyPressCallback& cb)
 {
     m_window_key_press_callback = cb;
 }
 
-void Window::set_mouse_pos_changed_callaback(MousePositionChangedCallback cb)
+void Window::set_mouse_pos_changed_callaback(const MousePositionChangedCallback& cb)
 {
     m_mouse_position_changed_callback = cb;
 }
 
-void Window::set_mose_button_pressed_callback(MouseButtonPressedCallback cb)
+void Window::set_mose_button_pressed_callback(const MouseButtonPressedCallback& cb)
 {
     m_mouse_button_pressed_callback = cb;
 }

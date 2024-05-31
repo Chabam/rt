@@ -1,8 +1,5 @@
 #include <rt/utils/logger.hpp>
 
-#include <exception>
-#include <iostream>
-
 const char* Logger::level_to_text(Level level)
 {
     switch (level)

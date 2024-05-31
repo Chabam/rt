@@ -21,10 +21,10 @@ class Window
     void set_size(int width, int height);
     unsigned int get_width() const;
     unsigned int get_height() const;
-    void set_resize_callback(WindowResizeCallback cb);
-    void set_key_press_callback(KeyPressCallback cb);
-    void set_mose_button_pressed_callback(MouseButtonPressedCallback cb);
-    void set_mouse_pos_changed_callaback(MousePositionChangedCallback cb);
+    void set_resize_callback(const WindowResizeCallback& cb);
+    void set_key_press_callback(const KeyPressCallback& cb);
+    void set_mose_button_pressed_callback(const MouseButtonPressedCallback& cb);
+    void set_mouse_pos_changed_callaback(const MousePositionChangedCallback& cb);
     void swap_buffers();
 
   private:
