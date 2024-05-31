@@ -12,7 +12,7 @@
 Engine::Engine()
     : m_window(1280, 720, "rt")
     , m_scene()
-    , m_target_fps(60)
+    , m_target_fps(-1)
     , m_frame_count()
     , m_frame_time()
     , m_mouse_info()
@@ -89,7 +89,10 @@ void Engine::start()
         const auto max_time_per_frame = std::chrono::nanoseconds(1s) / m_target_fps;
         const auto time_until_next_frame = after_render + (max_time_per_frame - elapsed);
 
-        std::this_thread::sleep_until(time_until_next_frame);
+        if (std::chrono::system_clock::now() < time_until_next_frame)
+        {
+            std::this_thread::sleep_until(time_until_next_frame);
+        }
     }
 }
 

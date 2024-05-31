@@ -30,6 +30,8 @@ Mesh& Mesh::operator=(const Mesh& other)
     m_material = other.m_material;
     m_model = other.m_model;
     m_normal_matrix = other.m_normal_matrix;
+
+    return *this;
 }
 
 Mesh::~Mesh()
