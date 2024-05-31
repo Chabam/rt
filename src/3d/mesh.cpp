@@ -8,12 +8,28 @@
 
 #include <algorithm>
 
-Mesh::Mesh(const Material& material)
+Mesh::Mesh(const std::shared_ptr<Material>& material)
     : m_buffer()
     , m_material(material)
     , m_model(glm::mat4(1.f))
     , m_normal_matrix(glm::transpose(glm::inverse(m_model)))
 {
+}
+
+Mesh::Mesh(const Mesh& other)
+    : m_buffer(std::make_unique<Buffer>(other.m_buffer->get_data()))
+    , m_material(other.m_material)
+    , m_model(other.m_model)
+    , m_normal_matrix(other.m_normal_matrix)
+{
+}
+
+Mesh& Mesh::operator=(const Mesh& other)
+{
+    m_buffer = std::make_unique<Buffer>(other.m_buffer->get_data());
+    m_material = other.m_material;
+    m_model = other.m_model;
+    m_normal_matrix = other.m_normal_matrix;
 }
 
 Mesh::~Mesh()
@@ -38,8 +54,8 @@ void Mesh::render(const Camera& camera, const Light& light) const
         throw std::logic_error("Buffer is not generated!");
     }
 
-    m_material.forward_uniforms(camera.get_view(), m_model, m_normal_matrix, camera.get_projection(),
-                                camera.get_position(), light);
+    m_material->forward_uniforms(camera.get_view(), m_model, m_normal_matrix, camera.get_projection(),
+                                 camera.get_position(), light);
 
     m_buffer->bind();
     glDrawArrays(GL_TRIANGLES, 0, get_triangle_count() * Triangle::VERTEX_COUNT);

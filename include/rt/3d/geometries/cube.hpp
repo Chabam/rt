@@ -10,7 +10,7 @@
 class Cube final : public Mesh
 {
   public:
-    Cube(float width, float height, float depth, const Material& material);
+    Cube(float width, float height, float depth, const std::shared_ptr<Material>& material);
 
     uint32_t get_triangle_count() const override;
 

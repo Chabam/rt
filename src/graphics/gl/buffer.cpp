@@ -8,8 +8,10 @@
 Buffer::Buffer(const std::span<const Vertex>& vertices)
     : m_vao()
     , m_vbo()
-    , m_data(vertices)
+    , m_data()
 {
+    m_data.assign(vertices.begin(), vertices.end());
+
     glCreateBuffers(1, &m_vbo);
     glNamedBufferStorage(m_vbo, sizeof(Vertex) * m_data.size(), m_data.data(), GL_DYNAMIC_STORAGE_BIT);
 

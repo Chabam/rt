@@ -24,32 +24,32 @@ int main(void)
 
         Scene scene;
         {
-            auto cube = std::make_shared<Cube>(0.5f, 0.5f, 0.5f, matRed);
-            cube->set_model(glm::translate(cube->get_model(), glm::vec3(-2.f, -1.f, 0.f)));
-            scene.addMesh(cube);
+            Cube cube{0.5f, 0.5f, 0.5f, std::make_shared<BlinnPhong>(matRed)};
+            cube.set_model(glm::translate(cube.get_model(), glm::vec3(-2.f, -1.f, 0.f)));
+            scene.add_mesh(std::make_shared<Cube>(cube));
         }
 
         {
-            auto cube = std::make_shared<Cube>(1, 1, 1, shinyBlue);
+            auto cube = std::make_shared<Cube>(1, 1, 1, std::make_shared<BlinnPhong>(shinyBlue));
             cube->set_model(glm::translate(cube->get_model(), glm::vec3(2.f, 0.f, 0.f)));
-            scene.addMesh(cube);
+            scene.add_mesh(cube);
         }
 
         {
-            auto ground = std::make_shared<Plane>(1, 1, groundGreen);
+            auto ground = std::make_shared<Plane>(1, 1, std::make_shared<BlinnPhong>(groundGreen));
             ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
             ground->set_model(glm::rotate(ground->get_model(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
             ground->set_model(glm::scale(ground->get_model(), glm::vec3(5.f, 5.f, 5.f)));
-            scene.addMesh(ground);
+            scene.add_mesh(ground);
         }
         {
             glm::vec3 ligthPosition(0.f, 0.2f, 0.5f);
-            auto lightIndicator = std::make_shared<Cube>(1, 1, 1, light);
+            auto lightIndicator = std::make_shared<Cube>(1, 1, 1, std::make_shared<BlinnPhong>(light));
             lightIndicator->set_model(glm::translate(lightIndicator->get_model(), ligthPosition));
             lightIndicator->set_model(glm::scale(lightIndicator->get_model(), glm::vec3(0.1f, 0.1f, 0.1f)));
-            scene.addMesh(lightIndicator);
+            scene.add_mesh(lightIndicator);
 
-            scene.setLight({.m_ambient = 0.1f, .m_pos = ligthPosition, .m_color = glm::vec3(1.f, 1.f, 1.f)});
+            scene.set_light({.m_ambient = 0.1f, .m_pos = ligthPosition, .m_color = glm::vec3(1.f, 1.f, 1.f)});
         }
 
         engine.set_scene(scene);

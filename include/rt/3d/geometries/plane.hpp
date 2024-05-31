@@ -8,9 +8,7 @@
 class Plane final : public Mesh
 {
   public:
-    Plane(float width, float height, const Material& material);
-    Plane(const Plane& other);
-    Plane& operator=(const Plane& other);
+    Plane(float width, float height, const std::shared_ptr<Material>& material);
 
     uint32_t get_triangle_count() const override;
 

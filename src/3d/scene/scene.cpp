@@ -35,17 +35,17 @@ bool Scene::empty()
     return m_meshes.empty();
 }
 
-void Scene::addMesh(const std::shared_ptr<Mesh>& mesh)
+void Scene::add_mesh(const std::shared_ptr<Mesh>& mesh)
 {
     m_meshes.push_back(mesh);
 }
 
-void Scene::setLight(const Light& light)
+void Scene::set_light(const Light& light)
 {
     m_light = light;
 }
 
-void Scene::setCamera(const Camera& camera)
+void Scene::set_camera(const Camera& camera)
 {
     m_camera = camera;
 }
@@ -60,7 +60,7 @@ const Camera& Scene::get_camera() const
     return m_camera;
 }
 
-const std::vector<std::shared_ptr<Mesh>>& Scene::getMeshes()
+const std::vector<std::shared_ptr<Mesh>>& Scene::get_meshes() const
 {
     return m_meshes;
 }

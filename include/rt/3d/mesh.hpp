@@ -17,7 +17,9 @@ class Shader;
 class Mesh
 {
   public:
-    Mesh(const Material& material);
+    Mesh(const std::shared_ptr<Material>& material);
+    Mesh(const Mesh& other);
+    Mesh& operator=(const Mesh& other);
     virtual ~Mesh();
 
     virtual uint32_t get_triangle_count() const = 0;
@@ -29,7 +31,7 @@ class Mesh
 
   protected:
     std::unique_ptr<Buffer> m_buffer;
-    const Material& m_material;
+    std::shared_ptr<Material> m_material;
     glm::mat4 m_model;
     glm::mat3 m_normal_matrix;
 };

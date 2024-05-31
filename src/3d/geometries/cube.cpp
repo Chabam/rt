@@ -27,7 +27,7 @@ std::array<Quad, 6> generate_default_quads()
     };
 }
 
-Cube::Cube(float width, float height, float depth, const Material& material)
+Cube::Cube(float width, float height, float depth, const std::shared_ptr<Material>& material)
     : Mesh(material)
     , m_quads(generate_default_quads())
 {

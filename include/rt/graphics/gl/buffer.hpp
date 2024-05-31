@@ -14,11 +14,12 @@ class Buffer
     ~Buffer();
 
     void bind() const;
+    const std::vector<Vertex>& get_data() const { return m_data; }
 
   private:
     GLuint m_vao;
     GLuint m_vbo;
-    std::span<const Vertex> m_data;
+    std::vector<Vertex> m_data;
 };
 
 #endif // RT_BUFFER_H

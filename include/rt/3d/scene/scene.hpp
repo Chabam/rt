@@ -18,12 +18,12 @@ class Scene
 
     void render();
     bool empty();
-    void addMesh(const std::shared_ptr<Mesh>& mesh);
-    void setLight(const Light& light);
-    void setCamera(const Camera& camera);
+    void add_mesh(const std::shared_ptr<Mesh>& mesh);
+    void set_light(const Light& light);
+    void set_camera(const Camera& camera);
     Camera& get_camera();
     const Camera& get_camera() const;
-    const std::vector<std::shared_ptr<Mesh>>& getMeshes();
+    const std::vector<std::shared_ptr<Mesh>>& get_meshes() const;
 
   private:
     std::vector<std::shared_ptr<Mesh>> m_meshes;

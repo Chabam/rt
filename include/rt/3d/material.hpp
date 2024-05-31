@@ -12,7 +12,7 @@ class ShaderProgram;
 class Material
 {
   public:
-    Material(const std::unique_ptr<ShaderProgram>& shader);
+    Material(const std::shared_ptr<ShaderProgram>& shader);
 
     void forward_uniforms(const glm::mat4& view, const glm::mat4& model, const glm::mat3& normal,
                           const glm::mat4& projection, const glm::vec3 camera_pos, const Light& light) const;
@@ -20,7 +20,7 @@ class Material
   protected:
     virtual void forward_properties_uniforms() const = 0;
 
-    const std::unique_ptr<ShaderProgram>& m_shader;
+    const std::shared_ptr<ShaderProgram>& m_shader;
 };
 
 #endif // RT_MATERIAL_H
