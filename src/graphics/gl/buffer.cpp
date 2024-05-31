@@ -17,7 +17,7 @@ Buffer::Buffer(const std::span<const Vertex>& vertices)
 
     glVertexArrayVertexBuffer(m_vao, 0, m_vbo, 0, sizeof(Vertex));
 
-    for (const VertexAttributeDescription& verticesAttribute : Vertex::getAttributesDescription())
+    for (const VertexAttributeDescription& verticesAttribute : Vertex::get_attributes_description())
     {
         glEnableVertexArrayAttrib(m_vao, verticesAttribute.m_location);
         glVertexArrayAttribFormat(m_vao, verticesAttribute.m_location, verticesAttribute.m_count,

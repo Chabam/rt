@@ -19,7 +19,7 @@ GLenum convertToGlEnum(Shader::Type type)
     }
 }
 
-const char* shaderTypeDisplayName(Shader::Type type)
+const char* shader_type_to_text(Shader::Type type)
 {
     switch (type)
     {
@@ -42,17 +42,17 @@ Shader::Shader(Type type, const char* source)
     glGetShaderiv(m_id, GL_COMPILE_STATUS, &isCompiled);
     if (isCompiled == GL_FALSE)
     {
-        GLint maxLength = 0;
-        glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &maxLength);
+        GLint max_length = 0;
+        glGetShaderiv(m_id, GL_INFO_LOG_LENGTH, &max_length);
 
-        std::vector<GLchar> infoLog(maxLength);
-        glGetShaderInfoLog(m_id, maxLength, &maxLength, &infoLog[0]);
+        std::vector<GLchar> info_log(max_length);
+        glGetShaderInfoLog(m_id, max_length, &max_length, &info_log[0]);
 
         glDeleteShader(m_id);
 
         std::ostringstream out;
-        out << shaderTypeDisplayName(type);
-        for (auto& character : infoLog)
+        out << shader_type_to_text(type);
+        for (auto& character : info_log)
         {
             out << character;
         }
@@ -80,16 +80,16 @@ Shader& Shader::operator=(Shader&& other)
 
 std::optional<Shader> Shader::try_compile(Type type, const char* source) noexcept
 {
-    std::optional<Shader> shaderOutput;
+    std::optional<Shader> shader_out;
     try
     {
-        shaderOutput = Shader{type, source};
-        Logger::debug("{} shader compiled with success", shaderTypeDisplayName(type));
+        shader_out = Shader{type, source};
+        Logger::debug("{} shader compiled with success", shader_type_to_text(type));
     }
     catch (const std::exception& e)
     {
         std::cerr << "Shader compilation failed:\n" << e.what() << '\n';
     }
 
-    return shaderOutput;
+    return shader_out;
 }

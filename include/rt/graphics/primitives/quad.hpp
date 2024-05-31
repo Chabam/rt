@@ -17,7 +17,7 @@ class Quad
     std::array<Vertex, VERTEX_COUNT> get_vertices() const;
 
     std::array<glm::vec3, 4> m_p;
-    std::array<Triangle, TRIANGLE_COUNT> m_triangleParts;
+    std::array<Triangle, TRIANGLE_COUNT> m_triangles;
 };
 
 #endif // RT_QUAD_H

@@ -20,7 +20,7 @@ struct Vertex
     glm::vec3 m_position;
     glm::vec3 m_normal;
 
-    constexpr static std::array<VertexAttributeDescription, ATTRIBUTES_COUNT> getAttributesDescription()
+    constexpr static std::array<VertexAttributeDescription, ATTRIBUTES_COUNT> get_attributes_description()
     {
         auto location = 0U;
         // clang-format off
