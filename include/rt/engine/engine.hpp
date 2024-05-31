@@ -17,9 +17,19 @@ class Engine
     void start();
 
   private:
+    /* TODO: Improve this bad boy!!
+        - Components:
+          - Window
+          - Input
+          - Graphics?
+        - Services:
+          - Input
+        - Update/Tick method -> timestep object?
+     */
     Window m_window;
     Scene m_scene;
-    unsigned int m_fps;
+    unsigned int m_target_fps;
+    unsigned long long m_frame_count;
     std::chrono::duration<double> m_frame_time;
 
     struct MouseInfo
@@ -38,7 +48,7 @@ class Engine
         bool m_up_key_pressed;
         bool m_down_key_pressed;
 
-    } m_keyboardInfo;
+    } m_keyboard_info;
 
     void on_key_press(int key_code, int action);
     void on_resize(int width, int height);

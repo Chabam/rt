@@ -14,7 +14,7 @@ class ShaderProgram
     ShaderProgram();
     ~ShaderProgram();
 
-    void attach_shader(const std::shared_ptr<Shader>& shader);
+    void attach_shader(const std::unique_ptr<Shader>& shader);
     void link();
 
     void use() const;
@@ -29,7 +29,7 @@ class ShaderProgram
 
   private:
     GLuint m_id;
-    std::vector<std::shared_ptr<Shader>> m_attached_shaders;
+    std::vector<std::reference_wrapper<const std::unique_ptr<Shader>>> m_attached_shaders;
 };
 
 #endif // RT_SHADER_PROGRAM_H

@@ -17,16 +17,16 @@ ShaderProgram::~ShaderProgram()
     glDeleteProgram(m_id);
 }
 
-void ShaderProgram::attach_shader(const std::shared_ptr<Shader>& shader)
+void ShaderProgram::attach_shader(const std::unique_ptr<Shader>& shader)
 {
-    m_attached_shaders.push_back(shader);
+    m_attached_shaders.emplace_back(shader);
 }
 
 void ShaderProgram::link()
 {
     for (const auto& shader : m_attached_shaders)
     {
-        glAttachShader(m_id, shader->getId());
+        glAttachShader(m_id, shader.get()->getId());
     }
 
     glLinkProgram(m_id);

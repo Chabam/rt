@@ -3,16 +3,17 @@
 #include <rt/graphics/gl/shader_program.hpp>
 #include <rt/utils/file_handler.hpp>
 
-static std::shared_ptr<ShaderProgram> get_blinn_phong_shader()
+// TODO: Should be in a cache (precompiled or not)
+static const std::unique_ptr<ShaderProgram>& get_blinn_phong_shader()
 {
-    static std::shared_ptr<ShaderProgram> blinn_phong_shader;
+    static std::unique_ptr<ShaderProgram> blinn_phong_shader;
     if (blinn_phong_shader)
         return blinn_phong_shader;
 
-    blinn_phong_shader = std::make_shared<ShaderProgram>();
-    std::shared_ptr<Shader> blinn_phong_vert = std::make_shared<Shader>(
+    blinn_phong_shader = std::make_unique<ShaderProgram>();
+    static std::unique_ptr<Shader> blinn_phong_vert = std::make_unique<Shader>(
         Shader::Type::Vertex, FileHandler::get_file_content("resources/shaders/blinn-phong.vert").c_str());
-    std::shared_ptr<Shader> blinn_phong_frag = std::make_shared<Shader>(
+    static std::unique_ptr<Shader> blinn_phong_frag = std::make_unique<Shader>(
         Shader::Type::Fragment, FileHandler::get_file_content("resources/shaders/blinn-phong.frag").c_str());
 
     blinn_phong_shader->attach_shader(blinn_phong_vert);

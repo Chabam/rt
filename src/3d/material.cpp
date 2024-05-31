@@ -2,7 +2,7 @@
 #include <rt/3d/material.hpp>
 #include <rt/graphics/gl/shader_program.hpp>
 
-Material::Material(const std::shared_ptr<ShaderProgram>& shader)
+Material::Material(const std::unique_ptr<ShaderProgram>& shader)
     : m_shader(shader)
 {
 }

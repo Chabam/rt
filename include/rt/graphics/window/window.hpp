@@ -4,6 +4,8 @@
 #include <functional>
 #include <memory>
 
+struct GLFWwindow;
+
 class Window
 {
   public:
@@ -14,10 +16,10 @@ class Window
 
     Window();
     Window(unsigned int width, unsigned int height, const char* title);
-    ~Window();
 
     void close();
     bool should_close();
+    void set_title(const char* title);
     void set_size(int width, int height);
     unsigned int get_width() const;
     unsigned int get_height() const;
@@ -31,8 +33,8 @@ class Window
     unsigned int m_width;
     unsigned int m_height;
     const char* m_title;
-    struct Impl;
-    std::unique_ptr<Impl> m_impl;
+
+    std::unique_ptr<GLFWwindow, std::function<void(GLFWwindow*)>> m_ptr;
 
     WindowResizeCallback m_window_resize_callback;
     KeyPressCallback m_window_key_press_callback;

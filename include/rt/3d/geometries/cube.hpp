@@ -6,6 +6,7 @@
 
 #include <array>
 
+// TODO: Implement indices
 class Cube final : public Mesh
 {
   public:

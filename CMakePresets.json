@@ -68,6 +68,13 @@
             ]
         },
         {
+            "name": "linux-x64-rls",
+            "inherits": [
+                "linux-x64",
+                "release"
+            ]
+        },
+        {
             "name": "win-x64-dbg",
             "inherits": [
                 "win-x64",
