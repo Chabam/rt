@@ -15,7 +15,7 @@ Plane::Plane(float width, float height, const Material& material)
 {
     m_model *= glm::scale(m_model, glm::vec3(width, height, 1.f));
 
-    m_buffer = std::make_unique<Buffer>(m_quad.getVertices());
+    m_buffer = std::make_unique<Buffer>(m_quad.get_vertices());
 }
 
 Plane::Plane(const Plane& other)
@@ -31,7 +31,7 @@ Plane& Plane::operator=(const Plane& other)
     return *this;
 }
 
-uint32_t Plane::getTriangleCount() const
+uint32_t Plane::get_triangle_count() const
 {
     return Quad::TRIANGLE_COUNT;
 }

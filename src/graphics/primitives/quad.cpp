@@ -1,4 +1,4 @@
-#include <rt/3d/geometries/quad.hpp>
+#include <rt/graphics/primitives/quad.hpp>
 
 #include <algorithm>
 #include <ranges>
@@ -23,15 +23,15 @@ Quad& Quad::operator=(const Quad& other)
     return *this;
 }
 
-std::array<Vertex, Quad::VERTICE_COUNT> Quad::getVertices() const
+std::array<Vertex, Quad::VERTEX_COUNT> Quad::get_vertices() const
 {
-    std::array<Vertex, VERTICE_COUNT> verticeData;
+    std::array<Vertex, VERTEX_COUNT> verticeData;
 
     auto verticeOffset = 0;
     for (const auto& triangle : m_triangleParts)
     {
-        std::ranges::move(triangle.getVertices(), verticeData.begin() + verticeOffset);
-        verticeOffset += Triangle::VERTICE_COUNT;
+        std::ranges::move(triangle.get_vertices(), verticeData.begin() + verticeOffset);
+        verticeOffset += Triangle::VERTEX_COUNT;
     }
 
     return verticeData;

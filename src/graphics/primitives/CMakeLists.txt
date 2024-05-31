@@ -1,3 +1,4 @@
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    logger.cpp
+    quad.cpp
+    triangle.cpp
 )

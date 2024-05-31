@@ -9,30 +9,30 @@ class Camera
   public:
     Camera();
 
-    void setAspectRatio(unsigned int width, unsigned int height);
-    const glm::mat4 getProjectionMatrix() const;
-    const glm::mat4 getViewMatrix() const;
-    const glm::vec3 getPosition() const;
+    void set_aspect_ratio(unsigned int width, unsigned int height);
+    const glm::mat4 get_projection() const;
+    const glm::mat4 get_view() const;
+    const glm::vec3 get_position() const;
 
     void move(const glm::vec3& direction);
 
-    const glm::vec3& getUp() const;
-    const glm::vec3& getFront() const;
+    const glm::vec3& get_up() const;
+    const glm::vec3& get_front() const;
 
-    void setYaw(double yaw);
-    void setPitch(double pitch);
-    double getYaw() const;
-    double getPitch() const;
+    void set_yaw(double yaw);
+    void set_pitch(double pitch);
+    double get_yaw() const;
+    double get_pitch() const;
 
-    void setSpeed(float speed);
+    void set_speed(float speed);
 
-    void updateFront();
+    void update_front();
 
   private:
     glm::vec3 m_position;
     glm::vec3 m_front;
     glm::vec3 m_up;
-    glm::mat4 m_projectionMatrix;
+    glm::mat4 m_projection;
     double m_yaw;
     double m_pitch;
     float m_speed;

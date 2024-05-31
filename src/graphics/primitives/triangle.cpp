@@ -1,4 +1,4 @@
-#include <rt/3d/geometries/triangle.hpp>
+#include <rt/graphics/primitives/triangle.hpp>
 
 #include <algorithm>
 #include <glm/geometric.hpp>
@@ -28,7 +28,7 @@ Triangle& Triangle::operator=(const Triangle& other)
     return *this;
 }
 
-std::array<Vertex, Triangle::VERTICE_COUNT> Triangle::getVertices() const
+std::array<Vertex, Triangle::VERTEX_COUNT> Triangle::get_vertices() const
 {
     std::array<Vertex, 3> vertices;
 

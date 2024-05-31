@@ -25,7 +25,7 @@ class Shader
 
     GLuint getId() const { return m_id; }
 
-    static std::optional<Shader> tryCompile(Type type, const char* source) noexcept;
+    static std::optional<Shader> try_compile(Type type, const char* source) noexcept;
 
   private:
     GLuint m_id;

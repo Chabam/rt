@@ -14,11 +14,11 @@ class Material
   public:
     Material(const std::shared_ptr<ShaderProgram>& shader);
 
-    void forwardUniforms(const glm::mat4& viewMatrix, const glm::mat4& modelMatrix, const glm::mat3& normalMatrix,
-                         const glm::mat4& projectionMatrix, const glm::vec3 cameraPos, const Light& light) const;
+    void forward_uniforms(const glm::mat4& view, const glm::mat4& model, const glm::mat3& normal,
+                          const glm::mat4& projection, const glm::vec3 camera_pos, const Light& light) const;
 
   protected:
-    virtual void forwardPropertiesUniforms() const = 0;
+    virtual void forward_properties_uniforms() const = 0;
 
     std::shared_ptr<ShaderProgram> m_shader;
 };

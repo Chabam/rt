@@ -1,5 +1,5 @@
 #include <rt/engine/engine.hpp>
-#include <rt/logger/logger.hpp>
+#include <rt/utils/logger.hpp>
 
 #include <GLFW/glfw3.h>
 #include <chrono>
@@ -12,15 +12,15 @@ Engine::Engine()
     : m_window(1280, 720, "rt")
     , m_scene()
     , m_fps(60)
-    , m_frameTime()
-    , m_mouseInfo()
+    , m_frame_time()
+    , m_mouse_info()
     , m_keyboardInfo()
 {
     using namespace std::placeholders;
-    m_window.setResizeCallback(std::bind(&Engine::handleResize, this, _1, _2));
-    m_window.setKeyPressCallback(std::bind(&Engine::handleKeyPress, this, _1, _2));
-    m_window.setMouseButtonPressedCallback(std::bind(&Engine::handleMouseButtonPressed, this, _1, _2, _3));
-    m_window.setMousePositionChangedCallback(std::bind(&Engine::handleMousePositionChanged, this, _1, _2));
+    m_window.set_resize_callback(std::bind(&Engine::on_resize, this, _1, _2));
+    m_window.set_key_press_callback(std::bind(&Engine::on_key_press, this, _1, _2));
+    m_window.set_mose_button_pressed_callback(std::bind(&Engine::on_mouse_pressed, this, _1, _2, _3));
+    m_window.set_mouse_pos_changed_callaback(std::bind(&Engine::on_mouse_pos_changed, this, _1, _2));
 
     Logger::debug("Init glad");
     if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
@@ -30,7 +30,7 @@ Engine::Engine()
     Logger::debug("glad ok!");
 
     glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(handleGlError, nullptr);
+    glDebugMessageCallback(handle_gl_error, nullptr);
 }
 
 void Engine::init()
@@ -52,153 +52,152 @@ void Engine::start()
         return;
     }
 
-    auto lastFrame = std::chrono::system_clock::now();
+    auto last_frame = std::chrono::system_clock::now();
     glEnable(GL_DEPTH_TEST);
-    while (!m_window.shouldClose())
+    while (!m_window.should_close())
     {
-        auto beforeRender = std::chrono::system_clock::now();
+        auto before_render = std::chrono::system_clock::now();
 
         constexpr glm::vec4 BLACK = {0.0f, 0.0f, 0.0f, 1.0f};
         glClearColor(BLACK.r, BLACK.g, BLACK.b, BLACK.a);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_scene.render();
-        m_window.swapBuffers();
+        m_window.swap_buffers();
 
-        const auto afterRender = std::chrono::system_clock::now();
-        m_frameTime = std::chrono::duration<double>(afterRender - lastFrame);
-        lastFrame = afterRender;
+        const auto after_render = std::chrono::system_clock::now();
+        m_frame_time = std::chrono::duration<double>(after_render - last_frame);
+        last_frame = after_render;
 
         glfwPollEvents();
-        processInputs();
+        process_inputs();
 
-        const auto elapsed = afterRender - beforeRender;
-        const auto maxTimePerFrame = std::chrono::seconds(1) / m_fps;
-        const auto timeUntilNextFrame = afterRender + (maxTimePerFrame - elapsed);
+        const auto elapsed = after_render - before_render;
+        const auto max_time_per_frame = std::chrono::seconds(1) / m_fps;
+        const auto time_until_next_frame = after_render + (max_time_per_frame - elapsed);
 
-        // Logger::debug("Frame took: ") << std::chrono::duration_cast<std::chrono::duration<double,
-        // std::milli>>(elapsed);
+        Logger::debug("Frame took: {}", std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(elapsed));
 
-        std::this_thread::sleep_until(timeUntilNextFrame);
+        std::this_thread::sleep_until(time_until_next_frame);
     }
 }
 
-void Engine::setScene(const Scene& scene)
+void Engine::set_scene(const Scene& scene)
 {
     m_scene = scene;
 }
 
-void Engine::processInputs()
+void Engine::process_inputs()
 {
-    Camera& camera = m_scene.getCamera();
-    camera.setSpeed(m_frameTime.count() * 2.5f);
+    Camera& camera = m_scene.get_camera();
+    camera.set_speed(m_frame_time.count() * 2.5f);
 
-    if (m_keyboardInfo.m_forwardKeyPressed)
+    if (m_keyboardInfo.m_forward_key_pressed)
     {
-        camera.move(camera.getFront());
+        camera.move(camera.get_front());
     }
 
-    if (m_keyboardInfo.m_backwardKeyPressed)
+    if (m_keyboardInfo.m_backward_key_pressed)
     {
-        camera.move(-camera.getFront());
+        camera.move(-camera.get_front());
     }
 
-    if (m_keyboardInfo.m_leftKeyPressed)
+    if (m_keyboardInfo.m_left_key_pressed)
     {
-        camera.move(-glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+        camera.move(-glm::normalize(glm::cross(camera.get_front(), camera.get_up())));
     }
 
-    if (m_keyboardInfo.m_rightKeyPressed)
+    if (m_keyboardInfo.m_right_key_pressed)
     {
-        camera.move(glm::normalize(glm::cross(camera.getFront(), camera.getUp())));
+        camera.move(glm::normalize(glm::cross(camera.get_front(), camera.get_up())));
     }
 
-    if (m_keyboardInfo.m_upKeyPressed)
+    if (m_keyboardInfo.m_up_key_pressed)
     {
-        camera.move(camera.getUp());
+        camera.move(camera.get_up());
     }
 
-    if (m_keyboardInfo.m_downKeyPressed)
+    if (m_keyboardInfo.m_down_key_pressed)
     {
-        camera.move(-camera.getUp());
+        camera.move(-camera.get_up());
     }
 }
 
-void Engine::handleKeyPress(int keyCode, int action)
+void Engine::on_key_press(int keyCode, int action)
 {
-    const bool isPressed = action != GLFW_RELEASE;
+    const bool is_pressed_action = action != GLFW_RELEASE;
 
     switch (keyCode)
     {
     case GLFW_KEY_UP:
     case GLFW_KEY_W:
-        m_keyboardInfo.m_forwardKeyPressed = isPressed;
+        m_keyboardInfo.m_forward_key_pressed = is_pressed_action;
         break;
     case GLFW_KEY_DOWN:
     case GLFW_KEY_S:
-        m_keyboardInfo.m_backwardKeyPressed = isPressed;
+        m_keyboardInfo.m_backward_key_pressed = is_pressed_action;
         break;
     case GLFW_KEY_LEFT:
     case GLFW_KEY_A:
-        m_keyboardInfo.m_leftKeyPressed = isPressed;
+        m_keyboardInfo.m_left_key_pressed = is_pressed_action;
         break;
     case GLFW_KEY_RIGHT:
     case GLFW_KEY_D:
-        m_keyboardInfo.m_rightKeyPressed = isPressed;
+        m_keyboardInfo.m_right_key_pressed = is_pressed_action;
         break;
     case GLFW_KEY_SPACE:
-        m_keyboardInfo.m_upKeyPressed = isPressed;
+        m_keyboardInfo.m_up_key_pressed = is_pressed_action;
         break;
     case GLFW_KEY_LEFT_SHIFT:
-        m_keyboardInfo.m_downKeyPressed = isPressed;
+        m_keyboardInfo.m_down_key_pressed = is_pressed_action;
         break;
     case GLFW_KEY_ESCAPE:
         Logger::info("Closing!");
-        m_window.setToClose();
+        m_window.close();
         break;
     }
 }
 
-void Engine::handleMousePositionChanged(double xPos, double yPos)
+void Engine::on_mouse_pos_changed(double x_pos, double y_pos)
 {
-    if (m_mouseInfo.m_pressed)
+    if (m_mouse_info.m_pressed)
     {
-        double deltaX = xPos - m_mouseInfo.m_lastX;
-        double deltaY = m_mouseInfo.m_lastY - yPos;
+        double delta_x = x_pos - m_mouse_info.m_last_x;
+        double delta_y = m_mouse_info.m_last_y - y_pos;
 
         constexpr auto sensitivity = 0.1f;
 
-        deltaX *= sensitivity;
-        deltaY *= sensitivity;
+        delta_x *= sensitivity;
+        delta_y *= sensitivity;
 
-        Camera& camera = m_scene.getCamera();
-        camera.setYaw(camera.getYaw() + deltaX);
-        camera.setPitch(camera.getPitch() + deltaY);
-        camera.updateFront();
+        Camera& camera = m_scene.get_camera();
+        camera.set_yaw(camera.get_yaw() + delta_x);
+        camera.set_pitch(camera.get_pitch() + delta_y);
+        camera.update_front();
     }
 
-    m_mouseInfo.m_lastX = xPos;
-    m_mouseInfo.m_lastY = yPos;
+    m_mouse_info.m_last_x = x_pos;
+    m_mouse_info.m_last_y = y_pos;
 }
 
-void Engine::handleMouseButtonPressed(int key, int action, int mod)
+void Engine::on_mouse_pressed(int key, int action, int mod)
 {
-    m_mouseInfo.m_pressed = key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
+    m_mouse_info.m_pressed = key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
 }
 
-void Engine::handleResize(int width, int height)
+void Engine::on_resize(int width, int height)
 {
     if (height == 0 || width == 0)
     {
         return;
     }
     glViewport(0, 0, width, height);
-    m_scene.getCamera().setAspectRatio(width, height);
+    m_scene.get_camera().set_aspect_ratio(width, height);
     m_scene.render();
 }
 
-void Engine::handleGlError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
-                           const GLchar* message, const void* userParam)
+void Engine::handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                             const GLchar* message, const void* user_param)
 {
     Logger::Level level;
     switch (severity)
@@ -215,7 +214,7 @@ void Engine::handleGlError(GLenum source, GLenum type, GLuint id, GLenum severit
         level = Logger::Level::DEBUG;
         return;
     }
-    Logger(level) << "OpenGL: " << message;
+    Logger::log(level, "OpenGL: {}", message);
 
     throw std::runtime_error("OpenGL fatal error!");
 }

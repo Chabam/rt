@@ -13,42 +13,42 @@ class Engine
     Engine();
 
     static void init();
-    void setScene(const Scene& scene);
+    void set_scene(const Scene& scene);
     void start();
 
   private:
     Window m_window;
     Scene m_scene;
     unsigned int m_fps;
-    std::chrono::duration<double> m_frameTime;
+    std::chrono::duration<double> m_frame_time;
 
     struct MouseInfo
     {
-        double m_lastX;
-        double m_lastY;
+        double m_last_x;
+        double m_last_y;
         bool m_pressed;
-    } m_mouseInfo;
+    } m_mouse_info;
 
     struct KeyboardInfo
     {
-        bool m_forwardKeyPressed;
-        bool m_backwardKeyPressed;
-        bool m_leftKeyPressed;
-        bool m_rightKeyPressed;
-        bool m_upKeyPressed;
-        bool m_downKeyPressed;
+        bool m_forward_key_pressed;
+        bool m_backward_key_pressed;
+        bool m_left_key_pressed;
+        bool m_right_key_pressed;
+        bool m_up_key_pressed;
+        bool m_down_key_pressed;
 
     } m_keyboardInfo;
 
-    void handleKeyPress(int keyCode, int action);
-    void handleResize(int width, int height);
-    void handleMousePositionChanged(double xPos, double yPos);
-    void handleMouseButtonPressed(int key, int action, int mod);
+    void on_key_press(int key_code, int action);
+    void on_resize(int width, int height);
+    void on_mouse_pos_changed(double x_pos, double y_pos);
+    void on_mouse_pressed(int key, int action, int mod);
 
-    void processInputs();
+    void process_inputs();
 
-    static void handleGlError(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
-                              const GLchar* message, const void* userParam);
+    static void handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                                const GLchar* message, const void* user_param);
 };
 
 #endif // RT_ENGINE_H

@@ -1,5 +1,5 @@
 #include <rt/graphics/gl/shader.hpp>
-#include <rt/logger/logger.hpp>
+#include <rt/utils/logger.hpp>
 
 #include <filesystem>
 #include <glad/gl.h>
@@ -78,13 +78,13 @@ Shader& Shader::operator=(Shader&& other)
     return *this;
 }
 
-std::optional<Shader> Shader::tryCompile(Type type, const char* source) noexcept
+std::optional<Shader> Shader::try_compile(Type type, const char* source) noexcept
 {
     std::optional<Shader> shaderOutput;
     try
     {
         shaderOutput = Shader{type, source};
-        Logger::debug(shaderTypeDisplayName(type)) << " shader compiled with success";
+        Logger::debug("{} shader compiled with success", shaderTypeDisplayName(type));
     }
     catch (const std::exception& e)
     {

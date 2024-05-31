@@ -16,16 +16,16 @@ class Window
     Window(unsigned int width, unsigned int height, const char* title);
     ~Window();
 
-    void setToClose();
-    bool shouldClose();
-    void setSize(int width, int height);
-    unsigned int getWidth() const;
-    unsigned int getHeight() const;
-    void setResizeCallback(WindowResizeCallback cb);
-    void setKeyPressCallback(KeyPressCallback cb);
-    void setMouseButtonPressedCallback(MouseButtonPressedCallback cb);
-    void setMousePositionChangedCallback(MousePositionChangedCallback cb);
-    void swapBuffers();
+    void close();
+    bool should_close();
+    void set_size(int width, int height);
+    unsigned int get_width() const;
+    unsigned int get_height() const;
+    void set_resize_callback(WindowResizeCallback cb);
+    void set_key_press_callback(KeyPressCallback cb);
+    void set_mose_button_pressed_callback(MouseButtonPressedCallback cb);
+    void set_mouse_pos_changed_callaback(MousePositionChangedCallback cb);
+    void swap_buffers();
 
   private:
     unsigned int m_width;
@@ -34,10 +34,10 @@ class Window
     struct Impl;
     std::unique_ptr<Impl> m_impl;
 
-    WindowResizeCallback m_windowResizeCallback;
-    KeyPressCallback m_windowKeyPressCallback;
-    MouseButtonPressedCallback m_mouseButtonPressedCallback;
-    MousePositionChangedCallback m_mousePositionChangedCallback;
+    WindowResizeCallback m_window_resize_callback;
+    KeyPressCallback m_window_key_press_callback;
+    MouseButtonPressedCallback m_mouse_button_pressed_callback;
+    MousePositionChangedCallback m_mouse_position_changed_callback;
 };
 
 #endif // RT_WINDOW_H

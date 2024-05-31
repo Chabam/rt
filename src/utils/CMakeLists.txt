@@ -1,3 +1,4 @@
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
-    resourceLoader.cpp
+    file_handler.cpp
+    logger.cpp
 )

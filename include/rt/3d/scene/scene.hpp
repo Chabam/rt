@@ -21,8 +21,8 @@ class Scene
     void addMesh(const std::shared_ptr<Mesh>& mesh);
     void setLight(const Light& light);
     void setCamera(const Camera& camera);
-    Camera& getCamera();
-    const Camera& getCamera() const;
+    Camera& get_camera();
+    const Camera& get_camera() const;
     const std::vector<std::shared_ptr<Mesh>>& getMeshes();
 
   private:

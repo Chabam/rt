@@ -1,7 +1,6 @@
 #include <rt/3d/mesh.hpp>
 #include <rt/3d/scene/scene.hpp>
 
-
 Scene::Scene()
     : m_meshes()
     , m_light()
@@ -51,12 +50,12 @@ void Scene::setCamera(const Camera& camera)
     m_camera = camera;
 }
 
-Camera& Scene::getCamera()
+Camera& Scene::get_camera()
 {
     return m_camera;
 }
 
-const Camera& Scene::getCamera() const
+const Camera& Scene::get_camera() const
 {
     return m_camera;
 }

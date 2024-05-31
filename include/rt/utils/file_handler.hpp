@@ -3,9 +3,9 @@
 
 #include <string>
 
-struct ResourceLoader
+struct FileHandler
 {
-    static std::string read_file(const char* path);
+    static std::string get_file_content(const char* path);
 };
 
 #endif // RT_RESSOURCE_LOADER_H

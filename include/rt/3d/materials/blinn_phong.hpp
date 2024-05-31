@@ -22,7 +22,7 @@ class BlinnPhong : public Material
     bool m_emitsLight;
 
   private:
-    virtual void forwardPropertiesUniforms() const override;
+    virtual void forward_properties_uniforms() const override;
 };
 
 #endif // RT_BLINN_PHONG_H

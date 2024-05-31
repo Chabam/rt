@@ -1,5 +1,5 @@
 #include <rt/graphics/window/window.hpp>
-#include <rt/logger/logger.hpp>
+#include <rt/utils/logger.hpp>
 
 #include <GLFW/glfw3.h>
 #include <math.h>
@@ -15,7 +15,7 @@ struct Window::Impl
             return;
         }
 
-        window->m_windowKeyPressCallback(key, action);
+        window->m_window_key_press_callback(key, action);
     }
 
     static void resizeCallback(GLFWwindow* glfwWindow, int width, int height)
@@ -27,7 +27,7 @@ struct Window::Impl
             return;
         }
 
-        window->m_windowResizeCallback(width, height);
+        window->m_window_resize_callback(width, height);
         window->m_width = width;
         window->m_height = height;
     }
@@ -41,7 +41,7 @@ struct Window::Impl
             return;
         }
 
-        window->m_mouseButtonPressedCallback(button, action, mods);
+        window->m_mouse_button_pressed_callback(button, action, mods);
     }
 
     static void mousePositionChangedCallback(GLFWwindow* glfwWindow, double xpos, double ypos)
@@ -53,7 +53,7 @@ struct Window::Impl
             return;
         }
 
-        window->m_mousePositionChangedCallback(xpos, ypos);
+        window->m_mouse_position_changed_callback(xpos, ypos);
     }
 
     GLFWwindow* m_windowPtr;
@@ -81,20 +81,17 @@ struct Window::Impl
         glfwMakeContextCurrent(m_windowPtr);
     }
 
-    ~Impl()
-    {
-        glfwDestroyWindow(m_windowPtr);
-    }
+    ~Impl() { glfwDestroyWindow(m_windowPtr); }
 };
 
 Window::Window()
     : m_width()
     , m_height()
     , m_title("New window")
-    , m_windowResizeCallback([](int, int) {})
-    , m_windowKeyPressCallback([](int, int) {})
-    , m_mouseButtonPressedCallback([](int, int, int) {})
-    , m_mousePositionChangedCallback([](double, double) {})
+    , m_window_resize_callback([](int, int) {})
+    , m_window_key_press_callback([](int, int) {})
+    , m_mouse_button_pressed_callback([](int, int, int) {})
+    , m_mouse_position_changed_callback([](double, double) {})
 {
 }
 
@@ -103,10 +100,10 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
     , m_height(height)
     , m_title(title)
     , m_impl(std::make_unique<Window::Impl>(*this, width, height, title))
-    , m_windowResizeCallback([](int, int) {})
-    , m_windowKeyPressCallback([](int, int) {})
-    , m_mouseButtonPressedCallback([](int, int, int) {})
-    , m_mousePositionChangedCallback([](double, double) {})
+    , m_window_resize_callback([](int, int) {})
+    , m_window_key_press_callback([](int, int) {})
+    , m_mouse_button_pressed_callback([](int, int, int) {})
+    , m_mouse_position_changed_callback([](double, double) {})
 {
 }
 
@@ -114,54 +111,54 @@ Window::~Window()
 {
 }
 
-void Window::setSize(int width, int height)
+void Window::set_size(int width, int height)
 {
     m_width = width;
     m_height = height;
 }
 
-void Window::setToClose()
+void Window::close()
 {
     Logger::info("Closing window");
     glfwSetWindowShouldClose(m_impl->m_windowPtr, GLFW_TRUE);
 }
 
-bool Window::shouldClose()
+bool Window::should_close()
 {
     return glfwWindowShouldClose(m_impl->m_windowPtr);
 }
 
-void Window::swapBuffers()
+void Window::swap_buffers()
 {
     glfwSwapBuffers(m_impl->m_windowPtr);
 }
 
-unsigned int Window::getWidth() const
+unsigned int Window::get_width() const
 {
     return m_width;
 }
 
-unsigned int Window::getHeight() const
+unsigned int Window::get_height() const
 {
     return m_height;
 }
 
-void Window::setResizeCallback(WindowResizeCallback cb)
+void Window::set_resize_callback(WindowResizeCallback cb)
 {
-    m_windowResizeCallback = cb;
+    m_window_resize_callback = cb;
 }
 
-void Window::setKeyPressCallback(KeyPressCallback cb)
+void Window::set_key_press_callback(KeyPressCallback cb)
 {
-    m_windowKeyPressCallback = cb;
+    m_window_key_press_callback = cb;
 }
 
-void Window::setMousePositionChangedCallback(MousePositionChangedCallback cb)
+void Window::set_mouse_pos_changed_callaback(MousePositionChangedCallback cb)
 {
-    m_mousePositionChangedCallback = cb;
+    m_mouse_position_changed_callback = cb;
 }
 
-void Window::setMouseButtonPressedCallback(MouseButtonPressedCallback cb)
+void Window::set_mose_button_pressed_callback(MouseButtonPressedCallback cb)
 {
-    m_mouseButtonPressedCallback = cb;
+    m_mouse_button_pressed_callback = cb;
 }

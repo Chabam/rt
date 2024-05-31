@@ -5,7 +5,7 @@ in vec3 fragPos;
 
 uniform vec3 color;
 uniform float specularStr;
-uniform int shininess;
+uniform uint shininess;
 uniform bool emitsLight;
 
 uniform float ambientStr;

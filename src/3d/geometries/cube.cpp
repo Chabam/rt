@@ -6,7 +6,7 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <iterator>
 
-std::array<Quad, 6> generateDefaultQuads()
+std::array<Quad, 6> generate_default_quads()
 {
     constexpr glm::vec3 p1 = {1.f, 1.f, -1.f};
     constexpr glm::vec3 p2 = {1.f, 1.f, 1.f};
@@ -29,23 +29,23 @@ std::array<Quad, 6> generateDefaultQuads()
 
 Cube::Cube(float width, float height, float depth, const Material& material)
     : Mesh(material)
-    , m_quadParts(generateDefaultQuads())
+    , m_quads(generate_default_quads())
 {
-    setModel(glm::scale(m_model, glm::vec3(width, height, depth)));
+    set_model(glm::scale(m_model, glm::vec3(width, height, depth)));
 
-    std::array<Vertex, std::tuple_size<decltype(m_quadParts)>::value * Quad::VERTICE_COUNT> data;
+    std::array<Vertex, std::tuple_size<decltype(m_quads)>::value * Quad::VERTEX_COUNT> data;
 
-    auto verticeOffset = 0;
-    for (const Quad& quad : m_quadParts)
+    auto vertices_offset = 0;
+    for (const Quad& quad : m_quads)
     {
-        std::ranges::move(quad.getVertices(), data.begin() + verticeOffset);
-        verticeOffset += Quad::VERTICE_COUNT;
+        std::ranges::move(quad.get_vertices(), data.begin() + vertices_offset);
+        vertices_offset += Quad::VERTEX_COUNT;
     }
 
     m_buffer = std::make_unique<Buffer>(data);
 }
 
-uint32_t Cube::getTriangleCount() const
+uint32_t Cube::get_triangle_count() const
 {
-    return m_quadParts.size() * Quad::TRIANGLE_COUNT;
+    return m_quads.size() * Quad::TRIANGLE_COUNT;
 }

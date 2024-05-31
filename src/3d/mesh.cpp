@@ -1,10 +1,10 @@
 #include <rt/3d/camera/camera.hpp>
-#include <rt/3d/geometries/triangle.hpp>
 #include <rt/3d/material.hpp>
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/gl/buffer.hpp>
 #include <rt/graphics/gl/shader.hpp>
-#include <rt/logger/logger.hpp>
+#include <rt/graphics/primitives/triangle.hpp>
+#include <rt/utils/logger.hpp>
 
 #include <algorithm>
 
@@ -12,7 +12,7 @@ Mesh::Mesh(const Material& material)
     : m_buffer()
     , m_material(material)
     , m_model(glm::mat4(1.f))
-    , m_normalMatrix(glm::transpose(glm::inverse(m_model)))
+    , m_normal_matrix(glm::transpose(glm::inverse(m_model)))
 {
 }
 
@@ -20,15 +20,15 @@ Mesh::~Mesh()
 {
 }
 
-const glm::mat4& Mesh::getModel() const
+const glm::mat4& Mesh::get_model() const
 {
     return m_model;
 }
 
-void Mesh::setModel(const glm::mat4& trans)
+void Mesh::set_model(const glm::mat4& trans)
 {
     m_model = trans;
-    m_normalMatrix = glm::transpose(glm::inverse(m_model));
+    m_normal_matrix = glm::transpose(glm::inverse(m_model));
 }
 
 void Mesh::render(const Camera& camera, const Light& light) const
@@ -38,9 +38,9 @@ void Mesh::render(const Camera& camera, const Light& light) const
         throw std::logic_error("Buffer is not generated!");
     }
 
-    m_material.forwardUniforms(camera.getViewMatrix(), m_model, m_normalMatrix, camera.getProjectionMatrix(),
-                               camera.getPosition(), light);
+    m_material.forward_uniforms(camera.get_view(), m_model, m_normal_matrix, camera.get_projection(),
+                                camera.get_position(), light);
 
     m_buffer->bind();
-    glDrawArrays(GL_TRIANGLES, 0, getTriangleCount() * Triangle::VERTICE_COUNT);
+    glDrawArrays(GL_TRIANGLES, 0, get_triangle_count() * Triangle::VERTEX_COUNT);
 }
