@@ -3,6 +3,7 @@
 
 #include <rt/3d/scene/scene.hpp>
 #include <rt/graphics/window/window.hpp>
+#include <rt/utils/logger.hpp>
 
 #include <chrono>
 #include <glad/gl.h>
@@ -12,7 +13,7 @@ class Engine
   public:
     Engine();
 
-    static void init();
+    void create_window(unsigned int width, unsigned int height, const char* title);
     void set_scene(const Scene& scene);
     void start();
 
@@ -26,7 +27,8 @@ class Engine
           - Input
         - Update/Tick method -> timestep object?
      */
-    Window m_window;
+    Logger m_logger;
+    std::unique_ptr<Window> m_window;
     Scene m_scene;
     unsigned int m_target_fps;
     unsigned long long m_frame_count;

@@ -1,6 +1,8 @@
 #ifndef RT_WINDOW_H
 #define RT_WINDOW_H
 
+#include <rt/utils/logger.hpp>
+
 #include <functional>
 #include <memory>
 
@@ -14,8 +16,8 @@ class Window
     typedef std::function<void(int, int, int)> MouseButtonPressedCallback;
     typedef std::function<void(double, double)> MousePositionChangedCallback;
 
-    Window();
     Window(unsigned int width, unsigned int height, const char* title);
+    ~Window();
 
     void close();
     bool should_close();
@@ -30,11 +32,12 @@ class Window
     void swap_buffers();
 
   private:
+    Logger m_logger;
     unsigned int m_width;
     unsigned int m_height;
     const char* m_title;
 
-    std::unique_ptr<GLFWwindow, std::function<void(GLFWwindow*)>> m_ptr;
+    GLFWwindow* m_ptr;
 
     WindowResizeCallback m_window_resize_callback;
     KeyPressCallback m_window_key_press_callback;

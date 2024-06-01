@@ -1,6 +1,8 @@
 #ifndef RT_SHADER_PROGRAM_H
 #define RT_SHADER_PROGRAM_H
 
+#include <rt/utils/logger.hpp>
+
 #include <glad/gl.h>
 #include <glm/mat4x4.hpp>
 #include <glm/vec4.hpp>
@@ -28,6 +30,7 @@ class ShaderProgram
     void set_uniform(const char* var_name, unsigned int value);
 
   private:
+    Logger m_logger;
     GLuint m_id;
     std::vector<std::shared_ptr<Shader>> m_attached_shaders;
 };

@@ -8,7 +8,8 @@
 #include <sstream>
 
 ShaderProgram::ShaderProgram()
-    : m_id(glCreateProgram())
+    : m_logger("ShaderProgram")
+    , m_id(glCreateProgram())
 {
 }
 
@@ -50,7 +51,7 @@ void ShaderProgram::link()
 
         throw std::runtime_error(out.str());
     }
-    Logger::debug("Program linked");
+    m_logger.debug("Program linked");
 }
 
 void ShaderProgram::use() const

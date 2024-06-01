@@ -1,5 +1,13 @@
 #include <rt/utils/logger.hpp>
 
+Logger::Logger(const char* category, std::ostream& ostream)
+    : m_category{category}
+    , m_enabled_level{}
+    , m_stream{ostream}
+{
+    m_enabled_level.all();
+}
+
 const char* Logger::level_to_text(Level level)
 {
     switch (level)

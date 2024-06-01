@@ -84,7 +84,7 @@ std::optional<Shader> Shader::try_compile(Type type, const char* source) noexcep
     try
     {
         shader_out = Shader{type, source};
-        Logger::debug("{} shader compiled with success", shader_type_to_text(type));
+        Logger("Shader").debug("{} shader compiled with success", shader_type_to_text(type));
     }
     catch (const std::exception& e)
     {

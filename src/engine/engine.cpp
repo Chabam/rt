@@ -9,8 +9,11 @@
 #include <ratio>
 #include <thread>
 
+static constexpr auto NAME = "rt";
+
 Engine::Engine()
-    : m_window(1280, 720, "rt")
+    : m_logger(NAME)
+    , m_window()
     , m_scene()
     , m_target_fps(-1)
     , m_frame_count()
@@ -18,46 +21,23 @@ Engine::Engine()
     , m_mouse_info()
     , m_keyboard_info()
 {
-    using namespace std::placeholders;
-    m_window.set_resize_callback(std::bind(&Engine::on_resize, this, _1, _2));
-    m_window.set_key_press_callback(std::bind(&Engine::on_key_press, this, _1, _2));
-    m_window.set_mose_button_pressed_callback(std::bind(&Engine::on_mouse_pressed, this, _1, _2, _3));
-    m_window.set_mouse_pos_changed_callaback(std::bind(&Engine::on_mouse_pos_changed, this, _1, _2));
-
-    Logger::debug("Init glad");
-    if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
-    {
-        throw std::runtime_error("Could not initialize glad!");
-    }
-    Logger::debug("glad ok!");
-
-    glEnable(GL_DEBUG_OUTPUT);
-    glDebugMessageCallback(handle_gl_error, nullptr);
-}
-
-void Engine::init()
-{
-
-    Logger::debug("Init glfw");
-    if (!glfwInit())
-    {
-        throw std::runtime_error("Could not initialize GLWF!");
-    }
-    Logger::debug("glfw ok!");
 }
 
 void Engine::start()
 {
     if (m_scene.empty())
     {
-        Logger::warn("Nothing to draw!");
+        m_logger.warn("Nothing to draw!");
         return;
     }
+
+    glEnable(GL_DEBUG_OUTPUT);
+    glDebugMessageCallback(handle_gl_error, nullptr);
 
     auto last_frame = std::chrono::system_clock::now();
     auto start_fps_count_timer = std::chrono::system_clock::now();
     glEnable(GL_DEPTH_TEST);
-    while (!m_window.should_close())
+    while (!m_window->should_close())
     {
         using namespace std::chrono_literals;
 
@@ -68,7 +48,7 @@ void Engine::start()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_scene.render();
-        m_window.swap_buffers();
+        m_window->swap_buffers();
 
         const auto after_render = std::chrono::system_clock::now();
         m_frame_time = std::chrono::duration<double>(after_render - last_frame);
@@ -80,7 +60,7 @@ void Engine::start()
         ++m_frame_count;
         if (after_render - start_fps_count_timer > 1s)
         {
-            m_window.set_title(std::vformat("rt: {} fps", std::make_format_args(m_frame_count)).c_str());
+            m_window->set_title(std::vformat("rt: {} fps", std::make_format_args(m_frame_count)).c_str());
             m_frame_count = 0;
             start_fps_count_timer = std::chrono::system_clock::now();
         }
@@ -94,6 +74,31 @@ void Engine::start()
             std::this_thread::sleep_until(time_until_next_frame);
         }
     }
+}
+
+void Engine::create_window(unsigned int width, unsigned int height, const char* title)
+{
+    m_logger.debug("Init glfw");
+    if (!glfwInit())
+    {
+        throw std::runtime_error("Could not initialize GLWF!");
+    }
+    m_logger.debug("glfw ok!");
+
+    m_window = std::make_unique<Window>(width, height, title);
+
+    using namespace std::placeholders;
+    m_window->set_resize_callback(std::bind(&Engine::on_resize, this, _1, _2));
+    m_window->set_key_press_callback(std::bind(&Engine::on_key_press, this, _1, _2));
+    m_window->set_mose_button_pressed_callback(std::bind(&Engine::on_mouse_pressed, this, _1, _2, _3));
+    m_window->set_mouse_pos_changed_callaback(std::bind(&Engine::on_mouse_pos_changed, this, _1, _2));
+
+    m_logger.debug("Init glad");
+    if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
+    {
+        throw std::runtime_error("Could not initialize glad!");
+    }
+    m_logger.debug("glad ok!");
 }
 
 void Engine::set_scene(const Scene& scene)
@@ -166,8 +171,8 @@ void Engine::on_key_press(int keyCode, int action)
         m_keyboard_info.m_down_key_pressed = is_pressed_action;
         break;
     case GLFW_KEY_ESCAPE:
-        Logger::info("Closing!");
-        m_window.close();
+        m_logger.info("Closing!");
+        m_window->close();
         break;
     }
 }
@@ -228,7 +233,7 @@ void Engine::handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum sever
         level = Logger::Level::DEBUG;
         return;
     }
-    Logger::log(level, "OpenGL: {}", message);
+    Logger{"OpenGL"}.log(level, "{}", message);
 
     throw std::runtime_error("OpenGL fatal error!");
 }
