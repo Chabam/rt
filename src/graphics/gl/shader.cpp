@@ -36,7 +36,8 @@ Shader::Shader(Type type, const char* source)
     : m_id(glCreateShader(convertToGlEnum(type)))
     , m_type(type)
 {
-    m_logger.add_subcategory("id:" + std::to_string(m_id));
+    const char* shader_type_str = shader_type_to_text(m_type);
+    m_logger.add_subcategory(std::vformat("{},id:{}", std::make_format_args(shader_type_str, m_id)));
 
     glShaderSource(m_id, 1, &source, 0);
     glCompileShader(m_id);
@@ -54,7 +55,7 @@ Shader::Shader(Type type, const char* source)
         glDeleteShader(m_id);
 
         std::ostringstream out;
-        out << shader_type_to_text(m_type);
+        out << shader_type_str;
         for (auto& character : info_log)
         {
             out << character;

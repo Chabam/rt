@@ -52,7 +52,7 @@ void ShaderProgram::link()
 
         throw std::runtime_error(out.str());
     }
-    m_logger.debug("Shader Program ({}) linked succesfully", m_id);
+    m_logger.debug("linked succesfully");
 }
 
 void ShaderProgram::use() const

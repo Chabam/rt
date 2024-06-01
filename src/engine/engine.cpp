@@ -14,7 +14,7 @@ static constexpr auto NAME = "rt";
 Engine::Engine()
     : m_window()
     , m_scene()
-    , m_target_fps(-1)
+    , m_target_fps(60)
     , m_frame_count()
     , m_frame_time()
     , m_mouse_info()

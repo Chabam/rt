@@ -29,7 +29,7 @@ Buffer::Buffer(const std::span<const Vertex>& vertices)
         glVertexArrayAttribBinding(m_vao, verticesAttribute.m_location, 0);
     }
 
-    m_logger.debug("Created the buffer with {} vertices", m_data.size());
+    m_logger.debug("Created with {} vertices", m_data.size());
 }
 
 Buffer::~Buffer()
