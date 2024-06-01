@@ -12,7 +12,7 @@
 
 int main(void)
 {
-    Logger main{"main"};
+    Logger logger_main{"main"};
 
     Engine engine;
 
@@ -61,7 +61,7 @@ int main(void)
     }
     catch (const std::runtime_error& e)
     {
-        main.error(e.what());
+        logger_main.error(e.what());
         return 1;
     }
 

@@ -1,27 +1,26 @@
 #include <rt/utils/logger.hpp>
 
-Logger::Logger(const char* category, std::ostream& ostream)
+Logger::Logger(const std::string& category, Level lowest_enabled_level, std::ostream& ostream)
     : m_category{category}
-    , m_enabled_level{}
+    , m_lowest_enabled_level{lowest_enabled_level}
     , m_stream{ostream}
 {
-    m_enabled_level.all();
 }
 
 const char* Logger::level_to_text(Level level)
 {
     switch (level)
     {
-    case Level::DEBUG:
+    case Level::Debug:
         return "DEBUG";
         break;
-    case Level::INFO:
+    case Level::Info:
         return "INFO";
         break;
-    case Level::WARN:
+    case Level::Warn:
         return "WARN ";
         break;
-    case Level::ERROR:
+    case Level::Error:
         return "ERROR";
         break;
     default:
@@ -34,16 +33,16 @@ const char* Logger::level_to_color(Level level)
 {
     switch (level)
     {
-    case Level::DEBUG:
+    case Level::Debug:
         return "\x1B[32m"; // GREEN
         break;
-    case Level::INFO:
+    case Level::Info:
         return "\x1B[34m"; // BLUE
         break;
-    case Level::WARN:
+    case Level::Warn:
         return "\x1B[33m"; // YELLOW
         break;
-    case Level::ERROR:
+    case Level::Error:
         return "\x1B[31m"; // RED
         break;
     default:

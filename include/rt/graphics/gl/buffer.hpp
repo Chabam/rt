@@ -2,6 +2,7 @@
 #define RT_BUFFER_H
 
 #include <rt/graphics/primitives/vertex.hpp>
+#include <rt/utils/logger.hpp>
 
 #include <glad/gl.h>
 #include <glm/vec3.hpp>
@@ -20,6 +21,8 @@ class Buffer
     GLuint m_vao;
     GLuint m_vbo;
     std::vector<Vertex> m_data;
+
+    Logger m_logger{"Buffer"};
 };
 
 #endif // RT_BUFFER_H

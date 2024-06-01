@@ -8,9 +8,9 @@
 #include <sstream>
 
 ShaderProgram::ShaderProgram()
-    : m_logger("ShaderProgram")
-    , m_id(glCreateProgram())
+    : m_id(glCreateProgram())
 {
+    m_logger.add_subcategory("id:" + std::to_string(m_id));
 }
 
 ShaderProgram::~ShaderProgram()
@@ -27,7 +27,8 @@ void ShaderProgram::link()
 {
     for (const auto& shader : m_attached_shaders)
     {
-        glAttachShader(m_id, shader.get()->getId());
+        m_logger.debug("Attaching Shader ({})", shader->get_id());
+        glAttachShader(m_id, shader->get_id());
     }
 
     glLinkProgram(m_id);
@@ -51,7 +52,7 @@ void ShaderProgram::link()
 
         throw std::runtime_error(out.str());
     }
-    m_logger.debug("Program linked");
+    m_logger.debug("Shader Program ({}) linked succesfully", m_id);
 }
 
 void ShaderProgram::use() const

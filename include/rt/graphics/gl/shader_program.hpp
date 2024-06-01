@@ -30,9 +30,9 @@ class ShaderProgram
     void set_uniform(const char* var_name, unsigned int value);
 
   private:
-    Logger m_logger;
     GLuint m_id;
     std::vector<std::shared_ptr<Shader>> m_attached_shaders;
+    Logger m_logger{"ShaderProgram"};
 };
 
 #endif // RT_SHADER_PROGRAM_H

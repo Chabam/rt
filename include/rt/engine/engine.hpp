@@ -27,7 +27,7 @@ class Engine
           - Input
         - Update/Tick method -> timestep object?
      */
-    Logger m_logger;
+
     std::unique_ptr<Window> m_window;
     Scene m_scene;
     unsigned int m_target_fps;
@@ -51,6 +51,8 @@ class Engine
         bool m_down_key_pressed;
 
     } m_keyboard_info;
+
+    Logger m_logger{"rt"};
 
     void on_key_press(int key_code, int action);
     void on_resize(int width, int height);

@@ -13,6 +13,8 @@ set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES CXX_STANDARD 20)
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE include/)
 
+target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE $<$<CONFIG:Debug>:RT_DEBUG=1>)
+
 if (UNIX)
     execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink ${CMAKE_CURRENT_SOURCE_DIR}/resources ${CMAKE_BINARY_DIR}/resources)
 else()

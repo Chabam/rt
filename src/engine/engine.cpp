@@ -12,8 +12,7 @@
 static constexpr auto NAME = "rt";
 
 Engine::Engine()
-    : m_logger(NAME)
-    , m_window()
+    : m_window()
     , m_scene()
     , m_target_fps(-1)
     , m_frame_count()
@@ -222,15 +221,15 @@ void Engine::handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum sever
     switch (severity)
     {
     case GL_DEBUG_SEVERITY_HIGH:
-        level = Logger::Level::ERROR;
+        level = Logger::Level::Error;
         break;
     case GL_DEBUG_SEVERITY_MEDIUM:
-        level = Logger::Level::WARN;
+        level = Logger::Level::Warn;
         break;
     default:
     case GL_DEBUG_SEVERITY_LOW:
     case GL_DEBUG_SEVERITY_NOTIFICATION:
-        level = Logger::Level::DEBUG;
+        level = Logger::Level::Debug;
         return;
     }
     Logger{"OpenGL"}.log(level, "{}", message);

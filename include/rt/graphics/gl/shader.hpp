@@ -1,6 +1,8 @@
 #ifndef RT_SHADER_H
 #define RT_SHADER_H
 
+#include <rt/utils/logger.hpp>
+
 #include <glad/gl.h>
 #include <optional>
 #include <string>
@@ -23,12 +25,14 @@ class Shader
     Shader(Shader&) = delete;
     Shader& operator=(Shader&) = delete;
 
-    GLuint getId() const { return m_id; }
+    GLuint get_id() const { return m_id; }
 
     static std::optional<Shader> try_compile(Type type, const char* source) noexcept;
 
   private:
     GLuint m_id;
+    Type m_type;
+    Logger m_logger{"Shader"};
 };
 
 #endif // RT_SHADER_H

@@ -4,8 +4,7 @@
 #include <GLFW/glfw3.h>
 
 Window::Window(unsigned int width, unsigned int height, const char* title)
-    : m_logger{std::vformat("window|{}", std::make_format_args(title)).c_str()}
-    , m_width{width}
+    : m_width{width}
     , m_height{height}
     , m_title{title}
     , m_ptr{glfwCreateWindow(width, height, title, nullptr, nullptr)}
@@ -18,6 +17,9 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
     {
         throw std::runtime_error("Could not create a GLWF window!");
     }
+
+    m_logger.add_subcategory(title);
+
     glfwSetWindowAspectRatio(m_ptr, 16, 9);
 
     using namespace std::placeholders;
@@ -54,38 +56,15 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
 
     glfwMakeContextCurrent(m_ptr);
     glfwSwapInterval(0);
+
+    m_logger.debug("Window created");
 }
 
 Window::~Window()
 {
     glfwDestroyWindow(m_ptr);
+    m_logger.debug("Window destroyed");
 }
-
-// Window::Window(Window&& other)
-//     : m_logger{std::move(other.m_logger)}
-//     , m_width{std::move(other.m_width)}
-//     , m_height{std::move(other.m_height)}
-//     , m_title{std::move(other.m_title)}
-//     , m_window_resize_callback{std::move(other.m_window_resize_callback)}
-//     , m_window_key_press_callback{std::move(other.m_window_key_press_callback)}
-//     , m_mouse_button_pressed_callback{std::move(other.m_mouse_button_pressed_callback)}
-//     , m_mouse_position_changed_callback{std::move(other.m_mouse_position_changed_callback)}
-// {
-// }
-
-// Window& Window::operator=(Window&& other)
-// {
-//     m_logger = std::move(other.m_logger);
-//     m_width = std::move(other.m_width);
-//     m_height = std::move(other.m_height);
-//     m_title = std::move(other.m_title);
-//     m_window_resize_callback = std::move(other.m_window_resize_callback);
-//     m_window_key_press_callback = std::move(other.m_window_key_press_callback);
-//     m_mouse_button_pressed_callback = std::move(other.m_mouse_button_pressed_callback);
-//     m_mouse_position_changed_callback = std::move(other.m_mouse_position_changed_callback);
-
-//     return *this;
-// }
 
 void Window::set_title(const char* title)
 {

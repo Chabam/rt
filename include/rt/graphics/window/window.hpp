@@ -32,7 +32,7 @@ class Window
     void swap_buffers();
 
   private:
-    Logger m_logger;
+    Logger m_logger{"Window"};
     unsigned int m_width;
     unsigned int m_height;
     const char* m_title;

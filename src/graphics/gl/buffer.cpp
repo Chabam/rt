@@ -17,6 +17,8 @@ Buffer::Buffer(const std::span<const Vertex>& vertices)
 
     glCreateVertexArrays(1, &m_vao);
 
+    m_logger.add_subcategory(std::vformat("vbo:{},vao:{}", std::make_format_args(m_vbo, m_vao)));
+
     glVertexArrayVertexBuffer(m_vao, 0, m_vbo, 0, sizeof(Vertex));
 
     for (const VertexAttributeDescription& verticesAttribute : Vertex::get_attributes_description())
@@ -26,12 +28,15 @@ Buffer::Buffer(const std::span<const Vertex>& vertices)
                                   verticesAttribute.m_type, GL_FALSE, verticesAttribute.m_offset);
         glVertexArrayAttribBinding(m_vao, verticesAttribute.m_location, 0);
     }
+
+    m_logger.debug("Created the buffer with {} vertices", m_data.size());
 }
 
 Buffer::~Buffer()
 {
     glDeleteBuffers(1, &m_vbo);
     glDeleteVertexArrays(1, &m_vao);
+    m_logger.debug("Buffer destroyed");
 }
 
 void Buffer::bind() const
