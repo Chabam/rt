@@ -6,10 +6,11 @@
 
 #include <array>
 
-// TODO: Implement indices
 class Cube final : public Mesh
 {
   public:
+    static constexpr auto POINT_COUNT = 8;
+
     Cube(float width, float height, float depth, const std::shared_ptr<Material>& material);
 
     uint32_t get_triangle_count() const override;

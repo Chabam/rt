@@ -5,19 +5,25 @@
 
 #include <array>
 
-class Quad
+struct Quad
 {
-  public:
+    static constexpr auto POINT_COUNT = 4;
     static constexpr auto TRIANGLE_COUNT = 2;
     static constexpr auto VERTEX_COUNT = Triangle::VERTEX_COUNT * TRIANGLE_COUNT;
-    Quad(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& p4);
+
+    Quad() = default;
+    Quad(const std::array<glm::vec3, POINT_COUNT>& pts);
+    Quad(const std::array<std::tuple<glm::vec3, unsigned short>, POINT_COUNT>& idx_pts);
+
     Quad(const Quad& other);
     Quad& operator=(const Quad& other);
 
-    std::array<Vertex, VERTEX_COUNT> get_vertices() const;
+    Quad(Quad&& other);
+    Quad& operator=(Quad&& other);
 
-    std::array<glm::vec3, 4> m_p;
-    std::array<Triangle, TRIANGLE_COUNT> m_triangles;
+    std::array<Vertex, POINT_COUNT> m_vertices;
+    std::array<unsigned short, VERTEX_COUNT> m_indices;
+    glm::vec3 m_normal;
 };
 
 #endif // RT_QUAD_H

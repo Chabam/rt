@@ -11,16 +11,19 @@
 class Buffer
 {
   public:
-    Buffer(const std::span<const Vertex>& vertices);
+    Buffer(const std::span<const Vertex>& vertices, const std::span<const unsigned short>& indices);
     ~Buffer();
 
     void bind() const;
-    const std::vector<Vertex>& get_data() const { return m_data; }
+    const std::vector<Vertex>& get_vertices() const { return m_vertices; }
+    const std::vector<unsigned short>& get_indices() const { return m_indices; }
 
   private:
     GLuint m_vao;
     GLuint m_vbo;
-    std::vector<Vertex> m_data;
+    GLuint m_ibo;
+    std::vector<Vertex> m_vertices;
+    std::vector<unsigned short> m_indices;
 
     Logger m_logger{"Buffer"};
 };

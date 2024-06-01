@@ -76,11 +76,13 @@ Shader::~Shader()
 Shader::Shader(Shader&& other)
 {
     m_id = std::move(other.m_id);
+    other.m_id = 0;
 }
 
 Shader& Shader::operator=(Shader&& other)
 {
     m_id = std::move(other.m_id);
+    other.m_id = 0;
 
     return *this;
 }

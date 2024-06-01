@@ -18,9 +18,13 @@ class Mesh
 {
   public:
     Mesh(const std::shared_ptr<Material>& material);
+    virtual ~Mesh();
+
     Mesh(const Mesh& other);
     Mesh& operator=(const Mesh& other);
-    virtual ~Mesh();
+
+    Mesh(Mesh&& other);
+    Mesh& operator=(Mesh&& other);
 
     virtual uint32_t get_triangle_count() const = 0;
 

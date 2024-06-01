@@ -6,20 +6,23 @@
 #include <array>
 #include <glm/vec3.hpp>
 
-class Triangle
+struct Triangle
 {
-  public:
-    static constexpr auto VERTEX_COUNT = 3;
+    static constexpr auto POINT_COUNT = 3;
+    static constexpr auto VERTEX_COUNT = POINT_COUNT;
 
-    Triangle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3);
+    Triangle(const std::array<glm::vec3, POINT_COUNT>& pts);
+    Triangle(const std::array<std::tuple<glm::vec3, unsigned short>, POINT_COUNT>& idx_pts);
+
     Triangle(const Triangle& other);
-    Triangle(Triangle&& other);
     Triangle& operator=(const Triangle& other);
 
-    std::array<glm::vec3, 3> m_p;
-    glm::vec3 m_normal;
+    Triangle(Triangle&& other);
+    Triangle& operator=(Triangle&& other);
 
-    std::array<Vertex, VERTEX_COUNT> get_vertices() const;
+    std::array<Vertex, POINT_COUNT> m_vertices;
+    std::array<unsigned short, VERTEX_COUNT> m_indices;
+    glm::vec3 m_normal;
 };
 
 #endif // RT_TRIANGLE_H

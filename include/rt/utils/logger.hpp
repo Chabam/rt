@@ -24,8 +24,6 @@ struct Logger
 #endif // RT_DEBUG
 
     Logger(const std::string& category, Level lowest_enabled_level = GLOBAL_DEFAULT, std::ostream& ostream = std::cout);
-    Logger(Logger&& other);
-    Logger& operator=(Logger&& other);
 
     template <typename... Args> void log(Level level, std::string_view text, const Args&... args)
     {

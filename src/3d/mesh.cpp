@@ -9,27 +9,45 @@
 #include <algorithm>
 
 Mesh::Mesh(const std::shared_ptr<Material>& material)
-    : m_buffer()
-    , m_material(material)
-    , m_model(glm::mat4(1.f))
-    , m_normal_matrix(glm::transpose(glm::inverse(m_model)))
+    : m_buffer{}
+    , m_material{material}
+    , m_model{glm::mat4(1.f)}
+    , m_normal_matrix{glm::transpose(glm::inverse(m_model))}
 {
 }
 
 Mesh::Mesh(const Mesh& other)
-    : m_buffer(std::make_unique<Buffer>(other.m_buffer->get_data()))
-    , m_material(other.m_material)
-    , m_model(other.m_model)
-    , m_normal_matrix(other.m_normal_matrix)
+    : m_buffer{std::make_unique<Buffer>(other.m_buffer->get_vertices(), other.m_buffer->get_indices())}
+    , m_material{other.m_material}
+    , m_model{other.m_model}
+    , m_normal_matrix{other.m_normal_matrix}
 {
 }
 
 Mesh& Mesh::operator=(const Mesh& other)
 {
-    m_buffer = std::make_unique<Buffer>(other.m_buffer->get_data());
+    m_buffer = std::make_unique<Buffer>(other.m_buffer->get_vertices(), other.m_buffer->get_indices());
     m_material = other.m_material;
     m_model = other.m_model;
     m_normal_matrix = other.m_normal_matrix;
+
+    return *this;
+}
+
+Mesh::Mesh(Mesh&& other)
+    : m_buffer{std::move(other.m_buffer)}
+    , m_material{std::move(other.m_material)}
+    , m_model{std::move(other.m_model)}
+    , m_normal_matrix{std::move(other.m_normal_matrix)}
+{
+}
+
+Mesh& Mesh::operator=(Mesh&& other)
+{
+    m_buffer = std::move(other.m_buffer);
+    m_material = std::move(other.m_material);
+    m_model = std::move(other.m_model);
+    m_normal_matrix = std::move(other.m_normal_matrix);
 
     return *this;
 }
@@ -60,5 +78,5 @@ void Mesh::render(const Camera& camera, const Light& light) const
                                  camera.get_position(), light);
 
     m_buffer->bind();
-    glDrawArrays(GL_TRIANGLES, 0, get_triangle_count() * Triangle::VERTEX_COUNT);
+    glDrawElements(GL_TRIANGLES, get_triangle_count() * Triangle::VERTEX_COUNT, GL_UNSIGNED_SHORT, nullptr);
 }

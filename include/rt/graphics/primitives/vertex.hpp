@@ -5,7 +5,7 @@
 #include <glad/gl.h>
 #include <glm/vec3.hpp>
 
-struct VertexAttributeDescription
+struct VertexAttributeLayout
 {
     GLuint m_location;
     GLuint m_count;
@@ -20,7 +20,7 @@ struct Vertex
     glm::vec3 m_position;
     glm::vec3 m_normal;
 
-    constexpr static std::array<VertexAttributeDescription, ATTRIBUTES_COUNT> get_attributes_description()
+    constexpr static std::array<VertexAttributeLayout, ATTRIBUTES_COUNT> get_attributes_layout()
     {
         auto location = 0U;
         // clang-format off
