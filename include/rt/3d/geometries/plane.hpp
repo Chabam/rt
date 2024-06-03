@@ -4,7 +4,6 @@
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/primitives/quad.hpp>
 
-// TODO: Implement indices
 class Plane final : public Mesh
 {
   public:
