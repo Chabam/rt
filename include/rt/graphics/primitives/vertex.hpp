@@ -1,5 +1,5 @@
-#ifndef RT_VERTICE_BUFFER_DATA_H
-#define RT_VERTICE_BUFFER_DATA_H
+#ifndef RT_VERTEX_H
+#define RT_VERTEX_H
 
 #include <array>
 #include <glad/gl.h>
@@ -45,4 +45,4 @@ struct Vertex
     }
 };
 
-#endif // RT_VERTICE_BUFFER_DATA_H
+#endif // RT_VERTEX_H
