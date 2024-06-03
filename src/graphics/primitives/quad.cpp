@@ -6,20 +6,10 @@
 
 Quad::Quad(const std::array<glm::vec3, POINT_COUNT>& pts)
     : m_vertices{}
-    , m_indices{{0, 1, 2, 2, 3, 0}}
+    , m_indices{0, 1, 2, 2, 3, 0}
     , m_normal{Triangle{{pts[0], pts[1], pts[2]}}.m_normal}
 {
     std::ranges::transform(pts, m_vertices.begin(), [this](const glm::vec3& point) { return Vertex{point, m_normal}; });
-}
-
-Quad::Quad(const std::array<std::tuple<glm::vec3, unsigned short>, POINT_COUNT>& idx_pts)
-    : m_vertices{}
-    , m_indices{{std::get<1>(idx_pts[0]), std::get<1>(idx_pts[1]), std::get<1>(idx_pts[2]), std::get<1>(idx_pts[2]),
-                 std::get<1>(idx_pts[3]), std::get<1>(idx_pts[0])}}
-    , m_normal{Triangle{{idx_pts[0], idx_pts[1], idx_pts[2]}}.m_normal}
-{
-    std::ranges::transform(idx_pts, m_vertices.begin(),
-                           [this](const auto& point) { return Vertex{std::get<0>(point), m_normal}; });
 }
 
 Quad::Quad(const Quad& other)

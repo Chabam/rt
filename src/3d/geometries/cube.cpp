@@ -2,9 +2,7 @@
 #include <rt/graphics/gl/buffer.hpp>
 
 #include <algorithm>
-#include <cassert>
 #include <glm/ext/matrix_transform.hpp>
-#include <iterator>
 
 Cube::Cube(float width, float height, float depth, const std::shared_ptr<Material>& material)
     : Mesh{material}
@@ -12,24 +10,22 @@ Cube::Cube(float width, float height, float depth, const std::shared_ptr<Materia
 {
     set_model(glm::scale(m_model, glm::vec3(width, height, depth)));
 
-    constexpr std::array<std::tuple<glm::vec3, unsigned short>, POINT_COUNT> p = {
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{1.f, 1.f, -1.f}, 0),
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{1.f, 1.f, 1.f}, 1),
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{1.f, -1.f, 1.f}, 2),
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{1.f, -1.f, -1.f}, 3),
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{-1.f, 1.f, 1.f}, 4),
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{-1.f, 1.f, -1.f}, 5),
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{-1.f, -1.f, -1.f}, 6),
-        std::make_tuple<glm::vec3, unsigned short>(glm::vec3{-1.f, -1.f, 1.f}, 7),
-    };
+    constexpr glm::vec3 p1 = {1.f, 1.f, -1.f};
+    constexpr glm::vec3 p2 = {1.f, 1.f, 1.f};
+    constexpr glm::vec3 p3 = {1.f, -1.f, 1.f};
+    constexpr glm::vec3 p4 = {1.f, -1.f, -1.f};
+    constexpr glm::vec3 p5 = {-1.f, 1.f, 1.f};
+    constexpr glm::vec3 p6 = {-1.f, 1.f, -1.f};
+    constexpr glm::vec3 p7 = {-1.f, -1.f, -1.f};
+    constexpr glm::vec3 p8 = {-1.f, -1.f, 1.f};
 
     m_quads = {
-        Quad{{p[0], p[1], p[2], p[3]}}, // RIGHT
-        Quad{{p[4], p[5], p[6], p[7]}}, // LEFT
-        Quad{{p[5], p[4], p[1], p[0]}}, // TOP
-        Quad{{p[6], p[7], p[2], p[3]}}, // BOTTOM
-        Quad{{p[5], p[0], p[3], p[6]}}, // FRONT
-        Quad{{p[1], p[4], p[7], p[2]}}  // BACK
+        Quad{{p1, p2, p3, p4}}, // RIGHT
+        Quad{{p5, p6, p7, p8}}, // LEFT
+        Quad{{p6, p5, p2, p1}}, // TOP
+        Quad{{p7, p8, p3, p4}}, // BOTTOM
+        Quad{{p6, p1, p4, p7}}, // FRONT
+        Quad{{p2, p5, p8, p3}}  // BACK
     };
 
     constexpr auto quad_count = std::tuple_size_v<decltype(m_quads)>;
@@ -40,13 +36,13 @@ Cube::Cube(float width, float height, float depth, const std::shared_ptr<Materia
     auto indices_offset = 0;
     for (const Quad& quad : m_quads)
     {
+        std::ranges::transform(quad.m_indices, indices.begin() + indices_offset,
+                               [vertices_offset](unsigned short idx) { return idx + vertices_offset; });
+        indices_offset += Quad::VERTEX_COUNT;
+
         std::ranges::move(quad.m_vertices, vertices.begin() + vertices_offset);
         vertices_offset += Quad::POINT_COUNT;
-
-        std::ranges::move(quad.m_indices, indices.begin() + indices_offset);
-        indices_offset += Quad::VERTEX_COUNT;
     }
-
     m_buffer = std::make_unique<Buffer>(vertices, indices);
 }
 

@@ -13,7 +13,6 @@ struct Quad
 
     Quad() = default;
     Quad(const std::array<glm::vec3, POINT_COUNT>& pts);
-    Quad(const std::array<std::tuple<glm::vec3, unsigned short>, POINT_COUNT>& idx_pts);
 
     Quad(const Quad& other);
     Quad& operator=(const Quad& other);

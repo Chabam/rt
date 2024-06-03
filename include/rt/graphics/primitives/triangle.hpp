@@ -12,7 +12,6 @@ struct Triangle
     static constexpr auto VERTEX_COUNT = POINT_COUNT;
 
     Triangle(const std::array<glm::vec3, POINT_COUNT>& pts);
-    Triangle(const std::array<std::tuple<glm::vec3, unsigned short>, POINT_COUNT>& idx_pts);
 
     Triangle(const Triangle& other);
     Triangle& operator=(const Triangle& other);
