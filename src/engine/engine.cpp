@@ -89,8 +89,8 @@ void Engine::create_window(unsigned int width, unsigned int height, const char* 
     using namespace std::placeholders;
     m_window->set_resize_callback(std::bind(&Engine::on_resize, this, _1, _2));
     m_window->set_key_press_callback(std::bind(&Engine::on_key_press, this, _1, _2));
-    m_window->set_mose_button_pressed_callback(std::bind(&Engine::on_mouse_pressed, this, _1, _2, _3));
-    m_window->set_mouse_pos_changed_callaback(std::bind(&Engine::on_mouse_pos_changed, this, _1, _2));
+    m_window->set_mouse_button_pressed_callback(std::bind(&Engine::on_mouse_pressed, this, _1, _2, _3));
+    m_window->set_mouse_pos_changed_callback(std::bind(&Engine::on_mouse_pos_changed, this, _1, _2));
 
     m_logger.debug("Init glad");
     if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))

@@ -114,12 +114,12 @@ void Window::set_key_press_callback(const KeyPressCallback& cb)
     m_window_key_press_callback = cb;
 }
 
-void Window::set_mouse_pos_changed_callaback(const MousePositionChangedCallback& cb)
+void Window::set_mouse_pos_changed_callback(const MousePositionChangedCallback& cb)
 {
     m_mouse_position_changed_callback = cb;
 }
 
-void Window::set_mose_button_pressed_callback(const MouseButtonPressedCallback& cb)
+void Window::set_mouse_button_pressed_callback(const MouseButtonPressedCallback& cb)
 {
     m_mouse_button_pressed_callback = cb;
 }

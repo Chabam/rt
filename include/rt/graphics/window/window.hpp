@@ -27,8 +27,8 @@ class Window
     unsigned int get_height() const;
     void set_resize_callback(const WindowResizeCallback& cb);
     void set_key_press_callback(const KeyPressCallback& cb);
-    void set_mose_button_pressed_callback(const MouseButtonPressedCallback& cb);
-    void set_mouse_pos_changed_callaback(const MousePositionChangedCallback& cb);
+    void set_mouse_button_pressed_callback(const MouseButtonPressedCallback& cb);
+    void set_mouse_pos_changed_callback(const MousePositionChangedCallback& cb);
     void swap_buffers();
 
   private:
