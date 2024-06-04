@@ -80,6 +80,13 @@
                 "win-x64",
                 "debug"
             ]
+        },
+        {
+            "name": "win-x64-rls",
+            "inherits": [
+                "win-x64",
+                "release"
+            ]
         }
     ]
 }

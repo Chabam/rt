@@ -3,8 +3,6 @@
 
 #include <filesystem>
 #include <fstream>
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/string_cast.hpp>
 
 std::ifstream FileHandler::open_file_stream(const char* path, std::ios_base::openmode open_mode)
 {
@@ -44,37 +42,39 @@ Image FileHandler::get_file_as_image(const char* path)
         throw std::runtime_error("Only PPM file format is supported for the moment!");
     }
 
+    while (file.peek() == '#')
+        std::getline(file, str_read);
+
     // Only supporting PPM with full RGB
     const unsigned char version = str_read[1];
 
     Image out_img;
-    std::string size_value;
-    std::getline(file, size_value, ' ');
-    out_img.m_width = std::stoi(size_value);
+    std::getline(file, str_read, ' ');
+    out_img.m_width = std::stoull(str_read);
 
-    std::getline(file, size_value);
-    out_img.m_height = std::stoi(size_value);
+    std::getline(file, str_read);
+    out_img.m_height = std::stoull(str_read);
+
+    unsigned char max_value = 1;
 
     if (version > 4)
     {
-        // skipping channel size, assuming 255
-        std::getline(file, size_value);
+        std::getline(file, str_read);
+        max_value = std::stoi(str_read);
     }
 
     const size_t total_pixels = out_img.m_width * out_img.m_height;
     out_img.m_pixels.reserve(total_pixels);
 
-    for (size_t i = 0; i < total_pixels; ++i)
+    char c;
+    while (file >> c)
     {
-        out_img.m_pixels.push_back(file.get());
-        out_img.m_pixels.push_back(file.get());
-        out_img.m_pixels.push_back(file.get());
-    }
-
-    file.get();
-    if (!file.eof())
-    {
-        throw std::runtime_error("File should have been read!");
+        char r = c;
+        file >> c;
+        char g = c;
+        file >> c;
+        char b = c;
+        out_img.m_pixels.emplace_back(r, g, b);
     }
 
     return out_img;

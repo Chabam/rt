@@ -37,5 +37,5 @@ void main()
 
     vec3 specular = pow(max(dot(normal, halfwayDir), 0.0), shininess) * specularStr * lightColor;
 
-    fragColor = texture(inTexture, texCoord) * vec4((ambient + diffuse + specular) * color, 1.0);
+    fragColor = texture(inTexture, texCoord) + vec4((ambient + diffuse + specular) * color, 1.0);
 }

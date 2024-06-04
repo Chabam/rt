@@ -24,7 +24,7 @@ int main(void)
     BlinnPhong ground_green{{.m_color = {0.f, 0.75f, 0.f}, .m_specular = 1.f, .m_shininess = 128}};
     BlinnPhong light{{.m_emitsLight = true}};
 
-    auto smiley_tex = std::make_shared<Texture>(FileHandler::get_file_as_image("resources/textures/smiley.ppm"));
+    auto tex = std::make_shared<Texture>(FileHandler::get_file_as_image("resources/textures/smiley.ppm"));
 
     Scene scene;
     {
@@ -40,20 +40,20 @@ int main(void)
     }
 
     {
-        auto ground = std::make_shared<Plane>(1, 1, std::make_shared<BlinnPhong>(ground_green), smiley_tex);
+        auto ground = std::make_shared<Plane>(1, 1, std::make_shared<BlinnPhong>(ground_green), tex);
         ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::rotate(ground->get_model(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
         ground->set_model(glm::scale(ground->get_model(), glm::vec3(5.f, 5.f, 5.f)));
         scene.add_mesh(ground);
     }
     {
-        glm::vec3 ligth_position(0.f, 0.2f, 0.5f);
+        glm::vec3 light_position(0.f, 0.2f, 0.5f);
         auto light_indicator = std::make_shared<Cube>(1, 1, 1, std::make_shared<BlinnPhong>(light));
-        light_indicator->set_model(glm::translate(light_indicator->get_model(), ligth_position));
+        light_indicator->set_model(glm::translate(light_indicator->get_model(), light_position));
         light_indicator->set_model(glm::scale(light_indicator->get_model(), glm::vec3(0.1f, 0.1f, 0.1f)));
         scene.add_mesh(light_indicator);
 
-        scene.set_light({.m_ambient = 0.1f, .m_pos = ligth_position, .m_color = glm::vec3(1.f, 1.f, 1.f)});
+        scene.set_light({.m_ambient = 0.1f, .m_pos = light_position, .m_color = glm::vec3(1.f, 1.f, 1.f)});
     }
 
     engine.set_scene(scene);

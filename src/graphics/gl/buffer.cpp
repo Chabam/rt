@@ -50,3 +50,8 @@ void Buffer::bind() const
 {
     glBindVertexArray(m_vao);
 }
+
+void Buffer::unbind() const
+{
+    glBindVertexArray(0);
+}

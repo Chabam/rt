@@ -82,7 +82,12 @@ void Mesh::render(const Camera& camera, const Light& light) const
     m_buffer->bind();
     if (m_texture)
     {
-        glBindTextureUnit(0, m_texture->get_id());
+        m_texture->bind();
     }
     glDrawElements(GL_TRIANGLES, get_triangle_count() * Triangle::VERTEX_COUNT, GL_UNSIGNED_SHORT, nullptr);
+    m_buffer->unbind();
+    if (m_texture)
+    {
+        m_texture->unbind();
+    }
 }
