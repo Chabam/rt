@@ -11,7 +11,8 @@ class Texture
     Texture(const Image& image);
     ~Texture();
 
-    GLuint get_id() const { return m_id; }
+    void bind() const;
+    void unbind() const;
 
   private:
     GLuint m_id;

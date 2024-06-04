@@ -15,6 +15,7 @@ class Buffer
     ~Buffer();
 
     void bind() const;
+    void unbind() const;
     const std::vector<Vertex>& get_vertices() const { return m_vertices; }
     const std::vector<unsigned short>& get_indices() const { return m_indices; }
 
