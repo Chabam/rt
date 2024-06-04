@@ -11,13 +11,14 @@ class Buffer;
 class Camera;
 class Light;
 class Material;
+class Texture;
 class Triangle;
 class Shader;
 
 class Mesh
 {
   public:
-    Mesh(const std::shared_ptr<Material>& material);
+    Mesh(const std::shared_ptr<Material>& material, const std::shared_ptr<Texture>& texture = {});
     virtual ~Mesh();
 
     Mesh(const Mesh& other);
@@ -36,6 +37,7 @@ class Mesh
   protected:
     std::unique_ptr<Buffer> m_buffer;
     std::shared_ptr<Material> m_material;
+    std::shared_ptr<Texture> m_texture;
     glm::mat4 m_model;
     glm::mat3 m_normal_matrix;
 };

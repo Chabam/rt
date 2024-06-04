@@ -12,9 +12,9 @@ static const std::shared_ptr<ShaderProgram>& get_blinn_phong_shader()
 
     blinn_phong_shader = std::make_shared<ShaderProgram>();
     static std::shared_ptr<Shader> blinn_phong_vert = std::make_shared<Shader>(
-        Shader::Type::Vertex, FileHandler::get_file_content("resources/shaders/blinn-phong.vert").c_str());
+        Shader::Type::Vertex, FileHandler::get_file_as_text("resources/shaders/blinn-phong.vert").c_str());
     static std::shared_ptr<Shader> blinn_phong_frag = std::make_shared<Shader>(
-        Shader::Type::Fragment, FileHandler::get_file_content("resources/shaders/blinn-phong.frag").c_str());
+        Shader::Type::Fragment, FileHandler::get_file_as_text("resources/shaders/blinn-phong.frag").c_str());
 
     blinn_phong_shader->attach_shader(blinn_phong_vert);
     blinn_phong_shader->attach_shader(blinn_phong_frag);

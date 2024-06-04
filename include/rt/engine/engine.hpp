@@ -3,6 +3,7 @@
 
 #include <rt/3d/scene/scene.hpp>
 #include <rt/graphics/window/window.hpp>
+#include <rt/utils/file_handler.hpp>
 #include <rt/utils/logger.hpp>
 
 #include <chrono>

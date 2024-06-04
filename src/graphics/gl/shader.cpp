@@ -60,6 +60,7 @@ Shader::Shader(Type type, const char* source)
         {
             out << character;
         }
+        m_logger.error("Compilation error: {}", out.str());
 
         throw std::runtime_error(out.str());
     }

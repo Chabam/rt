@@ -9,8 +9,9 @@ constexpr glm::vec3 p2 = {1.f, 1.f, 0.f};
 constexpr glm::vec3 p3 = {1.f, -1.f, 0.f};
 constexpr glm::vec3 p4 = {-1.f, -1.f, 0.f};
 
-Plane::Plane(float width, float height, const std::shared_ptr<Material>& material)
-    : Mesh(material)
+Plane::Plane(float width, float height, const std::shared_ptr<Material>& material,
+             const std::shared_ptr<Texture>& texture)
+    : Mesh(material, texture)
     , m_quad{{p1, p2, p3, p4}}
 {
     m_model *= glm::scale(m_model, glm::vec3(width, height, 1.f));

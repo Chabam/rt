@@ -3,6 +3,7 @@
 
 #include <array>
 #include <glad/gl.h>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
 struct VertexAttributeLayout
@@ -15,10 +16,11 @@ struct VertexAttributeLayout
 
 struct Vertex
 {
-    static constexpr auto ATTRIBUTES_COUNT = 2U;
+    static constexpr auto ATTRIBUTES_COUNT = 3U;
 
     glm::vec3 m_position;
     glm::vec3 m_normal;
+    glm::vec2 m_uv;
 
     constexpr static std::array<VertexAttributeLayout, ATTRIBUTES_COUNT> get_attributes_layout()
     {
@@ -38,6 +40,12 @@ struct Vertex
                     .m_count = decltype(Vertex::m_normal)::length(),
                     .m_type = GL_FLOAT,
                     .m_offset = sizeof(Vertex::m_position)
+                },
+                {
+                    .m_location = location++,
+                    .m_count = decltype(Vertex::m_uv)::length(),
+                    .m_type = GL_FLOAT,
+                    .m_offset = sizeof(Vertex::m_position) + sizeof(Vertex::m_normal)
                 }
             }
         };

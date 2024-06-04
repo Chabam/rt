@@ -3,14 +3,16 @@
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/gl/buffer.hpp>
 #include <rt/graphics/gl/shader.hpp>
+#include <rt/graphics/gl/texture.hpp>
 #include <rt/graphics/primitives/triangle.hpp>
 #include <rt/utils/logger.hpp>
 
 #include <algorithm>
 
-Mesh::Mesh(const std::shared_ptr<Material>& material)
+Mesh::Mesh(const std::shared_ptr<Material>& material, const std::shared_ptr<Texture>& texture)
     : m_buffer{}
     , m_material{material}
+    , m_texture{texture}
     , m_model{glm::mat4(1.f)}
     , m_normal_matrix{glm::transpose(glm::inverse(m_model))}
 {
@@ -78,5 +80,9 @@ void Mesh::render(const Camera& camera, const Light& light) const
                                  camera.get_position(), light);
 
     m_buffer->bind();
+    if (m_texture)
+    {
+        glBindTextureUnit(0, m_texture->get_id());
+    }
     glDrawElements(GL_TRIANGLES, get_triangle_count() * Triangle::VERTEX_COUNT, GL_UNSIGNED_SHORT, nullptr);
 }

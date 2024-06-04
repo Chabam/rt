@@ -7,7 +7,8 @@
 class Plane final : public Mesh
 {
   public:
-    Plane(float width, float height, const std::shared_ptr<Material>& material);
+    Plane(float width, float height, const std::shared_ptr<Material>& material,
+          const std::shared_ptr<Texture>& texture = {});
 
     uint32_t get_triangle_count() const override;
 

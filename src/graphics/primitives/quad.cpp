@@ -4,12 +4,18 @@
 #include <glm/geometric.hpp>
 #include <ranges>
 
+constexpr std::array<glm::vec2, Quad::POINT_COUNT> default_uvs = {glm::vec2{0.f, 1.f}, glm::vec2{1.f, 1.f},
+                                                                  glm::vec2{1.f, 0.f}, glm::vec2{0.f, 0.f}};
+
 Quad::Quad(const std::array<glm::vec3, POINT_COUNT>& pts)
     : m_vertices{}
     , m_indices{0, 1, 2, 2, 3, 0}
     , m_normal{Triangle{{pts[0], pts[1], pts[2]}}.m_normal}
 {
-    std::ranges::transform(pts, m_vertices.begin(), [this](const glm::vec3& point) { return Vertex{point, m_normal}; });
+    for (size_t i = 0; i < POINT_COUNT; ++i)
+    {
+        m_vertices[i] = Vertex{pts[i], m_normal, default_uvs[i]};
+    }
 }
 
 Quad::Quad(const Quad& other)
