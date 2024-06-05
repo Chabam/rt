@@ -17,6 +17,14 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
+  stb
+  GIT_REPOSITORY https://github.com/nothings/stb.git
+  GIT_TAG        master
+  GIT_SHALLOW    TRUE
+  GIT_PROGRESS   TRUE
+)
+
+FetchContent_Declare(
   glad
   GIT_REPOSITORY https://github.com/Dav1dde/glad.git
   GIT_TAG        glad2
@@ -31,4 +39,10 @@ if (NOT glad_POPULATED)
   glad_add_library(glad STATIC REPRODUCIBLE LOADER LANGUAGE C API gl:core=4.6)
 endif()
 
-FetchContent_MakeAvailable(glfw glm glad)
+FetchContent_GetProperties(stb)
+if (NOT stb_POPULATED)
+  FetchContent_Populate(stb)
+  target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${stb_SOURCE_DIR})
+endif()
+
+FetchContent_MakeAvailable(glfw glm glad stb)

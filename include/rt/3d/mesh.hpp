@@ -33,6 +33,8 @@ class Mesh
 
     void set_model(const glm::mat4& trans);
     const glm::mat4& get_model() const;
+    const glm::mat3& get_normal_matrix() const;
+    bool has_texture() const;
 
   protected:
     std::unique_ptr<Buffer> m_buffer;

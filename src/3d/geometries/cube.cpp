@@ -4,8 +4,9 @@
 #include <algorithm>
 #include <glm/ext/matrix_transform.hpp>
 
-Cube::Cube(float width, float height, float depth, const std::shared_ptr<Material>& material)
-    : Mesh{material}
+Cube::Cube(float width, float height, float depth, const std::shared_ptr<Material>& material,
+           const std::shared_ptr<Texture>& texture)
+    : Mesh{material, texture}
     , m_quads{}
 {
     set_model(glm::scale(m_model, glm::vec3(width, height, depth)));

@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.22)
 
 project(rt)
 
-add_subdirectory(external)
-
 add_executable(${CMAKE_PROJECT_NAME})
+
+add_subdirectory(external)
 
 add_subdirectory(src)
 

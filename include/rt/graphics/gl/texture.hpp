@@ -8,7 +8,7 @@
 class Texture
 {
   public:
-    Texture(const Image& image);
+    Texture(const std::shared_ptr<Image>& image);
     ~Texture();
 
     void bind() const;
@@ -16,7 +16,7 @@ class Texture
 
   private:
     GLuint m_id;
-    Image m_image;
+    std::shared_ptr<Image> m_image;
 };
 
 #endif // RT_TEXTURE_H

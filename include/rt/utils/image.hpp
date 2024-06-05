@@ -1,22 +1,23 @@
 #ifndef RT_IMAGE_H
 #define RT_IMAGE_H
 
-#include <stddef.h>
-#include <vector>
-
-struct Pixel
-{
-    char r;
-    char g;
-    char b;
-};
+#include <functional>
+#include <memory>
+#include <stb_image.h>
 
 struct Image
 {
-    size_t m_width;
-    size_t m_height;
+    Image(const char* path);
 
-    std::vector<Pixel> m_pixels;
+    Image(Image&& other);
+    Image& operator=(Image&& other);
+
+    const char* m_path;
+    int m_width;
+    int m_height;
+    int m_channels;
+
+    std::unique_ptr<stbi_uc, std::function<void(void*)>> m_pixels;
 };
 
 #endif // RT_IMAGE_H

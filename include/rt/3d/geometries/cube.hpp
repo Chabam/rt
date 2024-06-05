@@ -11,7 +11,8 @@ class Cube final : public Mesh
   public:
     static constexpr auto POINT_COUNT = 8;
 
-    Cube(float width, float height, float depth, const std::shared_ptr<Material>& material);
+    Cube(float width, float height, float depth, const std::shared_ptr<Material>& material,
+         const std::shared_ptr<Texture>& texture = {});
 
     uint32_t get_triangle_count() const override;
 

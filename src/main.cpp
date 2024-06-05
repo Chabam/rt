@@ -19,28 +19,29 @@ int main(void)
 
     engine.create_window(1280, 720, "rt");
 
-    BlinnPhong mat_red{{.m_color = {1.f, 0.f, 0.f}}};
-    BlinnPhong shiny_blue{{.m_color = {0.f, 0.f, 0.75f}, .m_specular = 1.f, .m_shininess = 128}};
+    BlinnPhong mat_black{{.m_color = {0.f, 0.f, 0.f}}};
+    BlinnPhong shiny_blue{{.m_color = {0.f, 0.f, 0.f}, .m_specular = 1.f, .m_shininess = 128}};
     BlinnPhong ground_green{{.m_color = {0.f, 0.75f, 0.f}, .m_specular = 1.f, .m_shininess = 128}};
     BlinnPhong light{{.m_emitsLight = true}};
 
-    auto tex = std::make_shared<Texture>(FileHandler::get_file_as_image("resources/textures/smiley.ppm"));
+    auto tex = std::make_shared<Texture>(
+        std::make_shared<Image>(FileHandler::get_file_as_image("resources/textures/bricks.jpg")));
 
     Scene scene;
     {
-        Cube cube{0.5f, 0.5f, 0.5f, std::make_shared<BlinnPhong>(mat_red)};
+        Cube cube{0.5f, 0.5f, 0.5f, std::make_shared<BlinnPhong>(mat_black), tex};
         cube.set_model(glm::translate(cube.get_model(), glm::vec3(-2.f, -1.f, 0.f)));
         scene.add_mesh(std::make_shared<Cube>(cube));
     }
 
     {
-        auto cube = std::make_shared<Cube>(1, 1, 1, std::make_shared<BlinnPhong>(shiny_blue));
+        auto cube = std::make_shared<Cube>(1, 1, 1, std::make_shared<BlinnPhong>(shiny_blue), tex);
         cube->set_model(glm::translate(cube->get_model(), glm::vec3(2.f, 0.f, 0.f)));
         scene.add_mesh(cube);
     }
 
     {
-        auto ground = std::make_shared<Plane>(1, 1, std::make_shared<BlinnPhong>(ground_green), tex);
+        auto ground = std::make_shared<Plane>(1, 1, std::make_shared<BlinnPhong>(ground_green));
         ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::rotate(ground->get_model(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
         ground->set_model(glm::scale(ground->get_model(), glm::vec3(5.f, 5.f, 5.f)));

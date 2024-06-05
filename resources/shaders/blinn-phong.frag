@@ -10,6 +10,7 @@ uniform vec3 color;
 uniform float specularStr;
 uniform uint shininess;
 uniform bool emitsLight;
+uniform bool hasTexture;
 
 uniform float ambientStr;
 uniform vec3 lightPos;
@@ -37,5 +38,12 @@ void main()
 
     vec3 specular = pow(max(dot(normal, halfwayDir), 0.0), shininess) * specularStr * lightColor;
 
-    fragColor = texture(inTexture, texCoord) + vec4((ambient + diffuse + specular) * color, 1.0);
+    vec4 texColor = texture(inTexture, texCoord);
+    vec4 vertex_color = vec4((ambient + diffuse + specular) * color, 1.0);
+
+    fragColor = vertex_color;
+    if (hasTexture)
+    {
+        fragColor = mix(fragColor, vertex_color, 0.2);
+    }
 }
