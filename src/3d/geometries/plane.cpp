@@ -1,8 +1,12 @@
+#include "glm/ext/vector_float3.hpp"
+#include "rt/3d/mesh.hpp"
+
 #include <rt/3d/geometries/plane.hpp>
 #include <rt/graphics/gl/buffer.hpp>
 
-#include <algorithm>
 #include <glm/ext/matrix_transform.hpp>
+#include <memory>
+
 
 namespace rt
 {
@@ -22,7 +26,7 @@ Plane::Plane(float width, float height, const std::shared_ptr<Material>& materia
     m_buffer = std::make_unique<Buffer>(m_quad.m_vertices, m_quad.m_indices);
 }
 
-uint32_t Plane::get_triangle_count() const
+unsigned int Plane::get_triangle_count() const
 {
     return Quad::TRIANGLE_COUNT;
 }

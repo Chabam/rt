@@ -1,7 +1,11 @@
+#include "glm/ext/vector_float3.hpp"
+#include "rt/graphics/primitives/vertex.hpp"
 #include <rt/graphics/primitives/triangle.hpp>
 
 #include <algorithm>
+#include <array>
 #include <glm/geometric.hpp>
+#include <utility>
 
 namespace rt
 {

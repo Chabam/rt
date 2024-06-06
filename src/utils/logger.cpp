@@ -1,4 +1,7 @@
 #include <rt/utils/logger.hpp>
+#include <string>
+#include <ostream>
+#include <stdexcept>
 
 namespace rt
 {

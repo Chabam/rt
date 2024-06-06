@@ -1,3 +1,7 @@
+#include "glm/ext/vector_float4.hpp"
+#include "glm/geometric.hpp"
+#include "rt/3d/camera/camera.hpp"
+
 #include <rt/engine/engine.hpp>
 #include <rt/utils/logger.hpp>
 
@@ -6,8 +10,10 @@
 #include <format>
 #include <functional>
 #include <glad/gl.h>
-#include <ratio>
+#include <memory>
+#include <stdexcept>
 #include <thread>
+
 
 namespace rt
 {

@@ -2,8 +2,9 @@
 #define RT_FILE_HANDLER_H
 
 #include <rt/utils/image.hpp>
-#include <rt/utils/logger.hpp>
 
+#include <fstream>
+#include <ios>
 #include <string>
 
 namespace rt

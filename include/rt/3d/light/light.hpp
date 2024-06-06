@@ -1,7 +1,7 @@
 #ifndef RT_LIGHT_H
 #define RT_LIGHT_H
 
-#include <glm/vec3.hpp>
+#include "glm/ext/vector_float3.hpp"
 
 namespace rt
 {

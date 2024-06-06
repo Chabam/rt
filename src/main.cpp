@@ -1,15 +1,17 @@
+#include "rt/utils/image.hpp"
+#include "rt/3d/scene.hpp"
+#include "glm/gtc/constants.hpp"
 #include <rt/3d/geometries/cube.hpp>
 #include <rt/3d/geometries/plane.hpp>
 #include <rt/3d/materials/blinn_phong.hpp>
 #include <rt/engine/engine.hpp>
-#include <rt/graphics/gl/shader.hpp>
 #include <rt/graphics/gl/texture.hpp>
 #include <rt/utils/file_handler.hpp>
 #include <rt/utils/logger.hpp>
 
-#include <exception>
 #include <glm/ext/matrix_transform.hpp>
-#include <glm/mat4x4.hpp>
+#include <memory>
+#include <stdexcept>
 
 int main(void)
 {

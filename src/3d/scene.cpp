@@ -1,5 +1,7 @@
 #include <rt/3d/mesh.hpp>
 #include <rt/3d/scene.hpp>
+#include <memory>
+#include <vector>
 
 namespace rt
 {

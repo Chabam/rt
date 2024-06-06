@@ -1,11 +1,12 @@
 #ifndef RT_LOGGER_H
 #define RT_LOGGER_H
 
-#include <bitset>
+#include <__msvc_chrono.hpp>
 #include <chrono>
 #include <format>
 #include <iostream>
-#include <sstream>
+#include <string>
+#include <string_view>
 
 namespace rt
 {

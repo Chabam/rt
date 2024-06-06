@@ -50,7 +50,7 @@ Cube::Cube(float width, float height, float depth, const std::shared_ptr<Materia
     m_buffer = std::make_unique<Buffer>(vertices, indices);
 }
 
-uint32_t Cube::get_triangle_count() const
+unsigned int Cube::get_triangle_count() const
 {
     return m_quads.size() * Quad::TRIANGLE_COUNT;
 }

@@ -4,7 +4,6 @@
 #include <rt/utils/logger.hpp>
 
 #include <functional>
-#include <memory>
 
 struct GLFWwindow;
 

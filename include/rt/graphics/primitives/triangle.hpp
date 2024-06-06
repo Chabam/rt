@@ -1,10 +1,10 @@
 #ifndef RT_TRIANGLE_H
 #define RT_TRIANGLE_H
 
+#include "glm/ext/vector_float3.hpp"
 #include <rt/graphics/primitives/vertex.hpp>
 
 #include <array>
-#include <glm/vec3.hpp>
 
 namespace rt
 {

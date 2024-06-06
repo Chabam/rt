@@ -1,10 +1,10 @@
 #ifndef RT_VERTEX_H
 #define RT_VERTEX_H
 
+#include "glm/ext/vector_float3.hpp"
+#include "glm/ext/vector_float2.hpp"
 #include <array>
 #include <glad/gl.h>
-#include <glm/vec2.hpp>
-#include <glm/vec3.hpp>
 
 namespace rt
 {

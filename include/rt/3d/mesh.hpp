@@ -1,11 +1,11 @@
 #ifndef RT_MESH_H
 #define RT_MESH_H
 
-#include <rt/graphics/primitives/vertex.hpp>
+#include "glm/ext/matrix_float3x3.hpp"
+#include "glm/ext/matrix_float4x4.hpp"
 
-#include <glm/mat3x3.hpp>
-#include <glm/mat4x4.hpp>
 #include <memory>
+
 
 namespace rt
 {
@@ -30,7 +30,7 @@ class Mesh
     Mesh(Mesh&& other);
     Mesh& operator=(Mesh&& other);
 
-    virtual uint32_t get_triangle_count() const = 0;
+    virtual unsigned int get_triangle_count() const = 0;
 
     void render(const Camera& camera, const Light& light) const;
 

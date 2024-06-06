@@ -1,7 +1,9 @@
+#include "rt/3d/material.hpp"
 #include <rt/3d/materials/blinn_phong.hpp>
 #include <rt/graphics/gl/shader.hpp>
 #include <rt/graphics/gl/shader_program.hpp>
 #include <rt/utils/file_handler.hpp>
+#include <memory>
 
 namespace rt
 {

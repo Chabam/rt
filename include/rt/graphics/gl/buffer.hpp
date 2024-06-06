@@ -5,8 +5,8 @@
 #include <rt/utils/logger.hpp>
 
 #include <glad/gl.h>
-#include <glm/vec3.hpp>
 #include <span>
+#include <vector>
 
 namespace rt
 {

@@ -1,6 +1,8 @@
 #ifndef RT_QUAD_H
 #define RT_QUAD_H
 
+#include "glm/ext/vector_float3.hpp"
+#include "rt/graphics/primitives/vertex.hpp"
 #include <rt/graphics/primitives/triangle.hpp>
 
 #include <array>

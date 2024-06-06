@@ -1,13 +1,16 @@
+#include "glm/ext/matrix_float4x4.hpp"
+#include "glm/matrix.hpp"
+#include "glad/gl.h"
 #include <rt/3d/camera/camera.hpp>
 #include <rt/3d/material.hpp>
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/gl/buffer.hpp>
-#include <rt/graphics/gl/shader.hpp>
 #include <rt/graphics/gl/texture.hpp>
 #include <rt/graphics/primitives/triangle.hpp>
-#include <rt/utils/logger.hpp>
 
-#include <algorithm>
+#include <memory>
+#include <utility>
+#include <stdexcept>
 
 namespace rt
 {

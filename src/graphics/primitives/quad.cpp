@@ -1,8 +1,10 @@
+#include "glm/ext/vector_float2.hpp"
+#include "glm/ext/vector_float3.hpp"
+
 #include <rt/graphics/primitives/quad.hpp>
 
-#include <algorithm>
-#include <glm/geometric.hpp>
-#include <ranges>
+#include <array>
+#include <utility>
 
 namespace rt
 {
@@ -15,7 +17,7 @@ Quad::Quad(const std::array<glm::vec3, POINT_COUNT>& pts)
     , m_indices{0, 1, 2, 2, 3, 0}
     , m_normal{Triangle{{pts[0], pts[1], pts[2]}}.m_normal}
 {
-    for (size_t i = 0; i < POINT_COUNT; ++i)
+    for (unsigned int i = 0; i < POINT_COUNT; ++i)
     {
         m_vertices[i] = Vertex{pts[i], m_normal, default_uvs[i]};
     }

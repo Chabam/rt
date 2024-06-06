@@ -3,6 +3,8 @@
 
 #include <rt/3d/material.hpp>
 
+#include <glm/ext/vector_float3.hpp>
+
 namespace rt
 {
 
@@ -13,7 +15,7 @@ class BlinnPhong : public Material
     {
         glm::vec3 m_color = glm::vec3(1.f);
         float m_specular = 0.f;
-        uint32_t m_shininess = 1;
+        unsigned int m_shininess = 1;
         bool m_emitsLight = false;
     };
 
@@ -21,7 +23,7 @@ class BlinnPhong : public Material
 
     glm::vec3 m_color;
     float m_specular;
-    uint32_t m_shininess;
+    unsigned int m_shininess;
     bool m_emitsLight;
 
   private:

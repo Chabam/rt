@@ -5,6 +5,8 @@
 #include <rt/graphics/primitives/quad.hpp>
 
 #include <array>
+#include <memory>
+
 
 namespace rt
 {
@@ -17,7 +19,7 @@ class Cube final : public Mesh
     Cube(float width, float height, float depth, const std::shared_ptr<Material>& material,
          const std::shared_ptr<Texture>& texture = {});
 
-    uint32_t get_triangle_count() const override;
+    unsigned int get_triangle_count() const override;
 
   private:
     std::array<Quad, 6> m_quads;

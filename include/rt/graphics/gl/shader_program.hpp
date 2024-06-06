@@ -1,12 +1,15 @@
 #ifndef RT_SHADER_PROGRAM_H
 #define RT_SHADER_PROGRAM_H
 
+#include "glm/ext/matrix_float4x4.hpp"
+#include "glm/ext/matrix_float3x3.hpp"
+#include "glm/ext/vector_float4.hpp"
+#include "glm/ext/vector_float3.hpp"
 #include <rt/utils/logger.hpp>
 
 #include <glad/gl.h>
-#include <glm/mat4x4.hpp>
-#include <glm/vec4.hpp>
 #include <memory>
+#include <vector>
 
 namespace rt
 {

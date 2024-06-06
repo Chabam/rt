@@ -1,3 +1,5 @@
+#include "glm/trigonometric.hpp"
+#include "glm/geometric.hpp"
 #include <rt/3d/camera/camera.hpp>
 
 #include <algorithm>

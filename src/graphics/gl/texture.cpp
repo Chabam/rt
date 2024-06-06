@@ -1,4 +1,7 @@
+#include "rt/utils/image.hpp"
+#include "glad/gl.h"
 #include <rt/graphics/gl/texture.hpp>
+#include <memory>
 
 namespace rt
 {

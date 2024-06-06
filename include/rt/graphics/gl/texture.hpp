@@ -4,6 +4,7 @@
 #include <rt/utils/image.hpp>
 
 #include <glad/gl.h>
+#include <memory>
 
 namespace rt
 {
