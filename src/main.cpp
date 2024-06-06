@@ -57,7 +57,7 @@ int main(void)
         light_indicator->set_model(glm::scale(light_indicator->get_model(), glm::vec3(0.1f, 0.1f, 0.1f)));
         scene.add_mesh(light_indicator);
 
-        scene.set_light({.m_ambient = 0.1f, .m_pos = light_position, .m_color = glm::vec3(1.f, 1.f, 1.f)});
+        scene.set_light({.m_ambient = 0.05f, .m_pos = light_position, .m_color = glm::vec3(1.f, 1.f, 1.f)});
     }
 
     engine.set_scene(scene);

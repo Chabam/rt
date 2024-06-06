@@ -22,10 +22,16 @@ out vec4 fragColor;
 
 void main()
 {
+    vec4 vertexColor = vec4(color, 1.0);
     if (emitsLight)
     {
-        fragColor = vec4(color, 1.0);
+        fragColor = vertexColor;
         return;
+    }
+
+    if (hasTexture)
+    {
+        vertexColor = texture(inTexture, texCoord);
     }
 
     vec3 ambient = ambientStr * lightColor;
@@ -39,11 +45,6 @@ void main()
     vec3 specular = pow(max(dot(normal, halfwayDir), 0.0), shininess) * specularStr * lightColor;
 
     vec4 texColor = texture(inTexture, texCoord);
-    vec4 vertex_color = vec4((ambient + diffuse + specular) * color, 1.0);
 
-    fragColor = vertex_color;
-    if (hasTexture)
-    {
-        fragColor = mix(texColor, vertex_color, 0.2);
-    }
+    fragColor = vec4(ambient + diffuse + specular, 1.0) * vertexColor;
 }
