@@ -5,6 +5,9 @@
 #include <array>
 #include <cstddef>
 
+namespace rt
+{
+
 Buffer::Buffer(const std::span<const Vertex>& vertices, const std::span<const unsigned short>& indices)
     : m_vao{}
     , m_vbo{}
@@ -55,3 +58,5 @@ void Buffer::unbind() const
 {
     glBindVertexArray(0);
 }
+
+} // namespace rt

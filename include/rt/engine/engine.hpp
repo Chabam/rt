@@ -1,13 +1,16 @@
 #ifndef RT_ENGINE_H
 #define RT_ENGINE_H
 
-#include <rt/3d/scene/scene.hpp>
+#include <rt/3d/scene.hpp>
 #include <rt/graphics/window/window.hpp>
 #include <rt/utils/file_handler.hpp>
 #include <rt/utils/logger.hpp>
 
 #include <chrono>
 #include <glad/gl.h>
+
+namespace rt
+{
 
 class Engine
 {
@@ -65,5 +68,7 @@ class Engine
     static void handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                 const GLchar* message, const void* user_param);
 };
+
+} // namespace rt
 
 #endif // RT_ENGINE_H

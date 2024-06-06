@@ -3,6 +3,9 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
+namespace rt
+{
+
 Image::Image(const char* path)
     : m_path{path}
     , m_width{}
@@ -30,3 +33,5 @@ Image& Image::operator=(Image&& other)
 
     return *this;
 }
+
+} // namespace rt

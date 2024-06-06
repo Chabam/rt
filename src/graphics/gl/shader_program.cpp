@@ -7,6 +7,9 @@
 #include <iostream>
 #include <sstream>
 
+namespace rt
+{
+
 ShaderProgram::ShaderProgram()
     : m_id(glCreateProgram())
 {
@@ -101,3 +104,5 @@ void ShaderProgram::set_uniform(const char* varName, unsigned int value)
     const int uniform_location = glGetUniformLocation(m_id, varName);
     glUniform1ui(uniform_location, value);
 }
+
+} // namespace rt

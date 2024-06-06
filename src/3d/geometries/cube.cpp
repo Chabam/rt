@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <glm/ext/matrix_transform.hpp>
 
+namespace rt
+{
+
 Cube::Cube(float width, float height, float depth, const std::shared_ptr<Material>& material,
            const std::shared_ptr<Texture>& texture)
     : Mesh{material, texture}
@@ -51,3 +54,5 @@ uint32_t Cube::get_triangle_count() const
 {
     return m_quads.size() * Quad::TRIANGLE_COUNT;
 }
+
+} // namespace rt

@@ -5,6 +5,9 @@
 
 #include <array>
 
+namespace rt
+{
+
 struct Quad
 {
     static constexpr auto POINT_COUNT = 4;
@@ -24,5 +27,7 @@ struct Quad
     std::array<unsigned short, VERTEX_COUNT> m_indices;
     glm::vec3 m_normal;
 };
+
+} // namespace rt
 
 #endif // RT_QUAD_H

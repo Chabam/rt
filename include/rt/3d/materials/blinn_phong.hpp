@@ -3,6 +3,9 @@
 
 #include <rt/3d/material.hpp>
 
+namespace rt
+{
+
 class BlinnPhong : public Material
 {
   public:
@@ -24,5 +27,7 @@ class BlinnPhong : public Material
   private:
     virtual void forward_properties_uniforms() const override;
 };
+
+} // namespace rt
 
 #endif // RT_BLINN_PHONG_H

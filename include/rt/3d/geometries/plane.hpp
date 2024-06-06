@@ -4,6 +4,9 @@
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/primitives/quad.hpp>
 
+namespace rt
+{
+
 class Plane final : public Mesh
 {
   public:
@@ -15,5 +18,7 @@ class Plane final : public Mesh
   private:
     Quad m_quad;
 };
+
+} // namespace rt
 
 #endif // RT_PLANE_H

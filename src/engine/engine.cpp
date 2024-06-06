@@ -9,6 +9,9 @@
 #include <ratio>
 #include <thread>
 
+namespace rt
+{
+
 static constexpr auto NAME = "rt";
 
 Engine::Engine()
@@ -236,3 +239,5 @@ void Engine::handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum sever
 
     throw std::runtime_error("OpenGL fatal error!");
 }
+
+} // namespace rt

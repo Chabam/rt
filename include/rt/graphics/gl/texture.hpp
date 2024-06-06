@@ -5,6 +5,9 @@
 
 #include <glad/gl.h>
 
+namespace rt
+{
+
 class Texture
 {
   public:
@@ -18,5 +21,7 @@ class Texture
     GLuint m_id;
     std::shared_ptr<Image> m_image;
 };
+
+} // namespace rt
 
 #endif // RT_TEXTURE_H

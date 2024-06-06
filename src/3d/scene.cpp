@@ -1,5 +1,8 @@
 #include <rt/3d/mesh.hpp>
-#include <rt/3d/scene/scene.hpp>
+#include <rt/3d/scene.hpp>
+
+namespace rt
+{
 
 Scene::Scene()
     : m_meshes()
@@ -64,3 +67,5 @@ const std::vector<std::shared_ptr<Mesh>>& Scene::get_meshes() const
 {
     return m_meshes;
 }
+
+} // namespace rt

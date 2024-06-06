@@ -9,6 +9,9 @@
 
 #include <algorithm>
 
+namespace rt
+{
+
 Mesh::Mesh(const std::shared_ptr<Material>& material, const std::shared_ptr<Texture>& texture)
     : m_buffer{}
     , m_material{material}
@@ -102,3 +105,5 @@ bool Mesh::has_texture() const
 {
     return m_texture != nullptr;
 }
+
+} // namespace rt

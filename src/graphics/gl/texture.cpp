@@ -1,5 +1,8 @@
 #include <rt/graphics/gl/texture.hpp>
 
+namespace rt
+{
+
 Texture::Texture(const std::shared_ptr<Image>& image)
     : m_id{}
     , m_image(image)
@@ -33,3 +36,5 @@ void Texture::unbind() const
 {
     glBindTextureUnit(0, 0);
 }
+
+} // namespace rt

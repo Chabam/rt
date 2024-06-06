@@ -4,6 +4,9 @@
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
 
+namespace rt
+{
+
 class Camera
 {
   public:
@@ -37,5 +40,7 @@ class Camera
     double m_pitch;
     float m_speed;
 };
+
+} // namespace rt
 
 #endif // RT_CAMERA_H

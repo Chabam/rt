@@ -7,6 +7,9 @@
 #include <glm/mat4x4.hpp>
 #include <memory>
 
+namespace rt
+{
+
 class Buffer;
 class Camera;
 class Light;
@@ -43,5 +46,7 @@ class Mesh
     glm::mat4 m_model;
     glm::mat3 m_normal_matrix;
 };
+
+} // namespace rt
 
 #endif // RT_MESH_H

@@ -6,6 +6,9 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+namespace rt
+{
+
 GLenum convertToGlEnum(Shader::Type type)
 {
     switch (type)
@@ -103,3 +106,5 @@ std::optional<Shader> Shader::try_compile(Type type, const char* source) noexcep
 
     return shader_out;
 }
+
+} // namespace rt

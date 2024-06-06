@@ -7,6 +7,9 @@
 #include <optional>
 #include <string>
 
+namespace rt
+{
+
 class Shader
 {
   public:
@@ -34,5 +37,7 @@ class Shader
     Type m_type;
     Logger m_logger{"Shader"};
 };
+
+} // namespace rt
 
 #endif // RT_SHADER_H

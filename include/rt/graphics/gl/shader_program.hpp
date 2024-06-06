@@ -8,6 +8,9 @@
 #include <glm/vec4.hpp>
 #include <memory>
 
+namespace rt
+{
+
 class Shader;
 
 class ShaderProgram
@@ -34,5 +37,7 @@ class ShaderProgram
     std::vector<std::shared_ptr<Shader>> m_attached_shaders;
     Logger m_logger{"ShaderProgram"};
 };
+
+} // namespace rt
 
 #endif // RT_SHADER_PROGRAM_H

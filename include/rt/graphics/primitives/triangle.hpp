@@ -6,6 +6,9 @@
 #include <array>
 #include <glm/vec3.hpp>
 
+namespace rt
+{
+
 struct Triangle
 {
     static constexpr auto POINT_COUNT = 3;
@@ -23,5 +26,7 @@ struct Triangle
     std::array<unsigned short, VERTEX_COUNT> m_indices;
     glm::vec3 m_normal;
 };
+
+} // namespace rt
 
 #endif // RT_TRIANGLE_H

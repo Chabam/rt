@@ -4,8 +4,15 @@
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/gl/shader_program.hpp>
 
+namespace rt
+{
+
 Material::Material(const std::shared_ptr<ShaderProgram>& shader)
     : m_shader(shader)
+{
+}
+
+Material::~Material()
 {
 }
 
@@ -27,3 +34,5 @@ void Material::forward_uniforms(const Mesh& mesh, const Camera& camera, const Li
 
     forward_properties_uniforms();
 }
+
+} // namespace rt

@@ -3,6 +3,9 @@
 
 #include <GLFW/glfw3.h>
 
+namespace rt
+{
+
 Window::Window(unsigned int width, unsigned int height, const char* title)
     : m_width{width}
     , m_height{height}
@@ -123,3 +126,5 @@ void Window::set_mouse_button_pressed_callback(const MouseButtonPressedCallback&
 {
     m_mouse_button_pressed_callback = cb;
 }
+
+} // namespace rt

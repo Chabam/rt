@@ -6,6 +6,9 @@
 
 #include <string>
 
+namespace rt
+{
+
 struct FileHandler
 {
     static std::string get_file_as_text(const char* path);
@@ -14,5 +17,7 @@ struct FileHandler
   private:
     static std::ifstream open_file_stream(const char* path, std::ios_base::openmode open_mode = std::ios_base::in);
 };
+
+} // namespace rt
 
 #endif // RT_FILE_HANDLER_H

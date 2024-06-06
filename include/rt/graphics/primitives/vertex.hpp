@@ -6,6 +6,9 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
+namespace rt
+{
+
 struct VertexAttributeLayout
 {
     GLuint m_location;
@@ -52,5 +55,7 @@ struct Vertex
         // clang-format on
     }
 };
+
+} // namespace rt
 
 #endif // RT_VERTEX_H

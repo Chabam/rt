@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <glm/ext/matrix_transform.hpp>
 
+namespace rt
+{
+
 constexpr glm::vec3 p1 = {-1.f, 1.f, 0.f};
 constexpr glm::vec3 p2 = {1.f, 1.f, 0.f};
 constexpr glm::vec3 p3 = {1.f, -1.f, 0.f};
@@ -23,3 +26,5 @@ uint32_t Plane::get_triangle_count() const
 {
     return Quad::TRIANGLE_COUNT;
 }
+
+} // namespace rt

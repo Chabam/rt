@@ -5,6 +5,9 @@
 #include <memory>
 #include <stb_image.h>
 
+namespace rt
+{
+
 struct Image
 {
     Image(const char* path);
@@ -19,5 +22,7 @@ struct Image
 
     std::unique_ptr<stbi_uc, std::function<void(void*)>> m_pixels;
 };
+
+} // namespace rt
 
 #endif // RT_IMAGE_H

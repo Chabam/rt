@@ -5,6 +5,9 @@
 #include <glm/vec3.hpp>
 #include <memory>
 
+namespace rt
+{
+
 class ShaderProgram;
 class Camera;
 class Texture;
@@ -15,6 +18,7 @@ class Material
 {
   public:
     Material(const std::shared_ptr<ShaderProgram>& shader);
+    virtual ~Material();
 
     void forward_uniforms(const Mesh& mesh, const Camera& camera, const Light& light) const;
 
@@ -23,5 +27,7 @@ class Material
 
     const std::shared_ptr<ShaderProgram>& m_shader;
 };
+
+} // namespace rt
 
 #endif // RT_MATERIAL_H

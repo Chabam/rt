@@ -8,6 +8,9 @@
 #include <glm/vec3.hpp>
 #include <span>
 
+namespace rt
+{
+
 class Buffer
 {
   public:
@@ -28,5 +31,7 @@ class Buffer
 
     Logger m_logger{"Buffer"};
 };
+
+} // namespace rt
 
 #endif // RT_BUFFER_H

@@ -7,6 +7,9 @@
 #include <iostream>
 #include <sstream>
 
+namespace rt
+{
+
 struct Logger
 {
     enum Level
@@ -70,5 +73,7 @@ struct Logger
     std::string m_category;
     std::ostream& m_stream;
 };
+
+} // namespace rt
 
 #endif // RT_LOGGER_H

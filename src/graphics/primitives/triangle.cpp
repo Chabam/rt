@@ -3,6 +3,9 @@
 #include <algorithm>
 #include <glm/geometric.hpp>
 
+namespace rt
+{
+
 Triangle::Triangle(const std::array<glm::vec3, POINT_COUNT>& pts)
     : m_vertices{}
     , m_indices{0, 1, 2}
@@ -42,3 +45,5 @@ Triangle& Triangle::operator=(Triangle&& other)
 
     return *this;
 }
+
+} // namespace rt

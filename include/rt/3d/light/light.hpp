@@ -3,11 +3,16 @@
 
 #include <glm/vec3.hpp>
 
+namespace rt
+{
+
 struct Light
 {
     float m_ambient;
     glm::vec3 m_pos;
     glm::vec3 m_color;
 };
+
+} // namespace rt
 
 #endif // RT_LIGHT_H

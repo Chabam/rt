@@ -8,6 +8,9 @@
 
 struct GLFWwindow;
 
+namespace rt
+{
+
 class Window
 {
   public:
@@ -44,5 +47,7 @@ class Window
     MouseButtonPressedCallback m_mouse_button_pressed_callback;
     MousePositionChangedCallback m_mouse_position_changed_callback;
 };
+
+} // namespace rt
 
 #endif // RT_WINDOW_H

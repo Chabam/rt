@@ -5,6 +5,9 @@
 #include <filesystem>
 #include <fstream>
 
+namespace rt
+{
+
 std::ifstream FileHandler::open_file_stream(const char* path, std::ios_base::openmode open_mode)
 {
     std::filesystem::path path_object = std::filesystem::absolute(path);
@@ -34,3 +37,5 @@ Image FileHandler::get_file_as_image(const char* path)
     stbi_set_flip_vertically_on_load(true);
     return Image(path);
 }
+
+} // namespace rt

@@ -5,6 +5,9 @@
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
+namespace rt
+{
+
 Camera::Camera()
     : m_position(0, 0, 4)
     , m_front(0, 0, -1)
@@ -84,3 +87,5 @@ void Camera::set_speed(float speed)
 {
     m_speed = speed;
 }
+
+} // namespace rt

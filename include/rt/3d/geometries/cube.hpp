@@ -6,6 +6,9 @@
 
 #include <array>
 
+namespace rt
+{
+
 class Cube final : public Mesh
 {
   public:
@@ -19,5 +22,7 @@ class Cube final : public Mesh
   private:
     std::array<Quad, 6> m_quads;
 };
+
+} // namespace rt
 
 #endif // RT_CUBE_H

@@ -7,6 +7,9 @@
 #include <memory>
 #include <vector>
 
+namespace rt
+{
+
 class Mesh;
 
 class Scene
@@ -30,5 +33,7 @@ class Scene
     Camera m_camera;
     Light m_light;
 };
+
+} // namespace rt
 
 #endif // RT_SCENE_H

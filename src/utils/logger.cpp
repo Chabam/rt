@@ -1,5 +1,8 @@
 #include <rt/utils/logger.hpp>
 
+namespace rt
+{
+
 Logger::Logger(const std::string& category, Level lowest_enabled_level, std::ostream& ostream)
     : m_category{category}
     , m_lowest_enabled_level{lowest_enabled_level}
@@ -50,3 +53,5 @@ const char* Logger::level_to_color(Level level)
         break;
     }
 }
+
+} // namespace rt

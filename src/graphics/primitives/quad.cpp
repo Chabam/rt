@@ -4,6 +4,9 @@
 #include <glm/geometric.hpp>
 #include <ranges>
 
+namespace rt
+{
+
 constexpr std::array<glm::vec2, Quad::POINT_COUNT> default_uvs = {glm::vec2{0.f, 1.f}, glm::vec2{1.f, 1.f},
                                                                   glm::vec2{1.f, 0.f}, glm::vec2{0.f, 0.f}};
 
@@ -49,3 +52,5 @@ Quad& Quad::operator=(Quad&& other)
 
     return *this;
 }
+
+} // namespace rt

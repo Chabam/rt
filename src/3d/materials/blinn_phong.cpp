@@ -3,6 +3,9 @@
 #include <rt/graphics/gl/shader_program.hpp>
 #include <rt/utils/file_handler.hpp>
 
+namespace rt
+{
+
 // TODO: Should be in a cache (precompiled or not)
 static const std::shared_ptr<ShaderProgram>& get_blinn_phong_shader()
 {
@@ -39,3 +42,5 @@ void BlinnPhong::forward_properties_uniforms() const
     m_shader->set_uniform("shininess", m_shininess);
     m_shader->set_uniform("emitsLight", m_emitsLight);
 }
+
+} // namespace rt
