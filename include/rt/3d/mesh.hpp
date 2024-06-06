@@ -1,18 +1,16 @@
 #ifndef RT_MESH_H
 #define RT_MESH_H
 
-#include "glm/ext/matrix_float3x3.hpp"
-#include "glm/ext/matrix_float4x4.hpp"
-
+#include <glm/ext/matrix_float3x3.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
 #include <memory>
-
 
 namespace rt
 {
 
 class Buffer;
 class Camera;
-class Light;
+struct Light;
 class Material;
 class Texture;
 class Triangle;

@@ -3,6 +3,7 @@
 #include <rt/3d/material.hpp>
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/gl/shader_program.hpp>
+
 #include <memory>
 
 namespace rt

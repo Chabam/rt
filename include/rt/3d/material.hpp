@@ -9,7 +9,7 @@ namespace rt
 class ShaderProgram;
 class Camera;
 class Texture;
-class Light;
+struct Light;
 class Mesh;
 
 class Material

@@ -1,6 +1,7 @@
+#include "glad/gl.h"
 #include "glm/ext/matrix_float4x4.hpp"
 #include "glm/matrix.hpp"
-#include "glad/gl.h"
+
 #include <rt/3d/camera/camera.hpp>
 #include <rt/3d/material.hpp>
 #include <rt/3d/mesh.hpp>
@@ -9,8 +10,8 @@
 #include <rt/graphics/primitives/triangle.hpp>
 
 #include <memory>
-#include <utility>
 #include <stdexcept>
+#include <utility>
 
 namespace rt
 {
@@ -78,12 +79,16 @@ void Mesh::render(const Camera& camera, const Light& light) const
     m_material->forward_uniforms(*this, camera, light);
 
     m_buffer->bind();
+
     if (m_texture)
     {
         m_texture->bind();
     }
+
     glDrawElements(GL_TRIANGLES, get_triangle_count() * Triangle::VERTEX_COUNT, GL_UNSIGNED_SHORT, nullptr);
+
     m_buffer->unbind();
+
     if (m_texture)
     {
         m_texture->unbind();
@@ -106,7 +111,7 @@ const glm::mat3& Mesh::get_normal_matrix() const
 }
 bool Mesh::has_texture() const
 {
-    return m_texture != nullptr;
+    return m_texture.use_count() != 0;
 }
 
 } // namespace rt

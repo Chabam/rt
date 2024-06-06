@@ -44,6 +44,6 @@ void main()
     fragColor = vertex_color;
     if (hasTexture)
     {
-        fragColor = mix(fragColor, vertex_color, 0.2);
+        fragColor = mix(texColor, vertex_color, 0.2);
     }
 }
