@@ -6,14 +6,13 @@
 #include <rt/utils/logger.hpp>
 
 #include <GLFW/glfw3.h>
+#include <algorithm>
 #include <chrono>
 #include <format>
 #include <functional>
-#include <glad/gl.h>
 #include <memory>
 #include <stdexcept>
 #include <thread>
-
 
 namespace rt
 {
@@ -94,19 +93,6 @@ void Engine::create_window(unsigned int width, unsigned int height, const char* 
     m_logger.debug("glfw ok!");
 
     m_window = std::make_unique<Window>(width, height, title);
-
-    using namespace std::placeholders;
-    m_window->set_resize_callback(std::bind(&Engine::on_resize, this, _1, _2));
-    m_window->set_key_press_callback(std::bind(&Engine::on_key_press, this, _1, _2));
-    m_window->set_mouse_button_pressed_callback(std::bind(&Engine::on_mouse_pressed, this, _1, _2, _3));
-    m_window->set_mouse_pos_changed_callback(std::bind(&Engine::on_mouse_pos_changed, this, _1, _2));
-
-    m_logger.debug("Init glad");
-    if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
-    {
-        throw std::runtime_error("Could not initialize glad!");
-    }
-    m_logger.debug("glad ok!");
 }
 
 void Engine::set_scene(const Scene& scene)
@@ -116,6 +102,12 @@ void Engine::set_scene(const Scene& scene)
 
 void Engine::process_inputs()
 {
+    m_keyboard_info = {};
+
+    check_pressed_keys();
+    check_pressed_mouse_buttons();
+    check_mouse_position_changed();
+
     Camera& camera = m_scene.get_camera();
     camera.set_speed(m_frame_time.count() * 2.5f);
 
@@ -150,47 +142,49 @@ void Engine::process_inputs()
     }
 }
 
-void Engine::on_key_press(int keyCode, int action)
+void Engine::check_pressed_keys()
 {
-    const bool is_pressed_action = action != GLFW_RELEASE;
-
-    switch (keyCode)
+    for (const int key_code : m_window->get_keyboard_info().m_current_pressed_keys)
     {
-    case GLFW_KEY_UP:
-    case GLFW_KEY_W:
-        m_keyboard_info.m_forward_key_pressed = is_pressed_action;
-        break;
-    case GLFW_KEY_DOWN:
-    case GLFW_KEY_S:
-        m_keyboard_info.m_backward_key_pressed = is_pressed_action;
-        break;
-    case GLFW_KEY_LEFT:
-    case GLFW_KEY_A:
-        m_keyboard_info.m_left_key_pressed = is_pressed_action;
-        break;
-    case GLFW_KEY_RIGHT:
-    case GLFW_KEY_D:
-        m_keyboard_info.m_right_key_pressed = is_pressed_action;
-        break;
-    case GLFW_KEY_SPACE:
-        m_keyboard_info.m_up_key_pressed = is_pressed_action;
-        break;
-    case GLFW_KEY_LEFT_SHIFT:
-        m_keyboard_info.m_down_key_pressed = is_pressed_action;
-        break;
-    case GLFW_KEY_ESCAPE:
-        m_logger.info("Closing!");
-        m_window->close();
-        break;
+        switch (key_code)
+        {
+        case GLFW_KEY_UP:
+        case GLFW_KEY_W:
+            m_keyboard_info.m_forward_key_pressed = true;
+            break;
+        case GLFW_KEY_DOWN:
+        case GLFW_KEY_S:
+            m_keyboard_info.m_backward_key_pressed = true;
+            break;
+        case GLFW_KEY_LEFT:
+        case GLFW_KEY_A:
+            m_keyboard_info.m_left_key_pressed = true;
+            break;
+        case GLFW_KEY_RIGHT:
+        case GLFW_KEY_D:
+            m_keyboard_info.m_right_key_pressed = true;
+            break;
+        case GLFW_KEY_SPACE:
+            m_keyboard_info.m_up_key_pressed = true;
+            break;
+        case GLFW_KEY_LEFT_SHIFT:
+            m_keyboard_info.m_down_key_pressed = true;
+            break;
+        case GLFW_KEY_ESCAPE:
+            m_logger.info("Closing!");
+            m_window->close();
+            break;
+        }
     }
 }
 
-void Engine::on_mouse_pos_changed(double x_pos, double y_pos)
+void Engine::check_mouse_position_changed()
 {
+    const auto& mouse_info = m_window->get_mouse_info();
     if (m_mouse_info.m_pressed)
     {
-        double delta_x = x_pos - m_mouse_info.m_last_x;
-        double delta_y = m_mouse_info.m_last_y - y_pos;
+        double delta_x = mouse_info.x_pos - m_mouse_info.m_last_x;
+        double delta_y = m_mouse_info.m_last_y - mouse_info.y_pos;
 
         constexpr auto sensitivity = 0.1f;
 
@@ -203,24 +197,20 @@ void Engine::on_mouse_pos_changed(double x_pos, double y_pos)
         camera.update_front();
     }
 
-    m_mouse_info.m_last_x = x_pos;
-    m_mouse_info.m_last_y = y_pos;
+    m_mouse_info.m_last_x = mouse_info.x_pos;
+    m_mouse_info.m_last_y = mouse_info.y_pos;
 }
 
-void Engine::on_mouse_pressed(int key, int action, int mod)
+void Engine::check_pressed_mouse_buttons()
 {
-    m_mouse_info.m_pressed = key == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS;
+    const auto& pressed_mouse_buttons = m_window->get_mouse_info().m_current_pressed_keys;
+    m_mouse_info.m_pressed =
+        std::ranges::find(pressed_mouse_buttons, GLFW_MOUSE_BUTTON_RIGHT) != pressed_mouse_buttons.end();
 }
 
-void Engine::on_resize(int width, int height)
+void Engine::check_resized()
 {
-    if (height == 0 || width == 0)
-    {
-        return;
-    }
-    glViewport(0, 0, width, height);
-    m_scene.get_camera().set_aspect_ratio(width, height);
-    m_scene.render();
+    m_scene.get_camera().set_aspect_ratio(m_window->get_width(), m_window->get_height());
 }
 
 void Engine::handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,

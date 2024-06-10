@@ -1,7 +1,6 @@
 #ifndef RT_LOGGER_H
 #define RT_LOGGER_H
 
-#include <__msvc_chrono.hpp>
 #include <chrono>
 #include <format>
 #include <iostream>

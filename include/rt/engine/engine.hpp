@@ -58,12 +58,12 @@ class Engine
 
     Logger m_logger{"rt"};
 
-    void on_key_press(int key_code, int action);
-    void on_resize(int width, int height);
-    void on_mouse_pos_changed(double x_pos, double y_pos);
-    void on_mouse_pressed(int key, int action, int mod);
-
     void process_inputs();
+
+    void check_pressed_keys();
+    void check_resized();
+    void check_mouse_position_changed();
+    void check_pressed_mouse_buttons();
 
     static void handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                 const GLchar* message, const void* user_param);

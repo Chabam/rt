@@ -4,6 +4,7 @@
 #include <rt/utils/logger.hpp>
 
 #include <functional>
+#include <vector>
 
 struct GLFWwindow;
 
@@ -13,13 +14,7 @@ namespace rt
 class Window
 {
   public:
-    typedef std::function<void(int, int)> KeyPressCallback;
-    typedef std::function<void(int, int)> WindowResizeCallback;
-    typedef std::function<void(int, int, int)> MouseButtonPressedCallback;
-    typedef std::function<void(double, double)> MousePositionChangedCallback;
-
     Window(unsigned int width, unsigned int height, const char* title);
-    ~Window();
 
     void close();
     bool should_close();
@@ -27,11 +22,22 @@ class Window
     void set_size(int width, int height);
     unsigned int get_width() const;
     unsigned int get_height() const;
-    void set_resize_callback(const WindowResizeCallback& cb);
-    void set_key_press_callback(const KeyPressCallback& cb);
-    void set_mouse_button_pressed_callback(const MouseButtonPressedCallback& cb);
-    void set_mouse_pos_changed_callback(const MousePositionChangedCallback& cb);
     void swap_buffers();
+
+    struct MouseInfo
+    {
+        std::vector<int> m_current_pressed_keys;
+        double x_pos;
+        double y_pos;
+    };
+
+    struct KeyboardInfo
+    {
+        std::vector<int> m_current_pressed_keys;
+    };
+
+    const MouseInfo& get_mouse_info() const;
+    const KeyboardInfo& get_keyboard_info() const;
 
   private:
     Logger m_logger{"Window"};
@@ -39,12 +45,10 @@ class Window
     unsigned int m_height;
     const char* m_title;
 
-    GLFWwindow* m_ptr;
+    MouseInfo m_mouse_info;
+    KeyboardInfo m_keyboard_info;
 
-    WindowResizeCallback m_window_resize_callback;
-    KeyPressCallback m_window_key_press_callback;
-    MouseButtonPressedCallback m_mouse_button_pressed_callback;
-    MousePositionChangedCallback m_mouse_position_changed_callback;
+    std::unique_ptr<GLFWwindow, std::function<void(GLFWwindow*)>> m_ptr;
 };
 
 } // namespace rt

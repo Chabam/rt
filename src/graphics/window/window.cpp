@@ -1,7 +1,10 @@
 #include <rt/graphics/window/window.hpp>
 #include <rt/utils/logger.hpp>
 
+// clang-format off
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
+// clang-format on
 
 namespace rt
 {
@@ -10,11 +13,7 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
     : m_width{width}
     , m_height{height}
     , m_title{title}
-    , m_ptr{glfwCreateWindow(width, height, title, nullptr, nullptr)}
-    , m_window_resize_callback{[](int, int) {}}
-    , m_window_key_press_callback{[](int, int) {}}
-    , m_mouse_button_pressed_callback{[](int, int, int) {}}
-    , m_mouse_position_changed_callback{[](double, double) {}}
+    , m_ptr{glfwCreateWindow(width, height, title, nullptr, nullptr), glfwDestroyWindow}
 {
     if (!m_ptr)
     {
@@ -23,56 +22,71 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
 
     m_logger.add_subcategory(title);
 
-    glfwSetWindowAspectRatio(m_ptr, 16, 9);
+    glfwSetWindowAspectRatio(m_ptr.get(), 16, 9);
 
-    using namespace std::placeholders;
+    glfwSetWindowUserPointer(m_ptr.get(), this);
 
-    glfwSetWindowUserPointer(m_ptr, this);
-
-    glfwSetKeyCallback(m_ptr, [](GLFWwindow* glfwWindow, int key, [[maybe_unused]] int scancode, int action,
-                                 [[maybe_unused]] int mods) {
-        Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
-        window->m_window_key_press_callback(key, action);
+    glfwSetKeyCallback(m_ptr.get(), [](GLFWwindow* glfwWindow, int key, [[maybe_unused]] int scancode, int action,
+                                       [[maybe_unused]] int mods) {
+        KeyboardInfo& keyboard_info = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow))->m_keyboard_info;
+        if (action == GLFW_PRESS)
+        {
+            keyboard_info.m_current_pressed_keys.push_back(key);
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            keyboard_info.m_current_pressed_keys.erase(std::ranges::find(keyboard_info.m_current_pressed_keys, key));
+        }
     });
 
-    glfwSetWindowSizeCallback(m_ptr, [](GLFWwindow* glfwWindow, int width, int height) {
+    glfwSetWindowSizeCallback(m_ptr.get(), [](GLFWwindow* glfwWindow, int width, int height) {
         Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
-        window->m_window_resize_callback(width, height);
         window->m_width = width;
         window->m_height = height;
+        glViewport(0, 0, width, height);
     });
 
-    glfwSetCursorPosCallback(m_ptr, [](GLFWwindow* glfwWindow, double xpos, double ypos) {
-        Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
-        window->m_mouse_position_changed_callback(xpos, ypos);
+    glfwSetCursorPosCallback(m_ptr.get(), [](GLFWwindow* glfwWindow, double x_pos, double y_pos) {
+        MouseInfo& mouse_info = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow))->m_mouse_info;
+        mouse_info.x_pos = x_pos;
+        mouse_info.y_pos = y_pos;
     });
 
-    glfwSetMouseButtonCallback(m_ptr, [](GLFWwindow* glfwWindow, int button, int action, int mods) {
-        Window* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
-        window->m_mouse_button_pressed_callback(button, action, mods);
-    });
+    glfwSetMouseButtonCallback(
+        m_ptr.get(), [](GLFWwindow* glfwWindow, int button, int action, [[maybe_unused]] int mods) {
+            MouseInfo& mouse_info = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow))->m_mouse_info;
+            if (action == GLFW_PRESS)
+            {
+                mouse_info.m_current_pressed_keys.push_back(button);
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                mouse_info.m_current_pressed_keys.erase(std::ranges::find(mouse_info.m_current_pressed_keys, button));
+            }
+        });
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
 
-    glfwMakeContextCurrent(m_ptr);
+    glfwMakeContextCurrent(m_ptr.get());
     glfwSwapInterval(0);
 
     m_logger.debug("Window created");
-}
 
-Window::~Window()
-{
-    glfwDestroyWindow(m_ptr);
-    m_logger.debug("Window destroyed");
+    m_logger.debug("Init glad");
+    if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
+    {
+        throw std::runtime_error("Could not initialize glad!");
+    }
+    m_logger.debug("glad ok!");
 }
 
 void Window::set_title(const char* title)
 {
     m_title = title;
-    glfwSetWindowTitle(m_ptr, title);
+    glfwSetWindowTitle(m_ptr.get(), title);
 }
 
 void Window::set_size(int width, int height)
@@ -84,17 +98,17 @@ void Window::set_size(int width, int height)
 void Window::close()
 {
     m_logger.info("Closing window");
-    glfwSetWindowShouldClose(m_ptr, GLFW_TRUE);
+    glfwSetWindowShouldClose(m_ptr.get(), GLFW_TRUE);
 }
 
 bool Window::should_close()
 {
-    return glfwWindowShouldClose(m_ptr);
+    return glfwWindowShouldClose(m_ptr.get());
 }
 
 void Window::swap_buffers()
 {
-    glfwSwapBuffers(m_ptr);
+    glfwSwapBuffers(m_ptr.get());
 }
 
 unsigned int Window::get_width() const
@@ -107,24 +121,13 @@ unsigned int Window::get_height() const
     return m_height;
 }
 
-void Window::set_resize_callback(const WindowResizeCallback& cb)
+const Window::MouseInfo& Window::get_mouse_info() const
 {
-    m_window_resize_callback = cb;
+    return m_mouse_info;
 }
-
-void Window::set_key_press_callback(const KeyPressCallback& cb)
+const Window::KeyboardInfo& Window::get_keyboard_info() const
 {
-    m_window_key_press_callback = cb;
-}
-
-void Window::set_mouse_pos_changed_callback(const MousePositionChangedCallback& cb)
-{
-    m_mouse_position_changed_callback = cb;
-}
-
-void Window::set_mouse_button_pressed_callback(const MouseButtonPressedCallback& cb)
-{
-    m_mouse_button_pressed_callback = cb;
+    return m_keyboard_info;
 }
 
 } // namespace rt
