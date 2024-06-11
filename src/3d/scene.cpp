@@ -28,7 +28,7 @@ Scene& Scene::operator=(const Scene& other)
     return *this;
 }
 
-void Scene::render()
+void Scene::render() const
 {
     for (const auto& mesh : m_meshes)
     {
@@ -36,7 +36,7 @@ void Scene::render()
     }
 }
 
-bool Scene::empty()
+bool Scene::empty() const
 {
     return m_meshes.empty();
 }

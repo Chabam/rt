@@ -2,6 +2,7 @@
 #include "rt/3d/scene.hpp"
 #include "rt/utils/image.hpp"
 
+#include <rt/3d/camera/camera_controller.hpp>
 #include <rt/3d/geometries/cube.hpp>
 #include <rt/3d/geometries/plane.hpp>
 #include <rt/3d/materials/blinn_phong.hpp>
@@ -20,7 +21,9 @@ int main(void)
 
     rt::Engine engine;
 
-    engine.create_window(1280, 720, "rt");
+    rt::Window::init();
+    rt::Window main_window{1280, 720, "rt"};
+    main_window.make_active();
 
     rt::BlinnPhong mat_red{{.m_color = {1.f, 0.f, 0.f}}};
     rt::BlinnPhong mat_shiny_blue{{.m_color = {0.f, 0.f, 1.f}, .m_specular = 1.f, .m_shininess = 128}};
@@ -60,11 +63,12 @@ int main(void)
         scene.set_light({.m_ambient = 0.05f, .m_pos = light_position, .m_color = glm::vec3(1.f, 1.f, 1.f)});
     }
 
-    engine.set_scene(scene);
+    rt::CameraController camera_controller{scene.get_camera(), main_window};
+    engine.register_engine_component(std::make_shared<rt::CameraController>(camera_controller));
 
     try
     {
-        engine.start();
+        engine.render(main_window, scene);
     }
     catch (const std::runtime_error& e)
     {

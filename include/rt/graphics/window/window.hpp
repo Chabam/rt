@@ -16,17 +16,22 @@ class Window
   public:
     Window(unsigned int width, unsigned int height, const char* title);
 
+    static void init();
+
+    void update();
+
+    void make_active();
     void close();
     bool should_close();
     void set_title(const char* title);
+    const char* get_title() const;
     void set_size(int width, int height);
     unsigned int get_width() const;
     unsigned int get_height() const;
-    void swap_buffers();
 
     struct MouseInfo
     {
-        std::vector<int> m_current_pressed_keys;
+        std::vector<int> m_current_pressed_buttons;
         double x_pos;
         double y_pos;
     };

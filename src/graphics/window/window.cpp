@@ -9,6 +9,19 @@
 namespace rt
 {
 
+void Window::init()
+{
+    Logger init_logger{"Window Init"};
+    init_logger.debug("Init glfw");
+
+    if (!glfwInit())
+    {
+        throw std::runtime_error("Could not initialize GLWF!");
+    }
+
+    init_logger.debug("glfw ok!");
+}
+
 Window::Window(unsigned int width, unsigned int height, const char* title)
     : m_width{width}
     , m_height{height}
@@ -17,7 +30,7 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
 {
     if (!m_ptr)
     {
-        throw std::runtime_error("Could not create a GLWF window!");
+        throw std::runtime_error("Could not create a GLWF window! Call Window::init first!");
     }
 
     m_logger.add_subcategory(title);
@@ -52,35 +65,43 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
         mouse_info.y_pos = y_pos;
     });
 
-    glfwSetMouseButtonCallback(
-        m_ptr.get(), [](GLFWwindow* glfwWindow, int button, int action, [[maybe_unused]] int mods) {
-            MouseInfo& mouse_info = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow))->m_mouse_info;
-            if (action == GLFW_PRESS)
-            {
-                mouse_info.m_current_pressed_keys.push_back(button);
-            }
-            else if (action == GLFW_RELEASE)
-            {
-                mouse_info.m_current_pressed_keys.erase(std::ranges::find(mouse_info.m_current_pressed_keys, button));
-            }
-        });
+    glfwSetMouseButtonCallback(m_ptr.get(), [](GLFWwindow* glfwWindow, int button, int action,
+                                               [[maybe_unused]] int mods) {
+        MouseInfo& mouse_info = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow))->m_mouse_info;
+        if (action == GLFW_PRESS)
+        {
+            mouse_info.m_current_pressed_buttons.push_back(button);
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            mouse_info.m_current_pressed_buttons.erase(std::ranges::find(mouse_info.m_current_pressed_buttons, button));
+        }
+    });
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
 
-    glfwMakeContextCurrent(m_ptr.get());
     glfwSwapInterval(0);
 
     m_logger.debug("Window created");
+}
 
+void Window::make_active()
+{
+    glfwMakeContextCurrent(m_ptr.get());
     m_logger.debug("Init glad");
     if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
     {
         throw std::runtime_error("Could not initialize glad!");
     }
     m_logger.debug("glad ok!");
+}
+
+const char* Window::get_title() const
+{
+    return m_title;
 }
 
 void Window::set_title(const char* title)
@@ -106,9 +127,10 @@ bool Window::should_close()
     return glfwWindowShouldClose(m_ptr.get());
 }
 
-void Window::swap_buffers()
+void Window::update()
 {
     glfwSwapBuffers(m_ptr.get());
+    glfwPollEvents();
 }
 
 unsigned int Window::get_width() const

@@ -12,58 +12,24 @@
 namespace rt
 {
 
+class EngineComponent;
+
 class Engine
 {
   public:
     Engine();
 
-    void create_window(unsigned int width, unsigned int height, const char* title);
-    void set_scene(const Scene& scene);
-    void start();
+    void render(Window& window, Scene& scene);
+
+    void register_engine_component(const std::shared_ptr<EngineComponent>& engine_component);
 
   private:
-    /* TODO: Improve this bad boy!!
-        - Components:
-          - Window
-          - Input
-          - Graphics?
-        - Services:
-          - Input
-        - Update/Tick method -> timestep object?
-     */
-
-    std::unique_ptr<Window> m_window;
-    Scene m_scene;
     unsigned int m_target_fps;
     unsigned long long m_frame_count;
-    std::chrono::duration<double> m_frame_time;
 
-    struct MouseInfo
-    {
-        double m_last_x;
-        double m_last_y;
-        bool m_pressed;
-    } m_mouse_info;
+    std::vector<std::shared_ptr<EngineComponent>> m_engine_components;
 
-    struct KeyboardInfo
-    {
-        bool m_forward_key_pressed;
-        bool m_backward_key_pressed;
-        bool m_left_key_pressed;
-        bool m_right_key_pressed;
-        bool m_up_key_pressed;
-        bool m_down_key_pressed;
-
-    } m_keyboard_info;
-
-    Logger m_logger{"rt"};
-
-    void process_inputs();
-
-    void check_pressed_keys();
-    void check_resized();
-    void check_mouse_position_changed();
-    void check_pressed_mouse_buttons();
+    Logger m_logger{"engine"};
 
     static void handle_gl_error(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                 const GLchar* message, const void* user_param);

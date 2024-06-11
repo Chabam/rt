@@ -19,8 +19,8 @@ class Scene
     Scene(const Scene& other);
     Scene& operator=(const Scene& other);
 
-    void render();
-    bool empty();
+    void render() const;
+    bool empty() const;
     void add_mesh(const std::shared_ptr<Mesh>& mesh);
     void set_light(const Light& light);
     void set_camera(const Camera& camera);
