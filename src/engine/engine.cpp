@@ -64,7 +64,7 @@ main_loop:
         last_frame = after_render;
 
         const auto elapsed = after_render - before_render;
-        const auto max_time_per_frame = std::chrono::nanoseconds(1s) / m_target_fps;
+        const auto max_time_per_frame = std::chrono::system_clock::duration(1s) / m_target_fps;
         time_step.m_next_frame_deadline = after_render + (max_time_per_frame - elapsed);
 
         for (const int pressed_key : window.get_keyboard_info().m_current_pressed_keys)
