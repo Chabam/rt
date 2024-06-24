@@ -1,9 +1,9 @@
-#include "glm/ext/vector_float3.hpp"
-#include "rt/graphics/primitives/vertex.hpp"
-#include <rt/graphics/primitives/triangle.hpp>
+#include <rt/3d/geometries/triangle.hpp>
+#include <rt/graphics/gl/vertex.hpp>
 
 #include <algorithm>
 #include <array>
+#include <glm/ext/vector_float3.hpp>
 #include <glm/geometric.hpp>
 #include <utility>
 
@@ -48,6 +48,21 @@ Triangle& Triangle::operator=(Triangle&& other)
     m_normal = std::move(other.m_normal);
 
     return *this;
+}
+
+std::span<const Vertex> Triangle::get_vertices() const
+{
+    return m_vertices;
+}
+
+std::span<const unsigned short> Triangle::get_indices() const
+{
+    return m_indices;
+}
+
+const glm::vec3& Triangle::get_normal() const
+{
+    return m_normal;
 }
 
 } // namespace rt

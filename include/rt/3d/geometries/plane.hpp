@@ -1,22 +1,21 @@
 #ifndef RT_PLANE_H
 #define RT_PLANE_H
 
-#include <rt/3d/mesh.hpp>
-#include <rt/graphics/primitives/quad.hpp>
+#include <rt/3d/geometries/geometry.hpp>
+#include <rt/3d/geometries/quad.hpp>
 
 #include <memory>
-
 
 namespace rt
 {
 
-class Plane final : public Mesh
+class Plane final : public Geometry
 {
   public:
-    Plane(float width, float height, const std::shared_ptr<Material>& material,
-          const std::shared_ptr<Texture>& texture = {});
+    Plane(float width = 1.f, float height = 1.f);
 
-    unsigned int get_triangle_count() const override;
+    std::span<const Vertex> get_vertices() const override;
+    std::span<const unsigned short> get_indices() const override;
 
   private:
     Quad m_quad;

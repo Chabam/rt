@@ -1,7 +1,7 @@
 #include "glm/ext/vector_float2.hpp"
 #include "glm/ext/vector_float3.hpp"
 
-#include <rt/graphics/primitives/quad.hpp>
+#include <rt/3d/geometries/quad.hpp>
 
 #include <array>
 #include <utility>
@@ -15,7 +15,7 @@ constexpr std::array<glm::vec2, Quad::POINT_COUNT> default_uvs = {glm::vec2{0.f,
 Quad::Quad(const std::array<glm::vec3, POINT_COUNT>& pts)
     : m_vertices{}
     , m_indices{0, 1, 2, 2, 3, 0}
-    , m_normal{Triangle{{pts[0], pts[1], pts[2]}}.m_normal}
+    , m_normal{Triangle{{pts[0], pts[1], pts[2]}}.get_normal()}
 {
     for (unsigned int i = 0; i < POINT_COUNT; ++i)
     {
@@ -53,6 +53,21 @@ Quad& Quad::operator=(Quad&& other)
     m_normal = std::move(other.m_normal);
 
     return *this;
+}
+
+std::span<const Vertex> Quad::get_vertices() const
+{
+    return m_vertices;
+}
+
+std::span<const unsigned short> Quad::get_indices() const
+{
+    return m_indices;
+}
+
+const glm::vec3& Quad::get_normal() const
+{
+    return m_normal;
 }
 
 } // namespace rt

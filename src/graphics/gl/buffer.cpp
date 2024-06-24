@@ -12,17 +12,12 @@ Buffer::Buffer(const std::span<const Vertex>& vertices, const std::span<const un
     : m_vao{}
     , m_vbo{}
     , m_ibo{}
-    , m_vertices{}
-    , m_indices{}
 {
-    m_vertices.assign(vertices.begin(), vertices.end());
-    m_indices.assign(indices.begin(), indices.end());
-
     glCreateBuffers(1, &m_vbo);
-    glNamedBufferStorage(m_vbo, sizeof(Vertex) * m_vertices.size(), m_vertices.data(), GL_DYNAMIC_STORAGE_BIT);
+    glNamedBufferStorage(m_vbo, sizeof(Vertex) * vertices.size(), vertices.data(), GL_DYNAMIC_STORAGE_BIT);
 
     glCreateBuffers(1, &m_ibo);
-    glNamedBufferStorage(m_ibo, sizeof(unsigned short) * m_indices.size(), m_indices.data(), GL_DYNAMIC_STORAGE_BIT);
+    glNamedBufferStorage(m_ibo, sizeof(unsigned short) * indices.size(), indices.data(), GL_DYNAMIC_STORAGE_BIT);
 
     glCreateVertexArrays(1, &m_vao);
     glVertexArrayVertexBuffer(m_vao, 0, m_vbo, 0, sizeof(Vertex));
@@ -38,7 +33,7 @@ Buffer::Buffer(const std::span<const Vertex>& vertices, const std::span<const un
         glVertexArrayAttribBinding(m_vao, verticesAttribute.m_location, 0);
     }
 
-    m_logger.debug("Created with {} vertices", m_vertices.size());
+    m_logger.debug("Created with {} vertices", vertices.size());
 }
 
 Buffer::~Buffer()

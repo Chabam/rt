@@ -10,25 +10,24 @@ namespace rt
 
 class Buffer;
 class Camera;
+class Geometry;
 struct Light;
 class Material;
 class Texture;
-class Triangle;
-class Shader;
 
 class Mesh
 {
   public:
-    Mesh(const std::shared_ptr<Material>& material, const std::shared_ptr<Texture>& texture = {});
-    virtual ~Mesh();
+    Mesh(const std::shared_ptr<Geometry>& geometry, const std::shared_ptr<Material>& material,
+         const std::shared_ptr<Texture>& texture = {});
+
+    ~Mesh();
 
     Mesh(const Mesh& other);
     Mesh& operator=(const Mesh& other);
 
     Mesh(Mesh&& other);
     Mesh& operator=(Mesh&& other);
-
-    virtual unsigned int get_triangle_count() const = 0;
 
     void render(const Camera& camera, const Light& light) const;
 
@@ -38,6 +37,7 @@ class Mesh
     bool has_texture() const;
 
   protected:
+    std::shared_ptr<Geometry> m_geometry;
     std::unique_ptr<Buffer> m_buffer;
     std::shared_ptr<Material> m_material;
     std::shared_ptr<Texture> m_texture;

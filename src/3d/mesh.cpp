@@ -3,11 +3,11 @@
 #include "glm/matrix.hpp"
 
 #include <rt/3d/camera/camera.hpp>
+#include <rt/3d/geometries/geometry.hpp>
 #include <rt/3d/material.hpp>
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/gl/buffer.hpp>
 #include <rt/graphics/gl/texture.hpp>
-#include <rt/graphics/primitives/triangle.hpp>
 
 #include <memory>
 #include <stdexcept>
@@ -16,8 +16,10 @@
 namespace rt
 {
 
-Mesh::Mesh(const std::shared_ptr<Material>& material, const std::shared_ptr<Texture>& texture)
-    : m_buffer{}
+Mesh::Mesh(const std::shared_ptr<Geometry>& geometry, const std::shared_ptr<Material>& material,
+           const std::shared_ptr<Texture>& texture)
+    : m_geometry{geometry}
+    , m_buffer{std::make_unique<Buffer>(m_geometry->get_vertices(), geometry->get_indices())}
     , m_material{material}
     , m_texture{texture}
     , m_model{glm::mat4(1.f)}
@@ -26,7 +28,8 @@ Mesh::Mesh(const std::shared_ptr<Material>& material, const std::shared_ptr<Text
 }
 
 Mesh::Mesh(const Mesh& other)
-    : m_buffer{std::make_unique<Buffer>(other.m_buffer->get_vertices(), other.m_buffer->get_indices())}
+    : m_geometry{other.m_geometry}
+    , m_buffer{std::make_unique<Buffer>(m_geometry->get_vertices(), m_geometry->get_indices())}
     , m_material{other.m_material}
     , m_texture{other.m_texture}
     , m_model{other.m_model}
@@ -36,7 +39,8 @@ Mesh::Mesh(const Mesh& other)
 
 Mesh& Mesh::operator=(const Mesh& other)
 {
-    m_buffer = std::make_unique<Buffer>(other.m_buffer->get_vertices(), other.m_buffer->get_indices());
+    m_geometry = other.m_geometry;
+    m_buffer = std::make_unique<Buffer>(m_geometry->get_vertices(), m_geometry->get_indices());
     m_material = other.m_material;
     m_texture = other.m_texture;
     m_model = other.m_model;
@@ -46,7 +50,8 @@ Mesh& Mesh::operator=(const Mesh& other)
 }
 
 Mesh::Mesh(Mesh&& other)
-    : m_buffer{std::move(other.m_buffer)}
+    : m_geometry{std::move(other.m_geometry)}
+    , m_buffer{std::move(other.m_buffer)}
     , m_material{std::move(other.m_material)}
     , m_texture{std::move(other.m_texture)}
     , m_model{std::move(other.m_model)}
@@ -56,6 +61,7 @@ Mesh::Mesh(Mesh&& other)
 
 Mesh& Mesh::operator=(Mesh&& other)
 {
+    m_geometry = std::move(other.m_geometry);
     m_buffer = std::move(other.m_buffer);
     m_material = std::move(other.m_material);
     m_texture = std::move(other.m_texture);
@@ -85,7 +91,7 @@ void Mesh::render(const Camera& camera, const Light& light) const
         m_texture->bind();
     }
 
-    glDrawElements(GL_TRIANGLES, get_triangle_count() * Triangle::VERTEX_COUNT, GL_UNSIGNED_SHORT, nullptr);
+    glDrawElements(GL_TRIANGLES, m_geometry->get_indices().size(), GL_UNSIGNED_SHORT, nullptr);
 
     m_buffer->unbind();
 

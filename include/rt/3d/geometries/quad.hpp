@@ -1,17 +1,18 @@
 #ifndef RT_QUAD_H
 #define RT_QUAD_H
 
-#include "glm/ext/vector_float3.hpp"
-#include "rt/graphics/primitives/vertex.hpp"
-#include <rt/graphics/primitives/triangle.hpp>
+#include <rt/3d/geometries/geometry.hpp>
+#include <rt/3d/geometries/triangle.hpp>
 
 #include <array>
+#include <glm/ext/vector_float3.hpp>
 
 namespace rt
 {
 
-struct Quad
+class Quad final : public Geometry
 {
+  public:
     static constexpr auto POINT_COUNT = 4;
     static constexpr auto TRIANGLE_COUNT = 2;
     static constexpr auto VERTEX_COUNT = Triangle::VERTEX_COUNT * TRIANGLE_COUNT;
@@ -25,6 +26,11 @@ struct Quad
     Quad(Quad&& other);
     Quad& operator=(Quad&& other);
 
+    std::span<const Vertex> get_vertices() const override;
+    std::span<const unsigned short> get_indices() const override;
+    const glm::vec3& get_normal() const;
+
+  private:
     std::array<Vertex, POINT_COUNT> m_vertices;
     std::array<unsigned short, VERTEX_COUNT> m_indices;
     glm::vec3 m_normal;

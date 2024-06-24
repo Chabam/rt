@@ -7,28 +7,29 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <memory>
 
-
 namespace rt
 {
 
-constexpr glm::vec3 p1 = {-1.f, 1.f, 0.f};
-constexpr glm::vec3 p2 = {1.f, 1.f, 0.f};
-constexpr glm::vec3 p3 = {1.f, -1.f, 0.f};
-constexpr glm::vec3 p4 = {-1.f, -1.f, 0.f};
-
-Plane::Plane(float width, float height, const std::shared_ptr<Material>& material,
-             const std::shared_ptr<Texture>& texture)
-    : Mesh(material, texture)
-    , m_quad{{p1, p2, p3, p4}}
+Plane::Plane(float width, float height)
+    : m_quad{}
 {
-    m_model *= glm::scale(m_model, glm::vec3(width, height, 1.f));
+    const glm::vec3 scale_vector{width, height, 1.f};
+    const glm::vec3 p1 = scale_vector * glm::vec3{-1.f, 1.f, 0.f};
+    const glm::vec3 p2 = scale_vector * glm::vec3{1.f, 1.f, 0.f};
+    const glm::vec3 p3 = scale_vector * glm::vec3{1.f, -1.f, 0.f};
+    const glm::vec3 p4 = scale_vector * glm::vec3{-1.f, -1.f, 0.f};
 
-    m_buffer = std::make_unique<Buffer>(m_quad.m_vertices, m_quad.m_indices);
+    m_quad = {{p1, p2, p3, p4}};
 }
 
-unsigned int Plane::get_triangle_count() const
+std::span<const Vertex> Plane::get_vertices() const
 {
-    return Quad::TRIANGLE_COUNT;
+    return m_quad.get_vertices();
+}
+
+std::span<const unsigned short> Plane::get_indices() const
+{
+    return m_quad.get_indices();
 }
 
 } // namespace rt

@@ -33,21 +33,25 @@ int main(void)
     auto tex = std::make_shared<rt::Texture>(
         std::make_shared<rt::Image>(rt::FileHandler::get_file_as_image("resources/textures/grass.jpg")));
 
+    std::shared_ptr<rt::Cube> small_cube = std::make_shared<rt::Cube>(0.5f, 0.5f, 0.5f);
+    std::shared_ptr<rt::Cube> default_cube = std::make_shared<rt::Cube>();
+    std::shared_ptr<rt::Plane> default_plane = std::make_shared<rt::Plane>();
+
     rt::Scene scene;
     {
-        rt::Cube cube{0.5f, 0.5f, 0.5f, std::make_shared<rt::BlinnPhong>(mat_red)};
-        cube.set_model(glm::translate(cube.get_model(), glm::vec3(-2.f, -1.f, 0.f)));
-        scene.add_mesh(std::make_shared<rt::Cube>(cube));
+        rt::Mesh cube{small_cube, std::make_shared<rt::BlinnPhong>(mat_red)};
+        cube.set_model(glm::translate(cube.get_model(), glm::vec3(-1.f, -0.5f, 0.f)));
+        scene.add_mesh(std::make_shared<rt::Mesh>(cube));
     }
 
     {
-        auto cube = std::make_shared<rt::Cube>(1, 1, 1, std::make_shared<rt::BlinnPhong>(mat_shiny_blue));
+        auto cube = std::make_shared<rt::Mesh>(default_cube, std::make_shared<rt::BlinnPhong>(mat_shiny_blue));
         cube->set_model(glm::translate(cube->get_model(), glm::vec3(2.f, 0.f, 0.f)));
         scene.add_mesh(cube);
     }
 
     {
-        auto ground = std::make_shared<rt::Plane>(1, 1, std::make_shared<rt::BlinnPhong>(mat_ground), tex);
+        auto ground = std::make_shared<rt::Mesh>(default_plane, std::make_shared<rt::BlinnPhong>(mat_ground), tex);
         ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::rotate(ground->get_model(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
         ground->set_model(glm::scale(ground->get_model(), glm::vec3(5.f, 5.f, 5.f)));
@@ -55,7 +59,7 @@ int main(void)
     }
     {
         glm::vec3 light_position(0.f, 0.2f, 0.5f);
-        auto light_indicator = std::make_shared<rt::Cube>(1, 1, 1, std::make_shared<rt::BlinnPhong>(mat_light));
+        auto light_indicator = std::make_shared<rt::Mesh>(default_cube, std::make_shared<rt::BlinnPhong>(mat_light));
         light_indicator->set_model(glm::translate(light_indicator->get_model(), light_position));
         light_indicator->set_model(glm::scale(light_indicator->get_model(), glm::vec3(0.1f, 0.1f, 0.1f)));
         scene.add_mesh(light_indicator);
