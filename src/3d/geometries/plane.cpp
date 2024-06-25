@@ -1,10 +1,7 @@
-#include "glm/ext/vector_float3.hpp"
-#include "rt/3d/mesh.hpp"
-
 #include <rt/3d/geometries/plane.hpp>
-#include <rt/graphics/gl/buffer.hpp>
 
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/vector_float3.hpp>
 #include <memory>
 
 namespace rt
