@@ -24,7 +24,7 @@ std::span<const Vertex> Plane::get_vertices() const
     return m_quad.get_vertices();
 }
 
-std::span<const unsigned short> Plane::get_indices() const
+std::span<const unsigned int> Plane::get_indices() const
 {
     return m_quad.get_indices();
 }

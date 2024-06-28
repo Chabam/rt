@@ -37,29 +37,33 @@ int main(void)
     std::shared_ptr<rt::Cube> small_cube = std::make_shared<rt::Cube>(0.5f, 0.5f, 0.5f);
     std::shared_ptr<rt::Cube> default_cube = std::make_shared<rt::Cube>();
     std::shared_ptr<rt::Plane> default_plane = std::make_shared<rt::Plane>();
+    std::shared_ptr<rt::Model> bunny =
+        std::make_shared<rt::Model>(rt::FileHandler::get_file_as_text("resources/models/bunny.obj"));
     std::shared_ptr<rt::Model> teapot =
         std::make_shared<rt::Model>(rt::FileHandler::get_file_as_text("resources/models/teapot.obj"));
 
     rt::Scene scene;
     {
-        rt::Mesh cube{small_cube, std::make_shared<rt::BlinnPhong>(mat_red)};
-        cube.set_model(glm::translate(cube.get_model(), glm::vec3(-1.f, -0.5f, 0.f)));
-        scene.add_mesh(std::make_shared<rt::Mesh>(cube));
+        rt::Mesh teapot_mesh{teapot, std::make_shared<rt::BlinnPhong>(mat_red)};
+        teapot_mesh.set_model(glm::translate(teapot_mesh.get_model(), glm::vec3(-1.f, -1.f, 0.f)));
+        teapot_mesh.set_model(glm::scale(teapot_mesh.get_model(), glm::vec3(0.25f)));
+        teapot_mesh.set_model(glm::rotate(teapot_mesh.get_model(), glm::quarter_pi<float>(), glm::vec3(0.f, 1.f, 0.f)));
+        scene.add_mesh(std::make_shared<rt::Mesh>(teapot_mesh));
     }
 
     {
-        auto teapot_mesh = std::make_shared<rt::Mesh>(teapot, std::make_shared<rt::BlinnPhong>(mat_shiny_blue));
-        teapot_mesh->set_model(glm::translate(teapot_mesh->get_model(), glm::vec3(1.5f, -1.f, 0.f)));
-        teapot_mesh->set_model(glm::scale(teapot_mesh->get_model(), glm::vec3(0.5f, 0.5f, 0.5f)));
-        teapot_mesh->set_model(
-            glm::rotate(teapot_mesh->get_model(), glm::quarter_pi<float>() * 3, glm::vec3(0.f, 1.f, 0.f)));
-        scene.add_mesh(teapot_mesh);
+        auto bunny_mesh = std::make_shared<rt::Mesh>(bunny, std::make_shared<rt::BlinnPhong>(mat_shiny_blue));
+        bunny_mesh->set_model(glm::translate(bunny_mesh->get_model(), glm::vec3(1.5f, -1.33f, 0.f)));
+        bunny_mesh->set_model(glm::scale(bunny_mesh->get_model(), glm::vec3(10.f)));
+        bunny_mesh->set_model(glm::rotate(bunny_mesh->get_model(), glm::quarter_pi<float>(), glm::vec3(0.f, 1.f, 0.f)));
+        scene.add_mesh(bunny_mesh);
     }
 
     {
         auto ground = std::make_shared<rt::Mesh>(default_plane, std::make_shared<rt::BlinnPhong>(mat_ground), tex);
         ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::rotate(ground->get_model(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
+        ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::scale(ground->get_model(), glm::vec3(5.f, 5.f, 5.f)));
         scene.add_mesh(ground);
     }

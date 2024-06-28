@@ -20,7 +20,7 @@ class Cube final : public Geometry
     Cube(float width = 1.f, float height = 1.f, float depth = 1.f);
 
     std::span<const Vertex> get_vertices() const override;
-    std::span<const unsigned short> get_indices() const override;
+    std::span<const unsigned int> get_indices() const override;
 
   private:
     float m_width;
@@ -29,7 +29,7 @@ class Cube final : public Geometry
 
     std::array<Quad, QUAD_COUNT> m_quads;
     std::array<Vertex, QUAD_COUNT * Quad::POINT_COUNT> m_vertices;
-    std::array<unsigned short, QUAD_COUNT * Quad::VERTEX_COUNT> m_indices;
+    std::array<unsigned int, QUAD_COUNT * Quad::VERTEX_COUNT> m_indices;
 };
 
 } // namespace rt

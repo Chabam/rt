@@ -27,12 +27,12 @@ class Quad final : public Geometry
     Quad& operator=(Quad&& other);
 
     std::span<const Vertex> get_vertices() const override;
-    std::span<const unsigned short> get_indices() const override;
+    std::span<const unsigned int> get_indices() const override;
     const glm::vec3& get_normal() const;
 
   private:
     std::array<Vertex, POINT_COUNT> m_vertices;
-    std::array<unsigned short, VERTEX_COUNT> m_indices;
+    std::array<unsigned int, VERTEX_COUNT> m_indices;
     glm::vec3 m_normal;
 };
 

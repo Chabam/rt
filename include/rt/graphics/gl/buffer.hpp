@@ -14,7 +14,7 @@ namespace rt
 class Buffer
 {
   public:
-    Buffer(const std::span<const Vertex>& vertices, const std::span<const unsigned short>& indices);
+    Buffer(const std::span<const Vertex>& vertices, const std::span<const unsigned int>& indices);
     ~Buffer();
 
     void bind() const;

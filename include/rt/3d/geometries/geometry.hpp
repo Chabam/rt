@@ -13,7 +13,7 @@ class Geometry
   public:
     virtual ~Geometry() = default;
     virtual std::span<const Vertex> get_vertices() const = 0;
-    virtual std::span<const unsigned short> get_indices() const = 0;
+    virtual std::span<const unsigned int> get_indices() const = 0;
 };
 
 } // namespace rt

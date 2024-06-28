@@ -55,7 +55,7 @@ std::span<const Vertex> Triangle::get_vertices() const
     return m_vertices;
 }
 
-std::span<const unsigned short> Triangle::get_indices() const
+std::span<const unsigned int> Triangle::get_indices() const
 {
     return m_indices;
 }

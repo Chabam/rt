@@ -15,7 +15,7 @@ class Plane final : public Geometry
     Plane(float width = 1.f, float height = 1.f);
 
     std::span<const Vertex> get_vertices() const override;
-    std::span<const unsigned short> get_indices() const override;
+    std::span<const unsigned int> get_indices() const override;
 
   private:
     Quad m_quad;

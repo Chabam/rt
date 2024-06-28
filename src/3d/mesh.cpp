@@ -91,7 +91,7 @@ void Mesh::render(const Camera& camera, const Light& light) const
         m_texture->bind();
     }
 
-    glDrawElements(GL_TRIANGLES, m_geometry->get_indices().size(), GL_UNSIGNED_SHORT, nullptr);
+    glDrawElements(GL_TRIANGLES, m_geometry->get_indices().size(), GL_UNSIGNED_INT, nullptr);
 
     m_buffer->unbind();
 

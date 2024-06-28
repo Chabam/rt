@@ -8,7 +8,7 @@
 namespace rt
 {
 
-Buffer::Buffer(const std::span<const Vertex>& vertices, const std::span<const unsigned short>& indices)
+Buffer::Buffer(const std::span<const Vertex>& vertices, const std::span<const unsigned int>& indices)
     : m_vao{}
     , m_vbo{}
     , m_ibo{}
@@ -17,7 +17,7 @@ Buffer::Buffer(const std::span<const Vertex>& vertices, const std::span<const un
     glNamedBufferStorage(m_vbo, sizeof(Vertex) * vertices.size(), vertices.data(), GL_DYNAMIC_STORAGE_BIT);
 
     glCreateBuffers(1, &m_ibo);
-    glNamedBufferStorage(m_ibo, sizeof(unsigned short) * indices.size(), indices.data(), GL_DYNAMIC_STORAGE_BIT);
+    glNamedBufferStorage(m_ibo, sizeof(unsigned int) * indices.size(), indices.data(), GL_DYNAMIC_STORAGE_BIT);
 
     glCreateVertexArrays(1, &m_vao);
     glVertexArrayVertexBuffer(m_vao, 0, m_vbo, 0, sizeof(Vertex));

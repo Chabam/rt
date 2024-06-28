@@ -37,7 +37,7 @@ Cube::Cube(float width, float height, float depth)
     for (const Quad& quad : m_quads)
     {
         std::ranges::transform(quad.get_indices(), m_indices.begin() + indices_offset,
-                               [vertices_offset](unsigned short idx) { return idx + vertices_offset; });
+                               [vertices_offset](unsigned int idx) { return idx + vertices_offset; });
         indices_offset += Quad::VERTEX_COUNT;
 
         std::ranges::move(quad.get_vertices(), m_vertices.begin() + vertices_offset);
@@ -50,7 +50,7 @@ std::span<const Vertex> Cube::get_vertices() const
     return m_vertices;
 }
 
-std::span<const unsigned short> Cube::get_indices() const
+std::span<const unsigned int> Cube::get_indices() const
 {
     return m_indices;
 }

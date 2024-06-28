@@ -55,7 +55,7 @@ std::span<const Vertex> Quad::get_vertices() const
     return m_vertices;
 }
 
-std::span<const unsigned short> Quad::get_indices() const
+std::span<const unsigned int> Quad::get_indices() const
 {
     return m_indices;
 }
