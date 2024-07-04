@@ -22,7 +22,7 @@ void Window::init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
+    // glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
 
     init_logger.debug("glfw ok!");
 }
@@ -129,7 +129,7 @@ bool Window::should_close()
 
 void Window::update()
 {
-    glFlush();
+    glfwSwapBuffers(m_ptr.get());
     glfwPollEvents();
 }
 

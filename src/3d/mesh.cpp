@@ -115,9 +115,16 @@ const glm::mat3& Mesh::get_normal_matrix() const
 {
     return m_normal_matrix;
 }
+
 bool Mesh::has_texture() const
 {
-    return m_texture.use_count() != 0;
+    return static_cast<bool>(m_texture.use_count());
 }
+
+const std::shared_ptr<Texture>& Mesh::get_texture() const
+{
+    return m_texture;
+}
+
 
 } // namespace rt

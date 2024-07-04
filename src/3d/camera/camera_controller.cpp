@@ -54,7 +54,7 @@ void CameraController::update(const TimeStep& time_step)
     }
 
     constexpr float speed_increase = 2.5f;
-    m_camera.set_speed(time_step.m_render_time.count() * speed_increase);
+    m_camera.set_speed(std::chrono::duration_cast<std::chrono::duration<double>>(time_step.m_render_time).count() * speed_increase);
 
     if (forward_key_pressed)
         m_camera.move(m_camera.get_front());

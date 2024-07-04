@@ -35,7 +35,7 @@ class Mesh
     const glm::mat4& get_model() const;
     const glm::mat3& get_normal_matrix() const;
     bool has_texture() const;
-
+    const std::shared_ptr<Texture>& get_texture() const;
   protected:
     std::shared_ptr<Geometry> m_geometry;
     std::unique_ptr<Buffer> m_buffer;

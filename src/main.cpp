@@ -32,7 +32,8 @@ int main(void)
     rt::BlinnPhong mat_light{{.m_emitsLight = true}};
 
     auto tex = std::make_shared<rt::Texture>(
-        std::make_shared<rt::Image>(rt::FileHandler::get_file_as_image("resources/textures/grass.jpg")));
+        std::make_shared<rt::Image>(rt::FileHandler::get_file_as_image("resources/textures/brickwall.jpg")),
+        std::make_shared<rt::Image>(rt::FileHandler::get_file_as_image("resources/textures/brickwall_normal.jpg")));
 
     std::shared_ptr<rt::Cube> small_cube = std::make_shared<rt::Cube>(0.5f, 0.5f, 0.5f);
     std::shared_ptr<rt::Cube> default_cube = std::make_shared<rt::Cube>();
@@ -48,7 +49,7 @@ int main(void)
         teapot_mesh.set_model(glm::translate(teapot_mesh.get_model(), glm::vec3(-1.f, -1.f, 0.f)));
         teapot_mesh.set_model(glm::scale(teapot_mesh.get_model(), glm::vec3(0.25f)));
         teapot_mesh.set_model(glm::rotate(teapot_mesh.get_model(), glm::quarter_pi<float>(), glm::vec3(0.f, 1.f, 0.f)));
-        scene.add_mesh(std::make_shared<rt::Mesh>(teapot_mesh));
+        scene.add_mesh(std::make_shared<rt::Mesh>(std::move(teapot_mesh)));
     }
 
     {
@@ -56,14 +57,14 @@ int main(void)
         bunny_mesh->set_model(glm::translate(bunny_mesh->get_model(), glm::vec3(1.5f, -1.33f, 0.f)));
         bunny_mesh->set_model(glm::scale(bunny_mesh->get_model(), glm::vec3(10.f)));
         bunny_mesh->set_model(glm::rotate(bunny_mesh->get_model(), glm::quarter_pi<float>(), glm::vec3(0.f, 1.f, 0.f)));
-        scene.add_mesh(bunny_mesh);
+        scene.add_mesh(std::move(bunny_mesh));
     }
 
     {
-        auto ground = std::make_shared<rt::Mesh>(default_plane, std::make_shared<rt::BlinnPhong>(mat_ground), tex);
+        auto ground =
+            std::make_shared<rt::Mesh>(default_plane, std::make_shared<rt::BlinnPhong>(mat_ground), tex);
         ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::rotate(ground->get_model(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
-        ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::scale(ground->get_model(), glm::vec3(5.f, 5.f, 5.f)));
         scene.add_mesh(ground);
     }

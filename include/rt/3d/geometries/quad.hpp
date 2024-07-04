@@ -28,12 +28,13 @@ class Quad final : public Geometry
 
     std::span<const Vertex> get_vertices() const override;
     std::span<const unsigned int> get_indices() const override;
-    const glm::vec3& get_normal() const;
 
   private:
     std::array<Vertex, POINT_COUNT> m_vertices;
     std::array<unsigned int, VERTEX_COUNT> m_indices;
     glm::vec3 m_normal;
+    glm::vec3 m_tangent;
+    glm::vec3 m_bi_tangent;
 };
 
 } // namespace rt

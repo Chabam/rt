@@ -6,23 +6,31 @@
 namespace rt
 {
 
-Texture::Texture(const std::shared_ptr<Image>& image)
-    : m_id{}
-    , m_image(image)
+void create_gl_texture(GLuint& id, const std::shared_ptr<Image>& image)
 {
-    glCreateTextures(GL_TEXTURE_2D, 1, &m_id);
+    glCreateTextures(GL_TEXTURE_2D, 1, &id);
 
-    glTextureStorage2D(m_id, 1, GL_RGB8, m_image->m_width, m_image->m_height);
+    glTextureStorage2D(id, 1, GL_RGB8, image->m_width, image->m_height);
 
-    glTextureParameteri(m_id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTextureParameteri(m_id, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTextureParameteri(m_id, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTextureParameteri(m_id, GL_TEXTURE_WRAP_R, GL_REPEAT);
+    glTextureParameteri(id, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTextureParameteri(id, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
-    glTextureSubImage2D(m_id, 0, 0, 0, m_image->m_width, m_image->m_height, GL_RGB, GL_UNSIGNED_BYTE,
-                        m_image->m_pixels.get());
-    glGenerateMipmap(m_id);
+    glTextureSubImage2D(id, 0, 0, 0, image->m_width, image->m_height, GL_RGB, GL_UNSIGNED_BYTE,
+                        image->m_pixels.get());
+    glGenerateMipmap(id);
+}
+
+Texture::Texture(const std::shared_ptr<Image>& image, const std::shared_ptr<Image>& normal_map)
+    : m_id{}
+    , m_normal_id{}
+    , m_image{image}
+    , m_normal_map{normal_map}
+{
+    create_gl_texture(m_id, m_image);
+    create_gl_texture(m_normal_id, m_normal_map);
 }
 
 Texture::~Texture()
@@ -33,11 +41,20 @@ Texture::~Texture()
 void Texture::bind() const
 {
     glBindTextureUnit(0, m_id);
+    if (has_normal_map())
+        glBindTextureUnit(1, m_normal_id);
 }
 
 void Texture::unbind() const
 {
     glBindTextureUnit(0, 0);
+    if (has_normal_map())
+        glBindTextureUnit(1, 0);
+}
+
+bool Texture::has_normal_map() const
+{
+    return static_cast<bool>(m_normal_map);
 }
 
 } // namespace rt

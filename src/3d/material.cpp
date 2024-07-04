@@ -3,6 +3,7 @@
 #include <rt/3d/material.hpp>
 #include <rt/3d/mesh.hpp>
 #include <rt/graphics/gl/shader_program.hpp>
+#include <rt/graphics/gl/texture.hpp>
 
 #include <memory>
 
@@ -26,7 +27,16 @@ void Material::forward_uniforms(const Mesh& mesh, const Camera& camera, const Li
     m_shader->set_uniform("model", mesh.get_model());
     m_shader->set_uniform("projection", camera.get_projection());
     m_shader->set_uniform("normalMatrix", mesh.get_normal_matrix());
-    m_shader->set_uniform("hasTexture", mesh.has_texture());
+    const bool has_texture = mesh.has_texture();
+    if (has_texture)
+        m_shader->set_uniform("inTexture", 0);
+    m_shader->set_uniform("hasTexture", has_texture);
+
+    const bool has_normal_map = has_texture && mesh.get_texture()->has_normal_map();
+    if (has_normal_map)
+        m_shader->set_uniform("inNormalMap", 1);
+    m_shader->set_uniform("hasNormalMap", has_normal_map);
+
 
     m_shader->set_uniform("cameraPos", camera.get_position());
 

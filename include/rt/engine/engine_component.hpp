@@ -9,6 +9,8 @@ struct TimeStep;
 class EngineComponent
 {
   public:
+    virtual ~EngineComponent() = default;
+
     virtual void update(const TimeStep& time_step) = 0;
 };
 
