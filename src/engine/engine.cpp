@@ -44,7 +44,6 @@ void Engine::render(Window& window, Scene& scene)
 
     const char* original_title = window.get_title();
 
-main_loop:
     while (!window.should_close())
     {
         using namespace std::chrono_literals;
@@ -60,7 +59,7 @@ main_loop:
 
         TimeStep time_step;
         const auto after_render = std::chrono::system_clock::now();
-        time_step.m_render_time = std::chrono::duration<double>(after_render - last_frame);
+        time_step.m_render_time = after_render - last_frame;
         last_frame = after_render;
 
         const auto elapsed = after_render - before_render;
@@ -89,10 +88,7 @@ main_loop:
             start_fps_count_timer = std::chrono::system_clock::now();
         }
 
-        if (std::chrono::system_clock::now() < time_step.m_next_frame_deadline)
-        {
-            std::this_thread::sleep_until(time_step.m_next_frame_deadline);
-        }
+        while(std::chrono::system_clock::now() < time_step.m_next_frame_deadline);
     }
 }
 
