@@ -53,8 +53,8 @@ int main(void)
     }
 
     {
-        auto bunny_mesh = std::make_shared<rt::Mesh>(bunny, std::make_shared<rt::BlinnPhong>(mat_shiny_blue));
-        bunny_mesh->set_model(glm::translate(bunny_mesh->get_model(), glm::vec3(1.5f, -1.33f, 0.f)));
+        auto bunny_mesh = std::make_shared<rt::Mesh>(bunny, std::make_shared<rt::BlinnPhong>(mat_shiny_blue), tex);
+        bunny_mesh->set_model(glm::translate(bunny_mesh->get_model(), glm::vec3(1.5f, -1.f, 0.f)));
         bunny_mesh->set_model(glm::scale(bunny_mesh->get_model(), glm::vec3(10.f)));
         bunny_mesh->set_model(glm::rotate(bunny_mesh->get_model(), glm::quarter_pi<float>(), glm::vec3(0.f, 1.f, 0.f)));
         scene.add_mesh(std::move(bunny_mesh));

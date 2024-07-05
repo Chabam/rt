@@ -15,7 +15,9 @@ class Triangle final : public Geometry
     static constexpr auto POINT_COUNT = 3;
     static constexpr auto VERTEX_COUNT = POINT_COUNT;
 
-    Triangle(const std::array<glm::vec3, POINT_COUNT>& pts);
+    Triangle(const std::array<glm::vec3, POINT_COUNT>& pts,
+             const std::array<glm::vec2, Triangle::POINT_COUNT>& uvs = {glm::vec2{0.5f, 1.f}, glm::vec2{1.f, 0.f},
+                                                                        glm::vec2{0.f, 0.f}});
 
     Triangle(const Triangle& other);
     Triangle& operator=(const Triangle& other);
