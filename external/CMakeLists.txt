@@ -7,6 +7,7 @@ FetchContent_Declare(
   GIT_REPOSITORY https://github.com/glfw/glfw.git
   GIT_SHALLOW    TRUE
   GIT_PROGRESS   TRUE
+  FIND_PACKAGE_ARGS NAMES glfw3
 )
 
 FetchContent_Declare(

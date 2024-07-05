@@ -22,7 +22,6 @@ void Window::init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    // glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
 
     init_logger.debug("glfw ok!");
 }
@@ -83,14 +82,13 @@ Window::Window(unsigned int width, unsigned int height, const char* title)
         }
     });
 
-    glfwSwapInterval(0);
-
     m_logger.debug("Window created");
 }
 
 void Window::make_active()
 {
     glfwMakeContextCurrent(m_ptr.get());
+    glfwSwapInterval(0);
     m_logger.debug("Init glad");
     if (!gladLoadGL(static_cast<GLADloadfunc>(glfwGetProcAddress)))
     {
