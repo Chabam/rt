@@ -1,5 +1,3 @@
-# add_subdirectory(glad)
-
 include(FetchContent)
 
 FetchContent_Declare(
