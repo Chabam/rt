@@ -55,7 +55,7 @@ Model::Model(const std::string& obj_file_content)
             const size_t first_space_loc = line_contents.find(' ');
             const size_t second_space_loc = line_contents.find(' ', first_space_loc + 1);
 
-            const size_t slash_count = std::count(line_contents.begin(), line_contents.end(), '/') / 2;
+            const size_t slash_count = std::count(line_contents.begin(), line_contents.end(), '/') / 3;
 
             if (slash_count != 0)
             {
@@ -71,7 +71,7 @@ Model::Model(const std::string& obj_file_content)
                     }
 
                     return std::make_tuple(std::stoi(triplets.substr(0, first_slash)) - 1,
-                                           std::stoi(triplets.substr(last_slash + 1)) - 1);
+                                           std::stoi(triplets.substr(last_slash - 1)) - 1);
                 };
 
                 const auto [p1_idx, p1_uv] = extract_values(line_contents.substr(0, first_space_loc));
