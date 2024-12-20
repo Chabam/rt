@@ -71,7 +71,7 @@ Model::Model(const std::string& obj_file_content)
                     }
 
                     return std::make_tuple(std::stoi(triplets.substr(0, first_slash)) - 1,
-                                           std::stoi(triplets.substr(first_slash + 1, last_slash)) - 1);
+                                           std::stoi(triplets.substr(last_slash + 1)) - 1);
                 };
 
                 const auto [p1_idx, p1_uv] = extract_values(line_contents.substr(0, first_space_loc));
