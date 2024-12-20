@@ -1,8 +1,10 @@
 #include <rt/3d/geometries/model.hpp>
 #include <rt/3d/geometries/triangle.hpp>
 
+#include <algorithm>
 #include <numeric>
 #include <sstream>
+#include <string>
 
 namespace rt
 {
@@ -53,13 +55,23 @@ Model::Model(const std::string& obj_file_content)
             const size_t first_space_loc = line_contents.find(' ');
             const size_t second_space_loc = line_contents.find(' ', first_space_loc + 1);
 
-            if (line_contents.find('/') != std::string::npos)
+            const size_t slash_count = std::count(line_contents.begin(), line_contents.end(), '/') / 2;
+
+            if (slash_count != 0)
             {
-                const auto extract_values = [](const std::string& triplets) -> std::tuple<unsigned int, unsigned int> {
+                const auto extract_values =
+                    [slash_count](const std::string& triplets) -> std::tuple<unsigned int, unsigned int> {
                     size_t first_slash = triplets.find('/');
                     size_t last_slash = triplets.rfind('/');
+
+                    if (slash_count == 2)
+                    {
+                        return std::make_tuple(std::stoi(triplets.substr(0, first_slash)) - 1,
+                                               std::stoi(triplets.substr(first_slash + 1, last_slash)) - 1);
+                    }
+
                     return std::make_tuple(std::stoi(triplets.substr(0, first_slash)) - 1,
-                                           std::stoi(triplets.substr(last_slash + 1)) - 1);
+                                           std::stoi(triplets.substr(first_slash + 1, last_slash)) - 1);
                 };
 
                 const auto [p1_idx, p1_uv] = extract_values(line_contents.substr(0, first_space_loc));
