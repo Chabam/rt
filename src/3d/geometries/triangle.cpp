@@ -1,7 +1,6 @@
 #include <rt/3d/geometries/triangle.hpp>
 #include <rt/graphics/gl/vertex.hpp>
 
-#include <algorithm>
 #include <array>
 #include <glm/ext/vector_float3.hpp>
 #include <glm/geometric.hpp>

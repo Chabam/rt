@@ -6,7 +6,6 @@
 #include <rt/3d/mesh.hpp>
 
 #include <array>
-#include <memory>
 
 namespace rt
 {

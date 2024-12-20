@@ -1,6 +1,8 @@
-#include "rt/utils/image.hpp"
 #include "glad/gl.h"
+#include "rt/utils/image.hpp"
+
 #include <rt/graphics/gl/texture.hpp>
+
 #include <memory>
 
 namespace rt
@@ -18,19 +20,19 @@ void create_gl_texture(GLuint& id, const std::shared_ptr<Image>& image)
     glTextureParameteri(id, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTextureParameteri(id, GL_TEXTURE_WRAP_R, GL_REPEAT);
 
-    glTextureSubImage2D(id, 0, 0, 0, image->m_width, image->m_height, GL_RGB, GL_UNSIGNED_BYTE,
-                        image->m_pixels.get());
+    glTextureSubImage2D(id, 0, 0, 0, image->m_width, image->m_height, GL_RGB, GL_UNSIGNED_BYTE, image->m_pixels.get());
     glGenerateMipmap(id);
 }
 
-Texture::Texture(const std::shared_ptr<Image>& image, const std::shared_ptr<Image>& normal_map)
+Texture::Texture(const std::shared_ptr<Image>& image, const std::optional<std::shared_ptr<Image>>& normal_map)
     : m_id{}
     , m_normal_id{}
     , m_image{image}
     , m_normal_map{normal_map}
 {
     create_gl_texture(m_id, m_image);
-    create_gl_texture(m_normal_id, m_normal_map);
+    if (normal_map)
+        create_gl_texture(m_normal_id, *m_normal_map);
 }
 
 Texture::~Texture()

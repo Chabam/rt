@@ -35,6 +35,9 @@ int main(void)
         std::make_shared<rt::Image>(rt::FileHandler::get_file_as_image("resources/textures/brickwall.jpg")),
         std::make_shared<rt::Image>(rt::FileHandler::get_file_as_image("resources/textures/brickwall_normal.jpg")));
 
+    auto bunny_tex = std::make_shared<rt::Texture>(
+        std::make_shared<rt::Image>(rt::FileHandler::get_file_as_image("resources/textures/bunny-atlas.jpg")));
+
     std::shared_ptr<rt::Cube> small_cube = std::make_shared<rt::Cube>(0.5f, 0.5f, 0.5f);
     std::shared_ptr<rt::Cube> default_cube = std::make_shared<rt::Cube>();
     std::shared_ptr<rt::Plane> default_plane = std::make_shared<rt::Plane>();
@@ -53,16 +56,15 @@ int main(void)
     }
 
     {
-        auto bunny_mesh = std::make_shared<rt::Mesh>(bunny, std::make_shared<rt::BlinnPhong>(mat_shiny_blue), tex);
+        auto bunny_mesh = std::make_shared<rt::Mesh>(bunny, std::make_shared<rt::BlinnPhong>(mat_shiny_blue), bunny_tex);
         bunny_mesh->set_model(glm::translate(bunny_mesh->get_model(), glm::vec3(1.5f, -1.f, 0.f)));
-        bunny_mesh->set_model(glm::scale(bunny_mesh->get_model(), glm::vec3(10.f)));
+        bunny_mesh->set_model(glm::scale(bunny_mesh->get_model(), glm::vec3(0.005f)));
         bunny_mesh->set_model(glm::rotate(bunny_mesh->get_model(), glm::quarter_pi<float>(), glm::vec3(0.f, 1.f, 0.f)));
         scene.add_mesh(std::move(bunny_mesh));
     }
 
     {
-        auto ground =
-            std::make_shared<rt::Mesh>(default_plane, std::make_shared<rt::BlinnPhong>(mat_ground), tex);
+        auto ground = std::make_shared<rt::Mesh>(default_plane, std::make_shared<rt::BlinnPhong>(mat_ground), tex);
         ground->set_model(glm::translate(ground->get_model(), glm::vec3(0.f, -1.01f, 0.f)));
         ground->set_model(glm::rotate(ground->get_model(), glm::half_pi<float>(), glm::vec3(1.f, 0.f, 0.f)));
         ground->set_model(glm::scale(ground->get_model(), glm::vec3(5.f, 5.f, 5.f)));

@@ -4,8 +4,6 @@
 #include <rt/3d/geometries/geometry.hpp>
 #include <rt/3d/geometries/quad.hpp>
 
-#include <memory>
-
 namespace rt
 {
 

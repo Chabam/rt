@@ -5,7 +5,6 @@
 #include <rt/graphics/window/window.hpp>
 #include <rt/utils/logger.hpp>
 
-#include <chrono>
 #include <glad/gl.h>
 #include <memory>
 

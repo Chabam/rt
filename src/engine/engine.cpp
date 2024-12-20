@@ -1,6 +1,4 @@
 #include "glm/ext/vector_float4.hpp"
-#include "glm/geometric.hpp"
-#include "rt/3d/camera/camera.hpp"
 
 #include <rt/engine/engine.hpp>
 #include <rt/engine/engine_component.hpp>
@@ -8,13 +6,10 @@
 #include <rt/utils/logger.hpp>
 
 #include <GLFW/glfw3.h>
-#include <algorithm>
 #include <chrono>
 #include <format>
-#include <functional>
 #include <memory>
 #include <stdexcept>
-#include <thread>
 
 namespace rt
 {
@@ -22,8 +17,8 @@ namespace rt
 static constexpr auto NAME = "rt";
 
 Engine::Engine()
-    : m_target_fps(60)
-    , m_frame_count()
+    : m_target_fps{60}
+    , m_frame_count{}
 {
 }
 
