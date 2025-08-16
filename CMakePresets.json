@@ -4,7 +4,6 @@
         {
             "name": "default",
             "hidden": true,
-            "generator": "Ninja",
             "binaryDir": "${sourceDir}/_build",
             "cacheVariables": {
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true
